@@ -1,72 +1,99 @@
+const fs = require(`fs`);
+
 class ProductManager {
-  constructor() {
-    this.products = [];
+  constructor(path) {
+    this.path = path;
   }
 
-  getProducts() {
-    return this.products;
-  }
+  async addProduct(title, description, price, thumbnail, code, stock) {
+    try {
+      const productosPrev = await this.getProducts();
+      
+      if (!title || !description || !price || !thumbnail || !code || !stock) {
+        return console.log("Todos los campos son obligatorios");
+      }
+      if (this.productosPrev.find((p) => code === p.code)) {
+        return console.log("ya existe ese code");
+      }
 
-  addProduct(title, description, price, thumbnail, code, stock) {
-    if (!title || !description || !price || !thumbnail || !code || !stock) {
-      console.log("Todos los campos son obligatorios");
+      let id;
+      if (!productosPrev.length) {
+        id = 1;
+      } else {
+        id = productosPrev[productosPrev.length - 1].id + 1;
+      }
+
+      const newProduct = {
+        id,
+        title,
+        description,
+        price,
+        thumbnail,
+        code,
+        stock,
+      };
+
+      productosPrev.push(newProduct);
+      
+      await fs.promises.writeFile(this.path, JSON.stringify(productosPrev));
+      
+    } catch (error) {
+      return error
     }
-    if (this.products.find((p) => code === p.code)) {
-      console.log("ya existe ese code");
-    }
-    const id =
-      this.products.length === 0 ? 1 : this.products[this.products.length - 1].id + 1;
-
-    const nuevoProducto = {
-      id,
-      title,
-      description,
-      price,
-      thumbnail,
-      code,
-      stock,
-    };
-
-    this.products.push(nuevoProducto);
-  }
-  getProductById(id){
-    const productoId = this.products.find(p => p.id === id )
-    if(productoId === undefined){
-        console.log("el producto no existe")
-    }else{
-        return productoId
-    }
   }
 
+  async getProducts() {
+    try {
+      if (fs.existsSync(this.path)) {
+        const infoProductos = await fs.promises.readFile(this.path, `utf-8`);
+        return JSON.parse(infoProductos);
+      } else {
+        return [];
+      }
+    } catch (error) {
+      return error;
+    }
+  }
+  
 
+  getProductById(id) {
+    const productoId = this.productosPrev.find((p) => p.id === id);
+    if (productoId === undefined) {
+      console.log("el producto no existe");
+    } else {
+      return productoId;
+    }
+  }
 }
 
 
+const producto1 ={
+  title: "producto prueba",
+  description: "este es un producto prueba",
+  price: 200,
+  thumbnail: "sin imagen",
+  code: "abc 123",
+  stock: 25
+}
+
+
+async function prueba() {
+  const pruebas = new ProductManager(`productos.json`);
+
+  await pruebas.addProduct(producto1.title,
+    producto1.description,
+    producto1.price,
+    producto1.thumbnail,
+    producto1.code,
+    producto1.stock)
 
 
 
 
+  //producto1.addProduct() (metodo para verificar que los campos son obligatorios)
+  //console.log(producto1.getProducts(2));
+  //console.log(producto1.getProductById(3)) //metodo para verificar que el id no existe
+}
 
-const producto1 = new ProductManager();
-producto1.addProduct(
-  "producto prueba",
-  "este es un producto prueba",
-  200,
-  "sin imagen",
-  "abc123",
-  25
-);
-producto1.addProduct(
-  "producto prueba 2",
-  "este es otro producto prueba",
-  300,
-  "con imagen",
-  "oka123",
-  50
-);
 
-//producto1.addProduct("producto prueba","este es un producto prueba",200,"sin imagen","abc123",25) (metodo para verificar que el campo CODE esta repetido)
-
-//producto1.addProduct() (metodo para verificar que los campos son obligatorios)
-//console.log(producto1.getProducts())
-//console.log(producto1.getProductById(3)) //metodo para verificar que el id no existe
+prueba()
