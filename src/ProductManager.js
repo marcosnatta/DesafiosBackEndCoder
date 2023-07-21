@@ -126,7 +126,7 @@ async function prueba() {
 
 
   //const producto = await pruebas.getProducts();
-  //const producto = await pruebas.getProductById(1)
+  //const producto = await pruebas.getProductById(3)
   //await pruebas.updateProduct(1,prodnew) // metodo para actualizar un producto tengo un problema que en el json me aparecen dos veces los id
   //console.log(producto);
   //await pruebas.deleteUser(3)

@@ -1,5 +1,5 @@
 import express from "express"
-import  ProductManager  from "../ProductManager.js";
+import  ProductManager  from "./ProductManager.js";
 
 const productmanager = new ProductManager("./productos.json")
 const app = express()
@@ -7,23 +7,36 @@ const app = express()
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get('/products', async (req, res) => {
+	try{
+	const allproducts = await productmanager.getProducts();
+	if(!req.query.limit){
+		return res.send(allproducts)
+	} else{
+		return res.send(allproducts.slice(0,Number(req.query.limit)))
+	}
+	}catch (err){
+		res.send({error:"tenemos un error"})
+	}
+});
 
-app.get("/saludo",(req,res) =>{
-    console.log(req)
-    res.send("hola a todos")
-})
+app.get('/products/:pid', async (req, res) => {
+	try{
 
-app.get("/despedida",(req,res) =>{
-    res.send("adios a todos")
-})
+		const idproductos =  await productmanager.getProductById(Number(req.params.pid))
+		if(idproductos){
+			return res.send(idproductos)
+		}else{
+			return res.send("el producto no se encontro")
+		}
+	}catch(err){
+		res.send({error:"tenemos un error"})
+	}
+	
+});
 
 
-app.get("/regreso",(req,res) =>{
-    res.json({message: "usuarios encontrados", usuarios})
-})
-
-
-app.listen(9090, ()=>{
+app.listen(8080, ()=>{
     console.log("escuchando el puerto 8080")
 })
 
