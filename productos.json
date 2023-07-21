@@ -1,1 +1,122 @@
-[{"id":1,"title":"producto prueba","description":"este es un producto prueba","price":200,"thumbnail":"sin imagen","code":"abc 123","stock":25},{"id":1},{"id":2,"title":"productos prueba","description":"este es otro  producto prueba","price":2001,"thumbnail":"sin imagen","code":"abc 1234","stock":251},{"id":2},{"id":3,"title":"otra prueba mas","description":"este es otro producto prueba otra vez","price":20,"thumbnail":"sin imagen","code":"abcd 1234","stock":2514},{"id":3}]
+[
+    {
+        "id": 1,
+        "title": "producto1",
+        "description": "prueba1",
+        "price": 100,
+        "thumbnail": "imagen linda",
+        "code": "prod1",
+        "stock": 4
+    },
+    {
+        "id": 1
+    },
+    {
+        "id": 2,
+        "title": "producto2",
+        "description": "prueba2",
+        "price": 7200,
+        "thumbnail": "imagen linda2",
+        "code": "prod21",
+        "stock": 6
+    },
+    {
+        "id": 2
+    },
+    {
+        "id": 3,
+        "title": "producto3",
+        "description": "prueba3",
+        "price": 103000,
+        "thumbnail": "imagen fea",
+        "code": "prod3",
+        "stock": 100
+    },
+    {
+        "id": 3
+    },
+    {
+        "id": 4,
+        "title": "producto4",
+        "description": "prueba4",
+        "price": 1400,
+        "thumbnail": "imagen linda3",
+        "code": "prod4",
+        "stock": 3
+    },
+    {
+        "id": 4
+    },
+    {
+        "id": 5,
+        "title": "producto5",
+        "description": "prueba5",
+        "price": 7050,
+        "thumbnail": "imagen linda4",
+        "code": "prod5",
+        "stock": 4
+    },
+    {
+        "id": 5
+    },
+    {
+        "id": 6,
+        "title": "producto6",
+        "description": "prueba6",
+        "price": 106000,
+        "thumbnail": "imagen fea2",
+        "code": "prod6",
+        "stock": 123
+    },
+    {
+        "id": 6
+    },
+    {
+        "id": 7,
+        "title": "producto7",
+        "description": "prueba7",
+        "price": 1700,
+        "thumbnail": "imagen linda5",
+        "code": "prod7",
+        "stock": 465
+    },
+    {
+        "id": 7
+    },
+    {
+        "id": 8,
+        "title": "producto8",
+        "description": "prueba8",
+        "price": 7800,
+        "thumbnail": "imagen linda6",
+        "code": "prod8",
+        "stock": 63
+    },
+    {
+        "id": 8
+    },
+    {
+        "id": 9,
+        "title": "producto9",
+        "description": "prueba9",
+        "price": 109000,
+        "thumbnail": "imagen fea3",
+        "code": "prod9",
+        "stock": 10120
+    },
+    {
+        "id": 9
+    },
+    {
+        "id": 10,
+        "title": "producto10",
+        "description": "prueba10",
+        "price": 14509000,
+        "thumbnail": "imagen fea4",
+        "code": "prod10",
+        "stock": 1123
+    },
+    {
+        "id": 10
+    }
+]

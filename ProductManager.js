@@ -1,7 +1,8 @@
-const fs = require("fs");
+import fs from "fs";
+
 
 class ProductManager {
-  constructor(path = "./products.json") {
+  constructor(path) {
     this.path = path;
   }
 
@@ -99,68 +100,31 @@ class ProductManager {
   }
 }
 
-const producto1 = {
-  title: "producto prueba",
-  description: "este es un producto prueba",
-  price: 200,
-  thumbnail: "sin imagen",
-  code: "abc 123",
-  stock: 25,
-};
-
-prodnew = {
+const prodnew = {
   title: "este no es una prueba",
   description: "producto que no es de prueba",
   stock: 20303,
-};
+}
+  
 
-const producto2 = {
-  title: "productos prueba",
-  description: "este es otro  producto prueba",
-  price: 2001,
-  thumbnail: "sin imagen",
-  code: "abc 1234",
-  stock: 251,
-};
 
-const producto3 = {
-  title: "otra prueba mas",
-  description: "este es otro producto prueba otra vez",
-  price: 20,
-  thumbnail: "sin imagen",
-  code: "abcd 1234",
-  stock: 2514,
-};
 
 async function prueba() {
   const pruebas = new ProductManager(`productos.json`);
 
-  await pruebas.addProduct(
-    producto1.title,
-    producto1.description,
-    producto1.price,
-    producto1.thumbnail,
-    producto1.code,
-    producto1.stock
-  );
+  await pruebas.addProduct("producto1", "prueba1",100,"imagen linda","prod1", 4);
+  await pruebas.addProduct("producto2", "prueba2",7200,"imagen linda2","prod21", 6);
+  await pruebas.addProduct("producto3", "prueba3",103000,"imagen fea","prod3", 100);
+  await pruebas.addProduct("producto4", "prueba4",1400,"imagen linda3","prod4", 3);
+  await pruebas.addProduct("producto5", "prueba5",7050,"imagen linda4","prod5", 4);
+  await pruebas.addProduct("producto6", "prueba6",106000,"imagen fea2","prod6", 123);
+  await pruebas.addProduct("producto7", "prueba7",1700,"imagen linda5","prod7", 465);
+  await pruebas.addProduct("producto8", "prueba8",7800,"imagen linda6","prod8", 63);
+  await pruebas.addProduct("producto9", "prueba9",109000,"imagen fea3","prod9", 10120);
+  await pruebas.addProduct("producto10", "prueba10",14509000,"imagen fea4","prod10", 1123);
 
-  await pruebas.addProduct(
-    producto2.title,
-    producto2.description,
-    producto2.price,
-    producto2.thumbnail,
-    producto2.code,
-    producto2.stock
-  );
 
-  await pruebas.addProduct(
-    producto3.title,
-    producto3.description,
-    producto3.price,
-    producto3.thumbnail,
-    producto3.code,
-    producto3.stock
-  );
+
   //const producto = await pruebas.getProducts();
   //const producto = await pruebas.getProductById(1)
   //await pruebas.updateProduct(1,prodnew) // metodo para actualizar un producto tengo un problema que en el json me aparecen dos veces los id
@@ -169,3 +133,5 @@ async function prueba() {
 }
 
 prueba();
+
+export default ProductManager
