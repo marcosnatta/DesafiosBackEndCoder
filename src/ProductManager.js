@@ -98,13 +98,7 @@ class ProductManager {
       return error;
     }
   }
-}
-
-const prodnew = {
-  title: "este no es una prueba",
-  description: "producto que no es de prueba",
-  stock: 20303,
-}
+} 
   
 
 
