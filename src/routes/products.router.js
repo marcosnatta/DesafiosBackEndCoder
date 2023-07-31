@@ -5,7 +5,7 @@ const router = Router();
 const manager = new ProductManager("productos.json")
 
 
-router.get("/products", async (req, res) => {
+router.get("/", async (req, res) => {
 
   try {
     const allproducts = await manager.getProducts();
@@ -18,6 +18,8 @@ router.get("/products", async (req, res) => {
     res.status(500).json({message:"tenemos un error"})
 	}
 });
+
+
 
 
 router.get("/:pid", async (req, res) => {
@@ -33,7 +35,7 @@ router.get("/:pid", async (req, res) => {
 });
 
 
-router.post("/products",async(req,res)=>{
+router.post("/",async(req,res)=>{
 
     try {
     const { title, description, price, thumbnail, code, stock, status, category } = req.body;

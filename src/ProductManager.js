@@ -107,7 +107,7 @@ class ProductManager {
 async function prueba() {
   const pruebas = new ProductManager(`productos.json`);
 
-  await pruebas.addProduct("producto1", "prueba1",100,"imagen linda","prod1", 4,true,pruebas);
+  await pruebas.addProduct("producto1", "prueba1",100,"imagen linda","prod1", 4,true,"celular");
   /*
   await pruebas.addProduct("producto2", "prueba2",7200,"imagen linda2","prod21", 6,true,pruebas);
   await pruebas.addProduct("producto3", "prueba3",103000,"imagen fea","prod3", 100,true,pruebas);

@@ -8,19 +8,17 @@
         "code": "prod1",
         "stock": 4,
         "status": true,
-        "category": {
-            "path": "productos.json"
-        }
+        "category": "celular"
     },
     {
-        "id": 3,
-        "title": "producto put",
-        "description": "prueba put",
+        "id": 2,
+        "title": "prueba",
+        "description": "prueba1",
         "price": 100,
-        "thumbnail": "URL de la imagen",
-        "code": "Código asd",
-        "stock": 10,
+        "thumbnail": "imagen linda",
+        "code": "propost",
+        "stock": 4,
         "status": true,
-        "category": "Categoría del producto"
+        "category": "otro cel"
     }
 ]
