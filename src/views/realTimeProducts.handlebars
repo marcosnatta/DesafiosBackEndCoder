@@ -1,49 +1,68 @@
 <h2>Agregar productos</h2>
 
+
 <form id="formulario">
-    <div>
-    <p>nombre del producto:
-        <input type="text" name="title  " id="title" required>
+<br>
+  nombre del producto:
+  <input type="text" name="title  " id="title" required />
+<br>
+  descripcion del producto:
+  <input type="text" name="description" id="description" required />
+<br>
+  precio del producto:
+  <input type="text" name="price" id="price" required />
+<br>
+  codigo del producto:
+  <input type="text" name="code" id="code" required />
+<br>
+  stock del producto:
+  <input type="text" name="stock" id="stock" required />
+<br>
+  categoria del producto
+  <input type="text" name="category" id="category" required />
 
-    </p>
 
-    <p>descripcion del producto:
-        <input type="text" name="description" id="description" required>
-
-    </p>
-
-    <p>precio del producto:
-        <input type="text" name="price" id="price" required>
-    </p>
-
-    <p>thumbnail:
-        <input type="text" name="thumbnail" id="thumbnail" required>
-    </p>
-
-    <p>codigo del producto:
-        <input type="text" name="code" id="code" required>
-    </p>
-
-    <p> stock del producto:
-        <input type="text" name="stock" id="stock" required>
-    </p>
-
-    <p>status del producto: true o false
-        <input type="text" name="status" id="status" required>
-    </p>
-
-    <p>categoria del producto
-        <input type="text" name="category" id="category" required>
-    </p>
-    <input type="submit" value="crear producto">
-    </div>
-
+  <input type="submit" value="crear producto">
+  
 </form>
 
-<div id="viewProducts">
+<form id="eliminarForm">
+  <!-- Campo para eliminar un producto por código o ID -->
+  <input type="text" id="eliminarProdId" placeholder="ID del producto a eliminar" required>
+  <input type="submit" value="Eliminar Producto"/>
+</form>
 
+
+<div id="viewProducts">
+  {{#each products}}
+  <ul>
+    <li>ID del producto creado: {{id}}</li>
+    <li>Titulo del producto: {{this.title}}</li>
+    <li>Descripcion del producto: {{this.description}}</li>
+    <li>Precio del producto: {{this.price}}</li>
+    <li>Codigo del producto: {{this.code}}</li>
+    <li>Stock del producto: {{this.stock}}</li>
+    <li>Categoria del producto: {{this.category}}</li>
+  </ul>
+  {{/each}}
 </div>
 
 
 <script src="/socket.io/socket.io.js"></script>
+
+<script>
+
+  const socketClient = io();
+ socketClient.on("deleteProductSuccess", (deletedProductId) => {
+    console.log("Producto eliminado con éxito:", deletedProductId);
+  });
+
+  socketClient.on("deleteProductError", (errorMessage) => {
+    console.log("Error al eliminar el producto:", errorMessage);
+  });
+  
+</script>
+
+
+
 <script src="/js/index.js"></script>

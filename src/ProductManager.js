@@ -21,7 +21,7 @@ class ProductManager {
 
   async addProduct(title, description, price, thumbnail, code, stock, status, category) {
     try {
-      if (!title || !description || !price || !thumbnail || !code || !stock) {
+      if (!title || !description || !price || !code || !stock) {
         return "Todos los campos son obligatorios";
       }
       const productosPrev = await this.getProducts();
@@ -91,12 +91,16 @@ class ProductManager {
     try {
       const productosPrev = await this.getProducts();
       const nuevoArrayProductos = productosPrev.filter((p) => p.id !== id);
+      if (productosPrev.length === nuevoArrayProductos.length) {
+        return "producto con id no encontrado";
+      }
       await fs.promises.writeFile(
         this.path,
         JSON.stringify(nuevoArrayProductos)
-      );
+        );
+        return "producto eliminado con éxito"
     } catch (error) {
-      return error;
+      return  "Error al eliminar el producto."
     }
   }
 } 
@@ -108,7 +112,9 @@ async function prueba() {
   const pruebas = new ProductManager(`productos.json`);
 
   await pruebas.addProduct("producto1", "prueba1",100,"imagen linda","prod1", 4,true,"celular");
+  await pruebas.addProduct("producto2", "prueba1",56,"imagen linda","prod1", 45,true,"celular");
   /*
+  await pruebas.deleteProduct(3)
   await pruebas.addProduct("producto2", "prueba2",7200,"imagen linda2","prod21", 6,true,pruebas);
   await pruebas.addProduct("producto3", "prueba3",103000,"imagen fea","prod3", 100,true,pruebas);
   await pruebas.addProduct("producto4", "prueba4",1400,"imagen linda3","prod4", 3,true,pruebas);
@@ -125,7 +131,6 @@ async function prueba() {
   //const producto = await pruebas.getProductById(5)
   //await pruebas.updateProduct(1,prodnew) // metodo para actualizar un producto tengo un problema que en el json me aparecen dos veces los id
   //console.log(producto);
-  //await pruebas.deleteUser(3)
   */
 }
 prueba();
