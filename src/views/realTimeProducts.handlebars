@@ -53,13 +53,6 @@
 <script>
 
   const socketClient = io();
- socketClient.on("deleteProductSuccess", (deletedProductId) => {
-    console.log("Producto eliminado con éxito:", deletedProductId);
-  });
-
-  socketClient.on("deleteProductError", (errorMessage) => {
-    console.log("Error al eliminar el producto:", errorMessage);
-  });
   
 </script>
 
