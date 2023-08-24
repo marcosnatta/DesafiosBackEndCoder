@@ -1,15 +1,15 @@
 import fs from "fs";
+import { __dirname } from "../../utils.js"
 
 
+const path = __dirname + './productos.json'
 class ProductManager {
-  constructor(path) {
-    this.path = path;
-  }
+  
 
   async getProducts() {
     try {
-      if (fs.existsSync(this.path)) {
-        const infoProductos = await fs.promises.readFile(this.path, `utf-8`);
+      if (fs.existsSync(path)) {
+        const infoProductos = await fs.promises.readFile(path, `utf-8`);
         return JSON.parse(infoProductos);
       } else {
         return [];
@@ -51,7 +51,7 @@ class ProductManager {
       productosPrev.push(newProduct);
       //productosPrev.push({ ...prodnew, id});
 
-      await fs.promises.writeFile(this.path, JSON.stringify(productosPrev));
+      await fs.promises.writeFile(path, JSON.stringify(productosPrev));
       return newProduct
     } catch (error) {
       return error;
@@ -81,7 +81,7 @@ class ProductManager {
       const producto = productosPrev[productosIndex];
 
       productosPrev[productosIndex] = { ...producto, ...prodnew };
-      await fs.promises.writeFile(this.path, JSON.stringify(productosPrev));
+      await fs.promises.writeFile(path, JSON.stringify(productosPrev));
     } catch (error) {
       return error;
     }
@@ -95,7 +95,7 @@ class ProductManager {
         return "producto con id no encontrado";
       }
       await fs.promises.writeFile(
-        this.path,
+        path,
         JSON.stringify(nuevoArrayProductos)
         );
         return "producto eliminado con éxito"

@@ -1,13 +1,14 @@
 import fs from "fs";
+import { __dirname } from "../../utils.js"
 
+
+
+const path = __dirname + "./carts.json"
 class CartsManager {
-  constructor(path) {
-    this.path = path;
-  }
 
   async getAllCarts() {
-    if (fs.existsSync(this.path)) {
-      const carritos = await fs.promises.readFile(this.path, `utf-8`);
+    if (fs.existsSync(path)) {
+      const carritos = await fs.promises.readFile(path, `utf-8`);
       return JSON.parse(carritos);
     } else {
       return [];
@@ -31,23 +32,29 @@ class CartsManager {
       const NewCart = {productos:[], id}
       carritos.push(NewCart);
   
-      await fs.promises.writeFile(this.path, JSON.stringify(carritos));
+      await fs.promises.writeFile(path, JSON.stringify(carritos));
       return NewCart
   }
 
   async addProduct(cid,pid){
     const carritos = await this.getAllCarts()
     const carro = carritos.find(c=>c.id===cid)
-    const prodIndex = carro.productos.findIndex(p=>p.product===pid)
-    if(prodIndex === -1){
-      carro.productos.push({product: pid, quantity:1})
-    } else {
-      carro.productos[prodIndex].quantity++
+
+    if(carro){
+      const prodIndex = carro.productos.findIndex(p=>p.product===pid)
+      if(prodIndex === -1){
+        carro.productos.push({product: pid, quantity:1})
+      } else {
+        carro.productos[prodIndex].quantity++
+      }
+      await fs.promises.writeFile(path, JSON.stringify(carritos))
+      return carro
+    } else{
+      return error
     }
-    await fs.promises.writeFile(this.path, JSON.stringify(carritos))
-    return carro
   }
 
 }
 
-export const cartsManager = new CartsManager("./carts.json")
+export const cartsManager = new CartsManager("carts.json")
+

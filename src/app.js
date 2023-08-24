@@ -1,11 +1,12 @@
 import express from "express"
-import ProductManager  from "./ProductManager.js";
+import ProductManager  from "./managers/products/ProductManager.js";
 import productsRouter from "./routes/products.router.js"
 import cartsRouter from "./routes/carts.router.js"
 import {__dirname} from "./utils.js"
 import handlebars from "express-handlebars"
 import viewsRouter from "./routes/views.router.js"
 import {Server} from "socket.io"
+import "./db/dbConfig.js"
  
 const app = express()
 
@@ -23,7 +24,6 @@ app.set("view engine","handlebars")
 app.use("/api/products", productsRouter)
 app.use("/api/carts", cartsRouter)
 app.use("/", viewsRouter)
-
 
 
 const PORT = 8080
