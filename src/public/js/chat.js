@@ -1,5 +1,5 @@
 const socket = io();
-
+ 
 document.getElementById("formularioChat").addEventListener("submit", (event) => {
   event.preventDefault();
   const usuario = document.getElementById("usuario").value;
