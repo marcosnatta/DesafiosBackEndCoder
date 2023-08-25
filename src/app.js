@@ -7,7 +7,7 @@ import viewsRouter from "./routes/views.router.js"
 import {Server} from "socket.io"
 import "./db/dbConfig.js"
 import {productsMongo} from "./managers/products/ProductsMongo.js"
-import { Message } from './db/models/messages.model.js';
+import {Mesagge} from "./db/models/messages.model.js"
 const app = express()
 
 app.use(express.json());
@@ -39,18 +39,6 @@ app.get("/chat", (req, res) => {
   res.render("chat", { messages: [] }); 
 });
 
-
-
-socket.on("chatMessage", async (messageData) => {
-  const { usuario, message } = messageData;
-  const newMessage = new Message({ usuario, message });
-  await newMessage.save();
-
-  // Emitir el mensaje a todos los clientes conectados
-  socketServer.emit("chatMessage", { usuario, message });
-
-  console.log(`Mensaje guardado en la base de datos: ${usuario}: ${message}`);
-});
 
 //agregar un producto nuevo
 socketServer.on("connection", (socket) => {
@@ -93,4 +81,17 @@ socketServer.on("connection", (socket) => {
       }
     });
     
+    socket.on("chatMessage", async (messageData) => {
+      const { usuario, message } = messageData;
+      const nuevomensaje = new Mesagge({ usuario, message });
+    
+      try {
+        await nuevomensaje.save();
+        socket.emit("chatMessage", { usuario, message });
+        console.log(`Mensaje guardado en la base de datos: ${usuario}: ${message}`);
+      } catch (error) {
+        console.error("Error al guardar el mensaje en la base de datos:", error);
+        socket.emit("chatMessageError", "Error al guardar el mensaje en la base de datos.");
+      }
+    });
   });

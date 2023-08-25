@@ -5,4 +5,5 @@ const mesaageSchema = new mongoose.Schema({
     message: String,
 });
 
-export const message = mongoose.model("message", mesaageSchema);
+const Mesagge = mongoose.model("Mesagge", mesaageSchema);
+export {Mesagge}

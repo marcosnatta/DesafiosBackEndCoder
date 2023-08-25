@@ -1,23 +1,26 @@
-<h1>BIENVENIDO AL CHAT</h1>
-<h3 id="nombreChat"></h3>
-<form id="formularioChat">
-<input id="usuario" type="text" placeholder="Usuario" required>
-<input id="message" type="text" placeholder="Mensaje" required>
-<input type="submit" value="ENVIAR">
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat</title>
+</head>
+<body>
+    <h1>BIENVENIDO AL CHAT</h1>
 
-</form>
+    <form id="formularioChat">
+        <input id="usuario" type="text" placeholder="Usuario" required>
+        <input id="message" type="text" placeholder="Mensaje" required>
+        <button type="submit">Enviar</button>
+    </form>
 
 
-<div id="chat">
-    <ul id="messages">
+    <div id="chat">
+        <ul id="messages">
             {{#each messages}}
-            <li>{{this.user}}: {{this.message}}</li>
+            <li>{{this.usuario}}: {{this.message}}</li>
             {{/each}}
         </ul>
-</div>
-
-
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/index.js"></script>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/chat.js"></script>
+</body>
+</html>    
