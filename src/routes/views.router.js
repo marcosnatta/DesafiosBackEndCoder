@@ -1,12 +1,10 @@
 import {Router} from "express"
-import  ProductManager  from "../managers/products/ProductManager.js";
-
+import {productsMongo} from "../managers/products/ProductsMongo.js"
 
 const router = Router()
-const manager = new ProductManager("productos.json")
 
 router.get("/home", async(req,res)=>{
-        const allproducts = await manager.getProducts();
+        const allproducts = await productsMongo.findAll();
         res.render("home",{ products: allproducts })
     })
 
@@ -14,8 +12,14 @@ router.get("/home", async(req,res)=>{
 
 
 router.get("/realtimeproducts", async(req,res)=>{
-    const allproducts = await manager.getProducts();
+    const allproducts = await productsMongo.findAll();
     res.render("realTimeProducts",{ products: allproducts })
+})
+
+//findbyid o findall
+
+router.get("/chat", (req,res)=>{
+    res.render("chat")
 })
 
 export default router

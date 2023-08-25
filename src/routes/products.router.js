@@ -74,14 +74,3 @@ router.put("/:pid",async(req,res)=>{
     }
 })
 export default router
-
-
-/*
- const newProduct = await productsMongo.createProduct(title, description, price, thumbnail, code, stock, status, category);
-        res.status(200).json({ message: "producto creado ", product: newProduct })
-        console.log(newProduct)
-    } catch (error) {
-        res.status(500).json({ error })
-        console.log(error)
-    }
-    */

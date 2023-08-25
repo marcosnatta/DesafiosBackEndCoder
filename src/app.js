@@ -1,5 +1,4 @@
 import express from "express"
-import ProductManager  from "./managers/products/ProductManager.js";
 import productsRouter from "./routes/products.router.js"
 import cartsRouter from "./routes/carts.router.js"
 import {__dirname} from "./utils.js"
@@ -7,7 +6,8 @@ import handlebars from "express-handlebars"
 import viewsRouter from "./routes/views.router.js"
 import {Server} from "socket.io"
 import "./db/dbConfig.js"
- 
+import {productsMongo} from "./managers/products/ProductsMongo.js"
+import { Message } from './db/models/messages.model.js';
 const app = express()
 
 app.use(express.json());
@@ -32,15 +32,32 @@ const httpServer = app.listen(PORT, ()=>{
 })
 
 const socketServer = new Server(httpServer)
-const manager = new ProductManager("./productos.json")
 
+
+// chat
+app.get("/chat", (req, res) => {
+  res.render("chat", { messages: [] }); 
+});
+
+
+
+socket.on("chatMessage", async (messageData) => {
+  const { usuario, message } = messageData;
+  const newMessage = new Message({ usuario, message });
+  await newMessage.save();
+
+  // Emitir el mensaje a todos los clientes conectados
+  socketServer.emit("chatMessage", { usuario, message });
+
+  console.log(`Mensaje guardado en la base de datos: ${usuario}: ${message}`);
+});
 
 //agregar un producto nuevo
 socketServer.on("connection", (socket) => {
     console.log("Cliente conectado:", socket.id);
-    socket.on("addProduct", async (nuevoproduct) => {
+    socket.on("createProduct", async (nuevoproduct) => {
       try {
-        const agregarProducto = await manager.addProduct(
+        const agregarProducto = await productsMongo.createProduct(
           nuevoproduct.title,
           nuevoproduct.description,
           nuevoproduct.price,
@@ -65,7 +82,7 @@ socketServer.on("connection", (socket) => {
     
     socket.on("deleteProduct", async (ProdId) => {
       try {
-        const result = await manager.deleteProduct(ProdId);
+        const result = await productsMongo.deleteProduct(ProdId);
         if (result === "producto con id no encontrado") {
           socket.emit("deleteProductError", result);
         } else {

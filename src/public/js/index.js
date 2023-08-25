@@ -1,5 +1,5 @@
+const socketClient = io()
 const formulario = document.getElementById("formulario");
-
 const productitle = document.getElementById("title");
 const prodDescription = document.getElementById("description");
 const prodprice = document.getElementById("price");
@@ -9,11 +9,12 @@ const prodcategory = document.getElementById("category");
 const divproducts = document.getElementById("viewProducts");
 const id = document.getElementById("id");
 
+
 //eliminar productos
 const eliminarForm = document.getElementById("eliminarForm");
 const eliminarProdId = document.getElementById("eliminarProdId");
 
-
+/*
 formulario.onsubmit = (e) => {
   e.preventDefault();
   const nuevoproduct = {
@@ -25,11 +26,11 @@ formulario.onsubmit = (e) => {
     category: prodcategory.value,
   };
 
-  socketClient.emit("addProduct", nuevoproduct);
+  socketClient.emit("createProduct", nuevoproduct);
   console.log(nuevoproduct);
 };
 
-socketClient.on("addProduct", async(nuevoproduct) => {
+socketClient.on("createProduct", async(nuevoproduct) => {
   const addProductos = `
         <div>
             <p>ID: ${nuevoproduct.id}</p>
@@ -53,4 +54,4 @@ eliminarForm.onsubmit = (e) => {
     socketClient.emit("deleteProduct", ProdId);
   }
 };
-
+*/
