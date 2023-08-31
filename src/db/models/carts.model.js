@@ -14,14 +14,15 @@ const cartsSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-  quantity:{
-    type: String,
-    require:true
-  },
   products: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Product"
+    id:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Products"
+    },
+    quantity: {
+      type: Number,
+      
+    }
   }]
 });
-
 export const cartsModel = mongoose.model("Carts", cartsSchema);

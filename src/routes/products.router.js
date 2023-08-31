@@ -5,23 +5,14 @@ import {productsMongo} from "../managers/products/ProductsMongo.js"
 const router = Router();
 
 
-
-router.get("/", async (req, res) => {
-
-  try {
-    const allproducts = await productsMongo.findAll()
-    if (!req.query.limit) {
-        res.status(200).json({ message: "productos", allproducts })
-    } else{
-        res.status(200).json({message:"productos", seleccionados: allproducts.slice(0,Number(req.query.limit))})
-	} 
-}catch (error){
-    res.status(500).json({message:"tenemos un error"})
-	}
-});
-
-
-
+router.get("/", async (req, res) =>{
+  try{
+  const allproducts = await productsMongo.findAll(req.query)
+  res.json({allproducts})
+}catch(error){
+  res.status(500).json({error})
+}
+})
 
 router.get("/:pid", async (req, res) => {
     const { pid } = req.params

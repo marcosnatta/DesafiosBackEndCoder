@@ -81,7 +81,9 @@ socketServer.on("connection", (socket) => {
       }
     });
     
+    
     socket.on("chatMessage", async (messageData) => {
+      
       const { usuario, message } = messageData;
       const nuevomensaje = new Mesagge({ usuario, message });
     
