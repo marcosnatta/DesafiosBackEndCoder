@@ -1,10 +1,9 @@
 import { cartsModel } from "../../db/models/carts.model.js";
-import {productsModel} from "../../db/models/products.model.js"
 
 class CartsMongo {
   async findAll() {
     try {
-      const carts = await cartsModel.find({});
+      const carts = await cartsModel.find({})
       return carts;
     } catch (error) {
       return error;

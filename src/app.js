@@ -14,6 +14,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname +"/public"))
 
+
+
+
 //parte de handlebars
 app.engine("handlebars", handlebars.engine())
 app.set("views", __dirname +"/views")
@@ -21,9 +24,10 @@ app.set("view engine","handlebars")
 
 
 // mis routers
-app.use("/api/products", productsRouter)
+//app.use("/api/products", productsRouter)
 app.use("/api/carts", cartsRouter)
 app.use("/", viewsRouter)
+app.use("/products", productsRouter)
 
 
 const PORT = 8080
@@ -97,3 +101,6 @@ socketServer.on("connection", (socket) => {
       }
     });
   });
+
+
+

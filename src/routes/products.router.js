@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { ObjectId } from "mongodb"
 import {productsMongo} from "../managers/products/ProductsMongo.js"
-
 const router = Router();
 
 
@@ -26,7 +25,6 @@ router.get("/:pid", async (req, res) => {
   }
 });
 
-
 router.post("/",async(req,res)=>{
 
     const { title, description, price, thumbnail, code, stock, category } = req.body;
@@ -47,7 +45,7 @@ router.post("/",async(req,res)=>{
 router.delete("/:pid",async(req,res)=>{
     const { pid } = req.params
 try {
-    const deleteProducts = await manager.deleteProduct(+pid)
+    const deleteProducts = await productsMongo.deleteProduct(+pid)
     res.status(200).json({message:"producto borrado"})
 } catch (error) {
     res.status(500).json({ error })
@@ -58,10 +56,15 @@ router.put("/:pid",async(req,res)=>{
     const { pid } = req.params
 
     try {
-        const updateproduct = await manager.updateProduct(+pid,req.body)
+        const updateproduct = await productsMongo.updateProduct(+pid,req.body)
         res.status(200).json({message: "producto actualizado"})
     } catch (error) {
         res.status(500).json({ error })
     }
 })
+
+
+
+
+  
 export default router

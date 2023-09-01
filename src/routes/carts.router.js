@@ -95,8 +95,6 @@ router.put("/:cid", async(req,res)=>{
     }
 })
 
-
-
 router.put("/:cid/products/:pid", async (req, res) => {
     const { cid, pid } = req.params;
     const updatedQuantity = req.body.quantity;

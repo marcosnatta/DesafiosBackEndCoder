@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Carrito</title>
+</head>
+
+<body>
+  <h1>Carrito</h1>
+  <ul>
+    {{#each cart.products}}
+    <li>
+      <h2>{{this.id.title}}</h2>
+      <p>Precio: {{this.id.price}}</p>
+      <p>Descripción: {{this.id.id.description}}</p>
+      <p>Categoría: {{this.id.category}}</p>
+      <p>Codigo del producto: {{this.id.code}}</p>
+      <p>stock del producto: {{this.id.stock}}</p>
+      <p>Cantidad: {{this.quantity}}</p>
+    </li>
+    {{/each}}
+  </ul>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>
+
+</html>

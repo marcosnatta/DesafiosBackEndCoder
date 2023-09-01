@@ -3,6 +3,7 @@ import { productsModel } from "../../db/models/products.model.js";
 
 class ProductsMongo{
 
+
 /*
   async findAll(){
     try {
@@ -13,14 +14,14 @@ class ProductsMongo{
     }
 }
 */
-
 async findAll(obj){
-  const {limit,page,sort,...query} = obj
-  //const {limit,page,sortPrice,...query} = obj  ---- filtrar por precio
+  const  {limit,page,sort,...query} = obj
+
   try{
  
     //const resultProd = await productsModel.paginate({title:"producto4"},{limit,page,sort:{price:sortPrice}})
     const resultProd = await productsModel.paginate(query,{limit,page,sort})
+
     const products = await productsModel.find({})
     const infoProds = {
         count: resultProd.totalDocs,
@@ -38,7 +39,7 @@ async findAll(obj){
           ? `http://localhost:8080/api/products?page=${resultProd.prevPage}`
           : null,
       }
-      return infoProds, products
+      return {infoProds, products}
 
   }catch (error){
     return error

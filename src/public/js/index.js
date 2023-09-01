@@ -1,3 +1,9 @@
+import {cartsMongo} from "../../managers/carts/CartsMongo.js"
+
+
+
+
+
 const socketClient = io()
 const formulario = document.getElementById("formulario");
 const productitle = document.getElementById("title");
@@ -14,7 +20,7 @@ const id = document.getElementById("id");
 const eliminarForm = document.getElementById("eliminarForm");
 const eliminarProdId = document.getElementById("eliminarProdId");
 
-/*
+
 formulario.onsubmit = (e) => {
   e.preventDefault();
   const nuevoproduct = {
@@ -54,4 +60,5 @@ eliminarForm.onsubmit = (e) => {
     socketClient.emit("deleteProduct", ProdId);
   }
 };
-*/
+
+
