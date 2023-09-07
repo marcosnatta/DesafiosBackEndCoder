@@ -42,8 +42,9 @@ router.get("/products", async (req, res) => {
       const totalPages = result.infoProds.totalPages;
   
       const pageRange = Array.from({ length: totalPages }, (_, i) => i + 1);
-  
-      res.render("products", { products: productsForPage, totalPages, pageRange });
+      const user = req.session.user;
+
+      res.render("products", { products: productsForPage, totalPages, pageRange, user });
     } catch (error) {
       res.status(500).json({ error });
       console.log(error);
@@ -75,10 +76,35 @@ router.get("/carts/:cid", async (req, res) => {
       res.status(500).json({ error: "Error al buscar el carrito" });
     }
   });
-  
 
 
+// desafio de login y registro
 
+const publicAcces = (req,res,next) =>{
+  if(req.session.user) return res.redirect('/profile');
+  next();
+  console.log(req.session.user)
+}
+
+const privateAcces = (req,res,next)=>{
+  if(!req.session.user) return res.redirect('/login');
+  next();
+}
+
+
+router.get('/register', publicAcces, (req,res)=>{
+  res.render('register')
+})
+
+router.get('/login', publicAcces, (req,res)=>{
+  res.render('login')
+})
+
+router.get('/profile', privateAcces ,(req,res)=>{
+  res.render('profile',{
+      user: req.session.user
+  })
+})
 
 
 export default router

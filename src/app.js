@@ -8,13 +8,18 @@ import {Server} from "socket.io"
 import "./db/dbConfig.js"
 import {productsMongo} from "./managers/products/ProductsMongo.js"
 import {Mesagge} from "./db/models/messages.model.js"
+import cookieParser from "cookie-parser"
+import session from "express-session"
+import FileStore from "session-file-store"
+import MongoStore from "connect-mongo"
+import sessionRouter from "./routes/sessions.router.js"
+import mongoose from "mongoose"
+
 const app = express()
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname +"/public"))
-
-
 
 
 //parte de handlebars
@@ -23,16 +28,11 @@ app.set("views", __dirname +"/views")
 app.set("view engine","handlebars")
 
 
-// mis routers
-//app.use("/api/products", productsRouter)
-app.use("/api/carts", cartsRouter)
-app.use("/", viewsRouter)
-app.use("/products", productsRouter)
-
 
 const PORT = 8080
+
 const httpServer = app.listen(PORT, ()=>{
-    console.log(`escuchando el puerto ${PORT}`)
+  console.log(`escuchando el puerto ${PORT}`)
 })
 
 const socketServer = new Server(httpServer)
@@ -42,7 +42,6 @@ const socketServer = new Server(httpServer)
 app.get("/chat", (req, res) => {
   res.render("chat", { messages: [] }); 
 });
-
 
 //agregar un producto nuevo
 socketServer.on("connection", (socket) => {
@@ -103,4 +102,41 @@ socketServer.on("connection", (socket) => {
   });
 
 
+const connection = mongoose.connect("mongodb+srv://marcosnatta:marcosnatta1234@cluster0.cibfyui.mongodb.net/ecommerce?retryWrites=true&w=majority")
+// cookie
+app.use(cookieParser())
+app.use(session({
+  store: new  MongoStore({
+    mongoUrl:"mongodb+srv://marcosnatta:marcosnatta1234@cluster0.cibfyui.mongodb.net/ecommerce?retryWrites=true&w=majority",
+    mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
+    ttl:15
 
+  }),
+  secret: "secretsession",
+  resave:false,
+  saveUninitialized: false
+}))
+
+app.get('/login', (req, res) => {
+  res.render('login'); 
+});
+
+app.get('/register', (req, res) => {
+  res.render('register'); 
+});
+
+app.get('/profile', (req, res) => {
+  res.render('profile', {
+    user: req.session.user,
+  }); 
+});
+
+
+// mis routers
+//app.use("/api/products", productsRouter)
+app.use("/api/carts", cartsRouter)
+app.use("/", viewsRouter)
+app.use("/products", productsRouter)
+
+//session
+app.use("/session",sessionRouter)

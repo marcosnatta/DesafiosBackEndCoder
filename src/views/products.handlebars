@@ -4,7 +4,13 @@
   <title>Productos</title>
 </head>
 <body>
-  <h1>Listado de Productos</h1>
+  <div>
+  <h1>Bienvenido {{user.name}}</h1>
+  <p>{{user.email}}</p>
+  <p>Estos son los productos que tenemos para vos</p>
+  </div>
+
+  <h2>Listado de Productos</h2>
 
   <div>
    <ul>
@@ -32,5 +38,6 @@
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/index.js"></script>
+  <a href="/session/logout"><button>Cerrar sesión</button></a>
 </body>
 </html>
