@@ -19,6 +19,7 @@ router.post('/register', async (req, res) =>{
 
     const result = await userModel.create(user);
     res.send({status:"succes", message:"Usuario registrado correctamente"});
+    
 })
 
 router.post('/login', async (req,res)=>{

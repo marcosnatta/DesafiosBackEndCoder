@@ -102,7 +102,7 @@ socketServer.on("connection", (socket) => {
   });
 
 
-const connection = mongoose.connect("mongodb+srv://marcosnatta:marcosnatta1234@cluster0.cibfyui.mongodb.net/ecommerce?retryWrites=true&w=majority")
+mongoose.connect("mongodb+srv://marcosnatta:marcosnatta1234@cluster0.cibfyui.mongodb.net/ecommerce?retryWrites=true&w=majority")
 // cookie
 app.use(cookieParser())
 app.use(session({

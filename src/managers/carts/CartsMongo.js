@@ -1,4 +1,5 @@
 import { cartsModel } from "../../db/models/carts.model.js";
+import { ObjectId } from "mongodb"
 
 class CartsMongo {
   async findAll() {
@@ -47,7 +48,7 @@ class CartsMongo {
             return "Carrito no encontrado";
         }
 
-        if (!cart.products.some(product => product.id.toString() === pid)) {
+        if (!cart.products.some(product => product.id == pid)) {
             cart.products.push({ id: pid });
             const updatedCart = await cart.save();
             return updatedCart;
@@ -76,10 +77,9 @@ class CartsMongo {
         if (!cart) {
             throw new Error("Carrito no encontrado");
         }
-
-        const productToUpdate = cart.products.find(product => product.id._id.toString() === productId);
-
+        const productToUpdate = cart.products.find(product => product.id.equals(new ObjectId(productId)));
         if (!productToUpdate) {
+          console.log(productToUpdate)
             throw new Error("Producto no encontrado en el carrito");
         }
 
@@ -135,11 +135,6 @@ class CartsMongo {
       return error
     }
   }
-  
-  
-  
 }
-
-
 
 export const cartsMongo = new CartsMongo();
