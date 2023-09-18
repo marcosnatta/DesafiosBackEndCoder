@@ -1,15 +1,15 @@
 import {Router} from "express"
 import {productsMongo} from "../managers/products/ProductsMongo.js"
-import {cartsModel} from "../db/models/carts.model.js"
+import {cartsModel} from "../persistencia/models/carts.model.js"
 
 
 const router = Router()
 
 
-router.get("/home", async(req,res)=>{
-        const allproducts = await productsMongo.findAll();
-        res.render("home",{ products: allproducts })
-    })
+// router.get("/home", async(req,res)=>{
+//         const allproducts = await productsMongo.findAll();
+//         res.render("home",{ products: allproducts })
+//     })
 
 
 router.get("/realtimeproducts", async(req,res)=>{
@@ -105,6 +105,20 @@ router.get('/profile', privateAcces ,(req,res)=>{
       user: req.session.user
   })
 })
+
+router.get('/adminHome',(req,res)=>{
+    res.render('adminHome')
+})
+
+router.get("/home", async (req, res) => {
+  const { email } = req.session;
+  const user = await userModel.findOne(email);
+  if (user.isAdmin) {
+    res.redirect("/adminHome");
+  } else {
+    res.redirect("/clientHome");
+  }
+});
 
 
 export default router

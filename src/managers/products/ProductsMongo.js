@@ -1,4 +1,4 @@
-import { productsModel } from "../../db/models/products.model.js";
+import { productsModel } from "../../persistencia/models/products.model.js";
 
 
 class ProductsMongo{

@@ -5,15 +5,16 @@ import {__dirname} from "./utils.js"
 import handlebars from "express-handlebars"
 import viewsRouter from "./routes/views.router.js"
 import {Server} from "socket.io"
-import "./db/dbConfig.js"
 import {productsMongo} from "./managers/products/ProductsMongo.js"
-import {Mesagge} from "./db/models/messages.model.js"
+import {Mesagge} from "./persistencia/models/messages.model.js"
 import cookieParser from "cookie-parser"
 import session from "express-session"
-import FileStore from "session-file-store"
 import MongoStore from "connect-mongo"
 import sessionRouter from "./routes/sessions.router.js"
 import mongoose from "mongoose"
+import "./persistencia/mongoDB/dbConfig.js"
+import passport from "passport"
+import './passport/passportStrategies.js'
 
 const app = express()
 
@@ -35,7 +36,6 @@ const httpServer = app.listen(PORT, ()=>{
   console.log(`escuchando el puerto ${PORT}`)
 })
 
-const socketServer = new Server(httpServer)
 
 
 // chat
@@ -44,6 +44,7 @@ app.get("/chat", (req, res) => {
 });
 
 //agregar un producto nuevo
+const socketServer = new Server(httpServer)
 socketServer.on("connection", (socket) => {
     console.log("Cliente conectado:", socket.id);
     socket.on("createProduct", async (nuevoproduct) => {
@@ -114,9 +115,17 @@ app.use(session({
   }),
   secret: "secretsession",
   resave:false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {maxAge:60000}
 }))
 
+//passport
+app.use(passport.initialize())
+app.use(passport.session())
+
+
+
+//login register y profile
 app.get('/login', (req, res) => {
   res.render('login'); 
 });
