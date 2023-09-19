@@ -12,8 +12,10 @@ const schema = new mongoose.Schema({
         type: String,
         default: 'usuario',
       },
+      fromGithub: {
+        type: Boolean,
+        default:false
+    }
 });
 
-const userModel = mongoose.model(collection, schema);
-
-export default userModel;
+export const userModel = mongoose.model(collection, schema);

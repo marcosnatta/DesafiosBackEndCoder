@@ -1,14 +1,14 @@
 import passport from "passport";
-import  userModel from "../persistencia/models/user.model.js";
+import  {userModel} from "../persistencia/models/user.model.js";
 import {Strategy as LocalStrategy} from 'passport-local'
 import { Strategy as GithubStrategy } from 'passport-github2'
 import {compareData} from "../utils.js"
-
+import {userManager} from "../managers/userManager.js"
 //estrategia local de passport
 passport.use('login',new LocalStrategy(
-  async function(email,password,done){
+  async function(username,password,done){
       try {
-          const user = await userModel.findOne(email)
+          const user = await userManager.findUser(username)
           if(!user){
               return done(null,false)
           }
@@ -30,11 +30,11 @@ passport.use('login',new LocalStrategy(
 passport.use(new GithubStrategy({
   clientID: 'Iv1.0850279be97932f8',
   clientSecret: 'dfd55cc0de2a515ea9cdff3673533c66b3c7ea09',
-  callbackURL: "http://localhost:8080/users/github"
+  callbackURL: "https://localhost:8080/github"
 },
 async function(accessToken, refreshToken, profile, done) {
   try {
-      const user = await userModel.findOne(profile.email) 
+      const user = await userManager.findUser(profile.username) 
       //login
       if(user ){
           if(user.fromGithub){
@@ -51,20 +51,13 @@ async function(accessToken, refreshToken, profile, done) {
           password: ' ',
           fromGithub: true
       }
-      const result = await userModel.create(newUser)
+      const result = await userManager.create(newUser)
       return done(null,result)
   } catch (error) {
       done(error)
   }
 }
 ))
-// cookies
-
-const cookieExtractor= (req)=>{
-  return req.cookies.token
-}
-
-
 
 // user => id
 passport.serializeUser((usuario, done) => {

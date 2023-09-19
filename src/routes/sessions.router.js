@@ -1,8 +1,9 @@
 import { Router } from "express";
-import userModel from "../persistencia/models/user.model.js";
+import { userModel } from "../persistencia/models/user.model.js";
 import { hashData } from "../utils.js";
 import { compareData } from "../utils.js";
 import passport from "passport";
+import { userManager } from "../managers/userManager.js";
 
 const router = Router();
 
@@ -16,7 +17,8 @@ router.post("/register", async (req, res) => {
       .status(400)
       .send({ status: "error", error: "El usuario ya existe" });
   }
-  const isAdmin = email === "adminCoder@coder.com" && password === "adminCod3r123";
+  const isAdmin =
+    email === "adminCoder@coder.com" && password === "adminCod3r123";
   const hashPassword = await hashData(password);
   const user = {
     first_name,
@@ -54,7 +56,7 @@ router.post("/login", async (req, res) => {
     age: user.age,
     role: user.role,
   };
-  req.session[`email`] = email
+  req.session[`email`] = email;
   //res.send({status:"success", payload:req.res.user, message:"Bienvenido"})
   res.redirect("/products");
 });
@@ -69,6 +71,17 @@ router.get("/logout", (req, res) => {
   });
 });
 
+router.get("/home", async (req, res) => {
+  const { user } = req.session;
+  const userDB = await userManager.findUserById(user);
+  if (userDB.isAdmin) {
+    res.redirect("/adminHome");
+  } else {
+    res.redirect("/clientHome");
+  }
+});
+
+
 //passport github
 
 router.get(
@@ -79,8 +92,12 @@ router.get(
 router.get(
   "/github",
   passport.authenticate("github", {
-    failureRedirect: "/api/views",
-    successRedirect: "/api/views/home",
-  }))
+    failureRedirect: "/login",
+  }),
+  async (req, res) => {
+    req.session.user = req.user;
+    res.redirect("/profile");
+  }
+);
 
 export default router;

@@ -1,22 +1,35 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Solo usuarios</title> 
+    <title>Solo usuarios</title>
 </head>
-<body> 
-<div>
-<div>
-    <h1>Acceso a tu cuenta</h1>
-    <form id="loginForm" method="POST">
-        <label>Email</label>
-        <input type="text" name="email">
-        <br>
-        <label>Contraseña</label>
-        <input name="password" type="password">
-        <input type="submit">
-    </form>
-    <p>No estás resgistrado? <a href="/register">Regístrate aquí</a></p>
-    </div>
-    <script src="/js/login.js"></script>
+
+<body>
+    <div>
+        <div>
+            <h1>Acceso a tu cuenta</h1>
+            <form id="loginForm" method="POST">
+                <label>Email</label>
+                <input type="text" name="email">
+                <br>
+                <label>Contraseña</label>
+                <input name="password" type="password">
+                <input type="submit">
+            </form>
+            <p>No estás resgistrado? <a href="/register">Regístrate aquí</a></p>
+            <button id="githubButton">GITHUB</button>
+        </div>
+
+
+        
+        <script>
+            document.getElementById("githubButton").addEventListener("click", function () {
+                window.location.href = "/session/githubSignup";
+            });
+        </script>
+
+        <script src="/js/login.js"></script>
 </body>
+
 </html>
