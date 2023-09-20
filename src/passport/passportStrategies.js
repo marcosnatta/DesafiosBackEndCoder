@@ -30,7 +30,7 @@ passport.use('login',new LocalStrategy(
 passport.use(new GithubStrategy({
   clientID: 'Iv1.0850279be97932f8',
   clientSecret: 'dfd55cc0de2a515ea9cdff3673533c66b3c7ea09',
-  callbackURL: "https://localhost:8080/github"
+  callbackURL: "http://localhost:8080/session/github"
 },
 async function(accessToken, refreshToken, profile, done) {
   try {
@@ -73,3 +73,9 @@ passport.deserializeUser(async (id, done) => {
     done(error);
   }
 });
+
+
+// solucionado el problema que me decia la conexion no es segura
+// tambien modifique la url me faltaba /session/github para que sea redirigido
+//ahora se guarda en mongodb correctamente 
+//{"_id":{"$oid":"650b354366e2f48ac56ec664"},"first_name":"marcosnatta","password":" ","role":"usuario","fromGithub":true,"__v":{"$numberInt":"0"}}
