@@ -81,6 +81,13 @@ router.get("/home", async (req, res) => {
   }
 });
 
+router.get("/current", (req, res) => {
+  
+  if (!req.session.user) {
+    return res.status(401).json({ error: 'Usuario no autenticado' });
+  }
+  return res.json({ user: req.session.user });
+});
 
 //passport github
 
