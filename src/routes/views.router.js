@@ -1,6 +1,6 @@
 import {Router} from "express"
-import {productsMongo} from "../managers/products/ProductsMongo.js"
-import {cartsModel} from "../persistencia/models/carts.model.js"
+import {productsMongo} from "../DAL/ProductsMongo.js"
+import {cartsModel} from "../db/models/carts.model.js"
 
 const router = Router()
 

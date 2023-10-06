@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { userModel } from "../persistencia/models/user.model.js";
+import { userModel } from "../db/models/user.model.js";
 import { hashData } from "../utils.js";
 import { compareData } from "../utils.js";
 import passport from "passport";
-import { userManager } from "../managers/userManager.js";
+import { userManager } from "../DAL/userManager.js";
 
 const router = Router();
 
@@ -86,6 +86,7 @@ router.get("/current", (req, res) => {
   if (!req.session.user) {
     return res.status(401).json({ error: 'Usuario no autenticado' });
   }
+
   return res.json({ user: req.session.user });
 });
 

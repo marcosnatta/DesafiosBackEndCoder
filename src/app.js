@@ -5,16 +5,18 @@ import {__dirname} from "./utils.js"
 import handlebars from "express-handlebars"
 import viewsRouter from "./routes/views.router.js"
 import {Server} from "socket.io"
-import {productsMongo} from "./managers/products/ProductsMongo.js"
-import {Mesagge} from "./persistencia/models/messages.model.js"
+import {productsMongo} from "./DAL/ProductsMongo.js"
+import {Mesagge} from "./db/models/messages.model.js"
 import cookieParser from "cookie-parser"
 import session from "express-session"
 import MongoStore from "connect-mongo"
 import sessionRouter from "./routes/sessions.router.js"
 import mongoose from "mongoose"
-import "./persistencia/mongoDB/dbConfig.js"
+import "./db/dbConfig.js"
 import passport from "passport"
 import './passport/passportStrategies.js'
+import config from "./config.js"
+
 
 const app = express()
 
@@ -30,8 +32,7 @@ app.set("view engine","handlebars")
 
 
 
-const PORT = 8080
-
+const PORT = config.port
 const httpServer = app.listen(PORT, ()=>{
   console.log(`escuchando el puerto ${PORT}`)
 })
@@ -113,7 +114,7 @@ app.use(session({
     ttl:15
 
   }),
-  secret: "secretsession",
+  secret: process.env.SESSiON_SECRET,
   resave:false,
   saveUninitialized: false,
   cookie: {maxAge:60000}

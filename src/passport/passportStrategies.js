@@ -1,9 +1,9 @@
 import passport from "passport";
-import  {userModel} from "../persistencia/models/user.model.js";
+import  {userModel} from "../db/models/user.model.js";
 import {Strategy as LocalStrategy} from 'passport-local'
 import { Strategy as GithubStrategy } from 'passport-github2'
 import {compareData} from "../utils.js"
-import {userManager} from "../managers/userManager.js"
+import {userManager} from "../DAL/userManager.js"
 
 
 //estrategia local de passport
