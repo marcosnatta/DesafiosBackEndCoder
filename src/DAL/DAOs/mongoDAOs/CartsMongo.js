@@ -1,4 +1,4 @@
-import { cartsModel } from "../db/models/carts.model.js";
+import { cartsModel } from "../../mongoDB/models/carts.model.js";
 import { ObjectId } from "mongodb"
 
 class CartsMongo {

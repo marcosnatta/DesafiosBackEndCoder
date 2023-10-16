@@ -1,16 +1,16 @@
 import passport from "passport";
-import  {userModel} from "../db/models/user.model.js";
+import  {userModel} from "../DAL/mongoDB/models/user.model.js";
 import {Strategy as LocalStrategy} from 'passport-local'
 import { Strategy as GithubStrategy } from 'passport-github2'
 import {compareData} from "../utils.js"
-import {userManager} from "../DAL/userManager.js"
+import {userMongo} from "../DAL/DAOs/mongoDAOs/userMongo.js"
 
 
 //estrategia local de passport
 passport.use('login',new LocalStrategy(
   async function(username,password,done){
       try {
-          const user = await userManager.findUser(username)
+          const user = await userMongo.findUser(username)
           if(!user){
               return done(null,false)
           }
@@ -36,7 +36,7 @@ passport.use(new GithubStrategy({
 },
 async function(accessToken, refreshToken, profile, done) {
   try {
-      const user = await userManager.findUser(profile.username) 
+      const user = await userMongo.findUser(profile.username) 
       //login
       if(user ){
           if(user.fromGithub){
@@ -53,7 +53,7 @@ async function(accessToken, refreshToken, profile, done) {
           password: ' ',
           fromGithub: true
       }
-      const result = await userManager.create(newUser)
+      const result = await userMongo.create(newUser)
       return done(null,result)
   } catch (error) {
       done(error)

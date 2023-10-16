@@ -1,4 +1,4 @@
-import { productsModel } from "../db/models/products.model.js";
+import { productsModel } from "../../mongoDB/models/products.model.js";
 
 
 class ProductsMongo{

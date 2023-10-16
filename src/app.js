@@ -5,17 +5,18 @@ import {__dirname} from "./utils.js"
 import handlebars from "express-handlebars"
 import viewsRouter from "./routes/views.router.js"
 import {Server} from "socket.io"
-import {productsMongo} from "./DAL/ProductsMongo.js"
-import {Mesagge} from "./db/models/messages.model.js"
+import {productsMongo} from "./DAL/DAOs/mongoDAOs/ProductsMongo.js"
+import {Mesagge} from "./DAL/mongoDB/models/messages.model.js"
 import cookieParser from "cookie-parser"
 import session from "express-session"
 import MongoStore from "connect-mongo"
 import sessionRouter from "./routes/sessions.router.js"
 import mongoose from "mongoose"
-import "./db/dbConfig.js"
+import "./DAL/mongoDB/dbConfig.js"
 import passport from "passport"
 import './passport/passportStrategies.js'
 import config from "./config.js"
+import usersRouter from "./routes/users.router.js"
 
 
 const app = express()
@@ -141,6 +142,8 @@ app.get('/profile', (req, res) => {
   }); 
 });
 
+// usuarios
+app.use("/users", usersRouter)
 
 // mis routers
 //app.use("/api/products", productsRouter)

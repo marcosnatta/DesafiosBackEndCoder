@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { ObjectId } from "mongodb"
-import {productsMongo} from "../DAL/ProductsMongo.js"
+import {productsMongo} from "../DAL/DAOs/mongoDAOs/ProductsMongo.js"
 const router = Router();
 
 

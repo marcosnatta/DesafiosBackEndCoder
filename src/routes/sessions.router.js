@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { userModel } from "../db/models/user.model.js";
+import { userModel } from "../DAL/mongoDB/models/user.model.js";
 import { hashData } from "../utils.js";
 import { compareData } from "../utils.js";
 import passport from "passport";
-import { userManager } from "../DAL/userManager.js";
+import { userMongo } from "../DAL/DAOs/MongoDAOs/userMongo.js"
 
 const router = Router();
 
@@ -73,7 +73,7 @@ router.get("/logout", (req, res) => {
 
 router.get("/home", async (req, res) => {
   const { user } = req.session;
-  const userDB = await userManager.findUserById(user);
+  const userDB = await userMongo.findUserById(user);
   if (userDB.isAdmin) {
     res.redirect("/adminHome");
   } else {
