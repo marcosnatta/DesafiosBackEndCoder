@@ -1,5 +1,6 @@
 import { cartsModel } from "../../mongoDB/models/carts.model.js";
 import { ObjectId } from "mongodb";
+import {productsModel} from "../../mongoDB/models/products.model.js"
 
 class CartsMongo {
   async findAll() {
@@ -11,8 +12,8 @@ class CartsMongo {
     }
   }
 
-  async getCartById(id) {
-    return await cartsModel.findById(id);
+  async getCartById(_id) {
+    return await cartsModel.findById(_id);
   }
 
   async createCart() {
@@ -37,6 +38,7 @@ class CartsMongo {
     }
   }
 
+
   async addProductToCart(cartId, productId, quantity) {
     console.log("cartId:", cartId);
     console.log("productId:", productId);
@@ -52,12 +54,39 @@ class CartsMongo {
     }
     try {
       const updatedCart = await cart.save();
+      console.log(updatedCart)
       return updatedCart;
     } catch (error) {
       throw new Error("Error updating cart: " + error.message);
     }
   }
 
+/*
+async addProductToCart(cart, productId, quantity) {
+  try {
+    const product = await productsModel.findById(productId);
+    console.log(productId)
+    if (!product) {
+      throw new Error("El producto no existe en la base de datos");
+    }
+
+    if (product.stock < quantity) {
+      throw new Error("No hay suficiente stock del producto");
+    }
+    const newItem = {
+      product: product,  
+      quantity: quantity,
+    };
+    cart.products.push(newItem);
+
+    const updatedCart = await cart.save();
+
+    return updatedCart;
+  } catch (error) {
+    throw new Error("Error al agregar el producto al carrito: " + error.message);
+  }
+}
+*/
   async updateOne(id, obj) {
     try {
       const update = await cartsModel.updateOne({ _id: id }, { ...obj });

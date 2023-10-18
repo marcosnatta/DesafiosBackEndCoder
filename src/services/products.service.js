@@ -1,4 +1,4 @@
-import { ProductsMongo } from "../DAL/DAOs/mongoDAOs/productsMongo.js";
+import { ProductsMongo } from "../DAL/DAOs/mongoDAOs/ProductsMongo.js"
 
 class ProductsService {
   constructor() {
@@ -35,7 +35,7 @@ class ProductsService {
 
   async updateProduct(id,obj){
     try {
-        const update = await this.productsMongo.updateOne({_id:id},{...obj})
+        const update = await this.productsMongo.updateProduct({_id:id},{...obj})
         return update
     } catch (error) {
         return error

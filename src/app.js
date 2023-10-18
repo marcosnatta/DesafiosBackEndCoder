@@ -15,7 +15,6 @@ import "./DAL/mongoDB/dbConfig.js"
 import passport from "passport"
 import './passport/passportStrategies.js'
 import config from "./config.js"
-import usersRouter from "./routes/users.router.js"
 import { isUser } from "./middlewares/auth.middlewares.js"
 
 const app = express()
@@ -56,10 +55,6 @@ app.use("/products", productsRouter)
 
 //session
 app.use("/session",sessionRouter)
-
-// usuarios
-app.use("/users", usersRouter)
-
 
 
 

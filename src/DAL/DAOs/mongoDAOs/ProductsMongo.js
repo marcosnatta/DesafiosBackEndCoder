@@ -79,14 +79,15 @@ async updateProduct(id,obj){
   }
 }
 
-async deleteProduct(id){
+async deleteProduct(id) {
   try {
-      const deleted = await usersModel.findByIdAndDelete(id)
-      return deleted
+    const deleted = await productsModel.findByIdAndDelete(id);
+    return deleted;
   } catch (error) {
-      return error
+    return error;
   }
 }
+
 
 }
 

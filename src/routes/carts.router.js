@@ -45,10 +45,8 @@ router.post("/", async (req, res) => {
 });
 //agregar isuser
 router.post("/:cid/products/:pid", async (req, res) => {
-  const { cid } = req.params;
-  const { pid } = req.body;
-  const cartId = new ObjectId(cid);
-  const productId = new ObjectId(pid);
+  const cartId = req.params.cid;  
+  const productId = req.params.pid; 
   const { quantity } = req.body;
   console.log("Sesión del usuario:", req.session.user);
   if (!quantity || isNaN(quantity)) {
