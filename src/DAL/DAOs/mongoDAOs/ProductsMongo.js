@@ -1,7 +1,7 @@
 import { productsModel } from "../../mongoDB/models/products.model.js";
 
 
-class ProductsMongo{
+export class ProductsMongo{
 
 
 /*
@@ -15,13 +15,12 @@ class ProductsMongo{
 }
 */
 async findAll(obj){
-  const  {limit,page,sort,...query} = obj
+  const  {limit =10 ,page = 1,sort,...query} = obj
 
   try{
  
     //const resultProd = await productsModel.paginate({title:"producto4"},{limit,page,sort:{price:sortPrice}})
     const resultProd = await productsModel.paginate(query,{limit,page,sort})
-
     const products = await productsModel.find({})
     const infoProds = {
         count: resultProd.totalDocs,
@@ -46,6 +45,11 @@ async findAll(obj){
   }
 }
 
+async addProduct(product) {
+  const newProduct = new productsModel(product);
+  await newProduct.save();
+  return newProduct;
+}
 
 async createProduct(obj){
   try {
@@ -56,9 +60,10 @@ async createProduct(obj){
   }
 }
 
-async findById(id){
+async findById(_id){
   try {
-      const producto = await productsModel.findById(id)
+      const producto = await productsModel.findById(_id)
+      
       return producto
   } catch (error) {
       return error

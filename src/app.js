@@ -11,26 +11,78 @@ import cookieParser from "cookie-parser"
 import session from "express-session"
 import MongoStore from "connect-mongo"
 import sessionRouter from "./routes/sessions.router.js"
-import mongoose from "mongoose"
 import "./DAL/mongoDB/dbConfig.js"
 import passport from "passport"
 import './passport/passportStrategies.js'
 import config from "./config.js"
 import usersRouter from "./routes/users.router.js"
-
+import { isUser } from "./middlewares/auth.middlewares.js"
 
 const app = express()
 
+// cookie
+app.use(cookieParser())
+app.use(session({
+  store: new  MongoStore({
+    mongoUrl: config.mongoUrl,
+    mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
+    ttl:15
+
+  }),
+  secret: process.env.SESSiON_SECRET,
+  resave:false,
+  saveUninitialized: false,
+  cookie: {maxAge:60000}
+}))
+//express
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname +"/public"))
 
+//passport
+app.use(passport.initialize())
+app.use(passport.session())
 
 //parte de handlebars
 app.engine("handlebars", handlebars.engine())
 app.set("views", __dirname +"/views")
 app.set("view engine","handlebars")
 
+// mis routers
+//app.use("/api/products", productsRouter)
+app.use("/api/carts", cartsRouter)
+app.use("/", viewsRouter)
+app.use("/products", productsRouter)
+
+//session
+app.use("/session",sessionRouter)
+
+// usuarios
+app.use("/users", usersRouter)
+
+
+
+
+
+// chat
+app.get("/chat",isUser, (req, res) => {
+  res.render("chat", { messages: [] }); 
+});
+
+//login register y profile
+app.get('/login', (req, res) => {
+  res.render('login'); 
+});
+
+app.get('/register', (req, res) => {
+  res.render('register'); 
+});
+
+app.get('/profile', (req, res) => {
+  res.render('profile', {
+    user: req.session.user,
+  }); 
+});
 
 
 const PORT = config.port
@@ -38,17 +90,11 @@ const httpServer = app.listen(PORT, ()=>{
   console.log(`escuchando el puerto ${PORT}`)
 })
 
-
-
-// chat
-app.get("/chat", (req, res) => {
-  res.render("chat", { messages: [] }); 
-});
-
 //agregar un producto nuevo
 const socketServer = new Server(httpServer)
 socketServer.on("connection", (socket) => {
     console.log("Cliente conectado:", socket.id);
+
     socket.on("createProduct", async (nuevoproduct) => {
       try {
         const agregarProducto = await productsMongo.createProduct(
@@ -103,53 +149,3 @@ socketServer.on("connection", (socket) => {
       }
     });
   });
-
-
-mongoose.connect("mongodb+srv://marcosnatta:marcosnatta1234@cluster0.cibfyui.mongodb.net/ecommerce?retryWrites=true&w=majority")
-// cookie
-app.use(cookieParser())
-app.use(session({
-  store: new  MongoStore({
-    mongoUrl:"mongodb+srv://marcosnatta:marcosnatta1234@cluster0.cibfyui.mongodb.net/ecommerce?retryWrites=true&w=majority",
-    mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
-    ttl:15
-
-  }),
-  secret: process.env.SESSiON_SECRET,
-  resave:false,
-  saveUninitialized: false,
-  cookie: {maxAge:60000}
-}))
-
-//passport
-app.use(passport.initialize())
-app.use(passport.session())
-
-
-
-//login register y profile
-app.get('/login', (req, res) => {
-  res.render('login'); 
-});
-
-app.get('/register', (req, res) => {
-  res.render('register'); 
-});
-
-app.get('/profile', (req, res) => {
-  res.render('profile', {
-    user: req.session.user,
-  }); 
-});
-
-// usuarios
-app.use("/users", usersRouter)
-
-// mis routers
-//app.use("/api/products", productsRouter)
-app.use("/api/carts", cartsRouter)
-app.use("/", viewsRouter)
-app.use("/products", productsRouter)
-
-//session
-app.use("/session",sessionRouter)

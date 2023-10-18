@@ -10,7 +10,7 @@ const schema = new mongoose.Schema({
     password:String,
     role: {
         type: String,
-        default: 'usuario',
+        default: 'user',
       },
       fromGithub: {
         type: Boolean,
@@ -26,4 +26,5 @@ const schema = new mongoose.Schema({
     }
 });
 
-export const userModel = mongoose.model(collection, schema);
+const userModel = mongoose.model(collection, schema);
+export default userModel

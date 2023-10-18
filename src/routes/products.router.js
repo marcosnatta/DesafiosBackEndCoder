@@ -1,14 +1,17 @@
 import { Router } from "express";
 import { ObjectId } from "mongodb"
 import {productsMongo} from "../DAL/DAOs/mongoDAOs/ProductsMongo.js"
+import { isAdmin } from "../middlewares/auth.middlewares.js";
 const router = Router();
 
 
 router.get("/", async (req, res) =>{
   try{
   const allproducts = await productsMongo.findAll(req.query)
+  console.log("Productos obtenidos:", allproducts);
   res.json({allproducts})
 }catch(error){
+    console.error("Error al obtener productos:", error);
   res.status(500).json({error})
 }
 })
@@ -25,7 +28,7 @@ router.get("/:pid", async (req, res) => {
   }
 });
 
-router.post("/",async(req,res)=>{
+router.post("/",isAdmin, async(req,res)=>{
 
     const { title, description, price, thumbnail, code, stock, category } = req.body;
 
@@ -42,7 +45,7 @@ router.post("/",async(req,res)=>{
  })
 
 
-router.delete("/:pid",async(req,res)=>{
+router.delete("/:pid",isAdmin,async(req,res)=>{
     const { pid } = req.params
 try {
     const deleteProducts = await productsMongo.deleteProduct(pid)
@@ -52,7 +55,7 @@ try {
 }
 })
 
-router.put("/:pid",async(req,res)=>{
+router.put("/:pid",isAdmin,async(req,res)=>{
     const { pid } = req.params
 
     try {

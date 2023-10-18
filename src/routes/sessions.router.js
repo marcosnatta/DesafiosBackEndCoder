@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { userModel } from "../DAL/mongoDB/models/user.model.js";
+import  userModel  from "../DAL/mongoDB/models/user.model.js";
 import { hashData } from "../utils.js";
 import { compareData } from "../utils.js";
 import passport from "passport";
-import { userMongo } from "../DAL/DAOs/MongoDAOs/userMongo.js"
+import UsersDto from "../DAL/DTOs/users.dto.js";
 
 const router = Router();
 
@@ -26,7 +26,7 @@ router.post("/register", async (req, res) => {
     email,
     age,
     password: hashPassword,
-    role: isAdmin ? "ADMIN" : "USER",
+    role: isAdmin ? "ADMIN" : "user",
   };
   const result = await userModel.create(user);
   res.send({ status: "succes", message: "Usuario registrado correctamente" });
@@ -47,7 +47,8 @@ router.post("/login", async (req, res) => {
 
   if (email === "adminCoder@coder.com" && password === "adminCod3r123") {
     user.role = "ADMIN";
-    console.log(user.role);
+  }else {
+    user.role = "user";
   }
 
   req.session.user = {
@@ -70,26 +71,6 @@ router.get("/logout", (req, res) => {
     res.redirect("/login");
   });
 });
-
-router.get("/home", async (req, res) => {
-  const { user } = req.session;
-  const userDB = await userMongo.findUserById(user);
-  if (userDB.isAdmin) {
-    res.redirect("/adminHome");
-  } else {
-    res.redirect("/clientHome");
-  }
-});
-
-router.get("/current", (req, res) => {
-  
-  if (!req.session.user) {
-    return res.status(401).json({ error: 'Usuario no autenticado' });
-  }
-
-  return res.json({ user: req.session.user });
-});
-
 //passport github
 
 router.get(
@@ -108,4 +89,9 @@ router.get(
   }
 );
 
+router.get("/current", (req, res) => {
+  const userDto = new UsersDto(req.session.user); 
+  console.log(userDto)
+  res.status(200).json({ user: userDto });
+});
 export default router;

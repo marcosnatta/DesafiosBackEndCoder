@@ -5,30 +5,41 @@ import {cartsModel} from "../DAL/mongoDB/models/carts.model.js"
 const router = Router()
 
 
-// router.get("/home", async(req,res)=>{
+// router.get("/product", async(req,res)=>{
 //         const allproducts = await productsMongo.findAll();
 //         res.render("home",{ products: allproducts })
 //     })
 
 
-router.get("/realtimeproducts", async(req,res)=>{
-    const allproducts = await productsMongo.findAll();
-    res.render("realTimeProducts",{ products: allproducts })
-})
+// router.get("/realtimeproducts", async(req,res)=>{
+//     const allproducts = await productsMongo.findAll();
+//     res.render("realTimeProducts",{ products: allproducts })
+// })
 
 
 router.get("/chat", (req,res)=>{
     res.render("chat")
 })
+/*
+router.get('/products', async (req, res) => {
+  try {
+      const products = await productsMongo.findAll();
+      res.render('products', { products, user: req.session.user });
+    } catch (error) {
+    console.log(error)
+      res.status(500).json({ error: 'Error al obtener listado de productos' });
+  }
+});
+*/
 
 router.get("/products", async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
-  
+    const sort = req.query.sort || 'asc';
     try {
       const result = await productsMongo.findAll({ page, limit });
       const productsForPage = result.infoProds.payload.map(product => ({
-        _id: product._id.toString(),
+        _id: product._id,
         title: product.title,
         description: product.description,
         price: product.price,
@@ -50,19 +61,25 @@ router.get("/products", async (req, res) => {
     }
   });
 
-router.get("/products/:pid", async (req, res) => {
+  router.get("/products/:pid", async (req, res) => {
     const productId = req.params.pid;
-  
+
     try {
-      const product = await productsMongo.findById(productId);
-      const productBasic = product.toObject();
-  
-      res.render("product-details", { product: productBasic });
+        const product = await productsMongo.findById(productId);
+
+        if (product && typeof product.toObject === "function") {
+            const productBasic = product.toObject();
+            res.render("product-details", { product: productBasic });
+        } else {
+            // Manejo de caso en el que product no es un documento de Mongoose
+            res.status(404).json({ error: "Producto no encontrado" });
+        }
     } catch (error) {
-      res.status(500).json({ error });
-      console.log(error);
+        res.status(500).json({ error });
+        console.log(error);
     }
 });
+
 
 router.get("/carts/:cid", async (req, res) => {
     const { cid } = req.params;

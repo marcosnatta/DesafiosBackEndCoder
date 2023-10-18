@@ -1,4 +1,4 @@
-import { userMongo } from "../DAL/DAOs/MongoDAOs/userMongo.js";
+import { userMongo } from "../DAL/DAOs/mongoDAOs/userMongo.js";
 import UsersDTO from "../DAL/DTOs/users.dto.js";
 import { hashData } from "../utils.js";
 class UsersService {

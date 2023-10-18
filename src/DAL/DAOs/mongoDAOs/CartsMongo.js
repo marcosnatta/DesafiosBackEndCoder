@@ -1,64 +1,62 @@
 import { cartsModel } from "../../mongoDB/models/carts.model.js";
-import { ObjectId } from "mongodb"
+import { ObjectId } from "mongodb";
 
 class CartsMongo {
   async findAll() {
     try {
-      const carts = await cartsModel.find({})
+      const carts = await cartsModel.find({});
       return carts;
     } catch (error) {
       return error;
     }
   }
 
-  async createCart(obj) {
+  async getCartById(id) {
+    return await cartsModel.findById(id);
+  }
+
+  async createCart() {
     try {
-      const cart = await cartsModel.create(obj);
-      let id
-      if (!carritos.length) {
-        id = 1;
-      } else {
-        id = carritos[carritos.length - 1].id + 1;
-      }
-      return cart;
+      const newCart = new cartsModel();
+      await newCart.save();
+      return newCart;
     } catch (error) {
-      return error;
+      throw error;
     }
   }
 
-  async findById(_id) {
+  async findById(id) {
     try {
-      const carrito  = await cartsModel.findById(_id);
-      if (!carrito ) {
+      const carrito = await cartsModel.findById(id);
+      if (!carrito) {
         throw new Error("Carrito no encontrado");
-    }
-      return carrito ;
+      }
+      return carrito;
     } catch (error) {
       return error;
     }
   }
 
+  async addProductToCart(cartId, productId, quantity) {
+    console.log("cartId:", cartId);
+    console.log("productId:", productId);
+    const cart = await this.getCartById(cartId);
+    const existingProductIndex = cart.products.findIndex(
+      (p) => p.product && p.product.equals(productId)
+    );
 
-
-  async addProductToCart(cid, pid) {
-    try {
-        const cart = await cartsModel.findById(cid).populate("products.id");
-
-        if (!cart) {
-            return "Carrito no encontrado";
-        }
-
-        if (!cart.products.some(product => product.id == pid)) {
-            cart.products.push({ id: pid });
-            const updatedCart = await cart.save();
-            return updatedCart;
-        } else {
-            return cart;
-        }
-    } catch (error) {
-        throw error;
+    if (existingProductIndex !== -1) {
+      cart.products[existingProductIndex].quantity += quantity || 1;
+    } else {
+      cart.products.push({ product: productId, quantity: quantity || 1 });
     }
-}
+    try {
+      const updatedCart = await cart.save();
+      return updatedCart;
+    } catch (error) {
+      throw new Error("Error updating cart: " + error.message);
+    }
+  }
 
   async updateOne(id, obj) {
     try {
@@ -69,30 +67,49 @@ class CartsMongo {
     }
   }
 
-  
+  async removeProductFromCart(cid, pid) {
+    try {
+      const cart = await this.getCartById(cid);
+
+      if (!cart) {
+        throw new Error("Carrito no encontrado");
+      }
+
+      const updatedProducts = cart.products.filter((p) => {
+        return p.product && p.product.equals(pid);
+      });
+
+      cart.products = updatedProducts;
+
+      const updatedCart = await cart.save();
+      return updatedCart;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async updateProductQuantity(cartId, productId, updatedQuantity) {
     try {
-        const cart = await cartsModel.findById(cartId).populate("products.id");
+      const cart = await cartsModel.findById(cartId).populate("products.id");
 
-        if (!cart) {
-            throw new Error("Carrito no encontrado");
-        }
-        const productToUpdate = cart.products.find(product => product.id.equals(new ObjectId(productId)));
-        if (!productToUpdate) {
-          console.log(productToUpdate)
-            throw new Error("Producto no encontrado en el carrito");
-        }
+      if (!cart) {
+        throw new Error("Carrito no encontrado");
+      }
+      const productToUpdate = cart.products.find((product) =>
+        product.id.equals(new ObjectId(productId))
+      );
+      if (!productToUpdate) {
+        console.log(productToUpdate);
+        throw new Error("Producto no encontrado en el carrito");
+      }
 
-        productToUpdate.quantity = updatedQuantity;
-        await cart.save();
-
-        return cart;
+      productToUpdate.quantity = updatedQuantity;
+      const updatedCart = await cart.save();
+      return updatedCart;
     } catch (error) {
-        throw error;
+      throw error;
     }
-}
-
-
+  }
 
   async deleteCart(id) {
     try {
@@ -106,35 +123,18 @@ class CartsMongo {
   async deleteAllProducts(cartId) {
     try {
       const cart = await cartsModel.findById(cartId);
-  
+
       if (!cart) {
         throw new Error("Carrito no encontrado");
       }
-  //tengo que devolver un array vacio para que queden eliminados mis productos
       cart.products = [];
       await cart.save();
-  
+
       return cart;
     } catch (error) {
       throw error;
     }
   }
-
-  
-  async deleteCartProd(cid,pid){
-    try {
-        const cart = await cartsModel.findById(cid)
-        if(!cart) throw new Error('cart not found')
-        
-        const response = await cartsModel.updateOne({ _id: cid }, { $pull: { products: pid } })
-      return response
-
-
-
-    } catch (error) {
-      return error
-    }
-  }
 }
 
-export const cartsMongo = new CartsMongo();
+export { CartsMongo };

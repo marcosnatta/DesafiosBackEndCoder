@@ -12,7 +12,7 @@ const productsSchema = new mongoose.Schema({
             require: true
         },
         price:{
-            type: String,
+            type: Number,
             require: true
         },
         thumbnail:{
@@ -25,7 +25,7 @@ const productsSchema = new mongoose.Schema({
 
         },
         stock:{
-            type: String,
+            type: Number,
         },
         status:{
             type: String,
