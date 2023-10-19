@@ -7,9 +7,9 @@ import { isAdmin } from "../middlewares/auth.middlewares.js";
 import { ticketService } from "../services/ticket.service.js";
 import { cartService } from "../services/carts.service.js";
 import { productsService } from "../services/products.service.js";
+import { mongoose } from "mongoose";
 const router = Router();
 const cartsMongo = new CartsMongo();
-
 
 router.get("/", async (req, res) => {
   try {
@@ -29,7 +29,6 @@ router.get("/:cid", async (req, res) => {
     const carrito = await cartsModel.findById(cartId).populate("products.id");
     res.status(200).json({ message: "Carrito encontrado", carrito });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Error al buscar el carrito" });
   }
 });
@@ -39,16 +38,14 @@ router.post("/", async (req, res) => {
     const createCart = await cartService.createCart();
     res.status(200).json({ message: "Productos", carro: createCart });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error });
   }
 });
-//agregar isuser
+
 router.post("/:cid/products/:pid", async (req, res) => {
-  const cartId = req.params.cid;  
-  const productId = req.params.pid; 
+  const cartId = req.params.cid;
+  const productId = req.params.pid;
   const { quantity } = req.body;
-  console.log("Sesión del usuario:", req.session.user);
   if (!quantity || isNaN(quantity)) {
     return res.status(400).json({ error: "Cantidad no válida" });
   }
@@ -63,7 +60,6 @@ router.post("/:cid/products/:pid", async (req, res) => {
       .status(200)
       .json({ message: "Producto agregado al carrito", carrito: updatedCart });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Error al agregar el producto al carrito" });
   }
 });
@@ -78,21 +74,19 @@ router.delete("/:cid", async (req, res) => {
       .status(200)
       .json({ message: "Productos eliminados del carrito", borrarProds });
   } catch (error) {
-    console.error(error);
     res
       .status(500)
       .json({ error: "Error al eliminar los productos del carrito" });
   }
 });
-
-router.delete("/:cid/products/:pid", isAdmin, async (req, res) => {
+//isadmin
+router.delete("/:cid/products/:pid", async (req, res) => {
   const { cid, pid } = req.params;
   if (!ObjectId.isValid(pid)) {
     return res.status(400).json({ error: "ID de producto no válido" });
   }
   const cartId = new ObjectId(cid);
   const productId = new ObjectId(pid);
-
   try {
     const resultCart = await cartsMongo.removeProductFromCart(
       cartId,
@@ -100,7 +94,6 @@ router.delete("/:cid/products/:pid", isAdmin, async (req, res) => {
     );
     res.status(200).json({ message: "Producto borrado con éxito", resultCart });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Error interno del servidor" });
   }
 });
@@ -114,7 +107,6 @@ router.put("/:cid", async (req, res) => {
     const updatedCart = await cartsMongo.updateOne(cartId, updatedData);
     res.status(200).json({ message: "Carrito actualizado", updatedCart });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Error al actualizar el carrito" });
   }
 });
@@ -148,55 +140,68 @@ router.put("/:cid/products/:pid", async (req, res) => {
   }
 });
 
-router.post('/:cid/purchase', async (req, res) => {
-    const cartId = req.params.cid;
-  
-    try {
-      const cart = await cartService.getCartById(cartId);
-      if (!cart) {
-        return res.status(404).json({ error: 'Carrito no encontrado' });
+router.post("/:cid/purchase", async (req, res) => {
+  const cartId = req.params.cid;
+  try {
+    // Obtener el carrito por su ID
+    const cart = await cartService.getCartById(cartId);
+    if (!cart) {
+      return res.status(404).json({ error: "Carrito no encontrado" });
+    }
+
+    // Inicializa un arreglo para llevar un registro de los productos no procesados
+    const productosNoProcesados = [];
+
+    // Recorre los productos en el carrito
+    for (const productInfo of cart.products) {
+      if (!mongoose.Types.ObjectId.isValid(productInfo._id)) {
+        console.log(productInfo._id)
+        productosNoProcesados.push(productInfo._id);
+        continue;
       }
-  
-      let insufficientStock = false;
-  
-      for (const productInfo of cart.products) {
-        const product = await productsService.findById(productInfo.product);
-  
-        if (!product) {
-          return res.status(404).json({ error: 'Producto no encontrado en la base de datos' });
-        }
-  
-        if (product.stock < productInfo.quantity) {
-          insufficientStock = true;
-        }
-      }
-  
-      if (insufficientStock) {
-        return res.status(400).json({ error: 'No hay suficiente stock para algunos productos en el carrito' });
-      }
-  
-      for (const productInfo of cart.products) {
-        const product = await productsService.findById(productInfo.product);
+
+      const product = await productsService.findById(productInfo._id);
+
+
+      if (!product) {
+        productosNoProcesados.push(productInfo.product);
+      } else if (product.stock >= productInfo.quantity) {
+        // Resta el stock y actualiza el producto
         product.stock -= productInfo.quantity;
         await product.save();
+      } else {
+        productosNoProcesados.push(productInfo.product);
       }
-  
-      // Realizar la compra y guardar los detalles del ticket
-      const ticketData = {
-        purchase_datetime: new Date(),
-        amount: cart.totalAmount,
-        purchaser: "marcos",
-      };
-      const ticket = await ticketService.createTicket(ticketData);
-  
-      // Actualizar el carrito para reflejar los productos comprados
-      await cartService.clearCart(cartId);
-  
-      res.status(201).json({ message: 'Compra exitosa', ticket });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
     }
-  });
-  
+
+    // Filtra los productos no procesados en el carrito
+    cart.products = cart.products.filter(
+      (productInfo) => !productosNoProcesados.includes(productInfo.product)
+    );
+
+    // Actualizar el carrito para reflejar los productos no procesados
+    await cartService.updateCart(cart);
+
+    // Si hay productos no procesados, devolver sus IDs
+    if (productosNoProcesados.length > 0) {
+      return res.status(400).json({
+        message: "Compra incompleta",
+        productosNoProcesados,
+      });
+    }
+
+    // Realizar la compra y guardar los detalles del ticket
+    const ticketData = {
+      purchase_datetime: new Date(),
+      amount: cart.totalAmount,
+      purchaser: "marcos", // Reemplaza esto con el nombre del comprador real
+    };
+    const ticket = await ticketService.createTicket(ticketData);
+
+    res.status(201).json({ message: "Compra exitosa", ticket });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 export default router;

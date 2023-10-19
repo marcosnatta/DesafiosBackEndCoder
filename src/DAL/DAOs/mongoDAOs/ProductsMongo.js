@@ -1,6 +1,5 @@
 import { productsModel } from "../../mongoDB/models/products.model.js";
-
-
+import {mongoose} from "mongoose"
 export class ProductsMongo{
 
 
@@ -60,15 +59,11 @@ async createProduct(obj){
   }
 }
 
-async findById(_id){
-  try {
-      const producto = await productsModel.findById(_id)
-      
-      return producto
-  } catch (error) {
-      return error
-  }
+async findById(id) {
+  return await productsModel.findById(id)
 }
+
+
 
 async updateProduct(id,obj){
   try {

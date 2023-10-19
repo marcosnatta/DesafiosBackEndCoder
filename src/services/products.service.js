@@ -23,15 +23,19 @@ class ProductsService {
       }
   }
 
-  async findById(_id){
+  async findById(id) {
     try {
-        const producto = await this.productsMongo.findById(_id)
-        console.log(producto)
-        return producto
+      const producto = await this.productsMongo.findById(id);
+     
+      if (!producto) {
+        throw new Error('Producto no encontrado en la base de datos');
+      }
+      return producto;
     } catch (error) {
-        return error
+      throw new Error('Error al buscar el producto: ' + error.message);
     }
   }
+  
 
   async updateProduct(id,obj){
     try {
@@ -42,9 +46,9 @@ class ProductsService {
     }
   }
 
-  async deleteProduct(id){
+  async deleteProduct(_id){
     try {
-        const deleted = await this.productsMongo.findByIdAndDelete(id)
+        const deleted = await this.productsMongo.findByIdAndDelete(_id)
         return deleted
     } catch (error) {
         return error

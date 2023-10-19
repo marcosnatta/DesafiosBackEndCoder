@@ -2,10 +2,6 @@ import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 
 const cartsSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    unique: true,
-},
   products: [
     {
       id: {

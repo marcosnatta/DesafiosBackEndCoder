@@ -25,7 +25,6 @@ class ProductController {
 
   async findById(req, res) {
     const { id } = req.params;
-
     try {
       const product = await productsService.findById(id);
       console.log(product)
@@ -39,21 +38,26 @@ class ProductController {
     }
   }
 
-  async updateProduct(req, res) {
-    const { id } = req.params;
-    const updateprod = req.body;
+// En tu controlador ProductController
+async updateProduct(req, res) {
+  const { id } = req.params;
+  const updateprod = req.body;
 
-    try {
-      const updatedProduct = await productsService.updateProduct(id, updateprod);
-      if (updatedProduct) {
-        res.status(200).json({ product: updatedProduct });
-      } else {
-        res.status(404).json({ message: 'Producto no encontrado' });
-      }
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+  try {
+    // Asegura que el ID no se modifique
+    delete updateprod._id; // Si existe _id en los datos enviados, elimínalo
+
+    const updatedProduct = await productsService.updateProduct(id, updateprod);
+    if (updatedProduct) {
+      res.status(200).json({ product: updatedProduct });
+    } else {
+      res.status(404).json({ message: 'Producto no encontrado' });
     }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
+}
+
 
 
 
