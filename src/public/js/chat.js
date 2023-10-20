@@ -1,4 +1,3 @@
-
 const socket = io();
 
 document.getElementById("formularioChat").addEventListener("submit", (event) => {

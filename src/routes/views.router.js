@@ -4,33 +4,9 @@ import {cartsModel} from "../DAL/mongoDB/models/carts.model.js"
 
 const router = Router()
 
-
-// router.get("/product", async(req,res)=>{
-//         const allproducts = await productsMongo.findAll();
-//         res.render("home",{ products: allproducts })
-//     })
-
-
-// router.get("/realtimeproducts", async(req,res)=>{
-//     const allproducts = await productsMongo.findAll();
-//     res.render("realTimeProducts",{ products: allproducts })
-// })
-
-
 router.get("/chat", (req,res)=>{
     res.render("chat")
 })
-/*
-router.get('/products', async (req, res) => {
-  try {
-      const products = await productsMongo.findAll();
-      res.render('products', { products, user: req.session.user });
-    } catch (error) {
-    console.log(error)
-      res.status(500).json({ error: 'Error al obtener listado de productos' });
-  }
-});
-*/
 
 router.get("/products", async (req, res) => {
     const page = parseInt(req.query.page) || 1;

@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { ObjectId } from "mongodb"
 import {productsMongo} from "../DAL/DAOs/mongoDAOs/ProductsMongo.js"
 import { isAdmin } from "../middlewares/auth.middlewares.js";
+import { isUser } from "../middlewares/auth.middlewares.js";
 const router = Router();
 
 
@@ -27,7 +27,7 @@ router.get("/:pid", async (req, res) => {
   }
 });
 //is admin
-router.post("/", async(req,res)=>{
+router.post("/",isAdmin, async(req,res)=>{
 
     const { title, description, price, thumbnail, code, stock, category } = req.body;
 
@@ -45,7 +45,7 @@ router.post("/", async(req,res)=>{
  })
 
 //isAdmin
-router.delete("/:pid",async(req,res)=>{
+router.delete("/:pid",isAdmin, async(req,res)=>{
     const { pid } = req.params
 try {
     const deleteProducts = await productsMongo.deleteProduct(pid)
@@ -55,7 +55,7 @@ try {
 }
 })
 //isAdmin
-router.put("/:pid",async(req,res)=>{
+router.put("/:pid",isAdmin,async(req,res)=>{
     const { pid } = req.params
 
     try {

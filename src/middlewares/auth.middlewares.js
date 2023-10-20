@@ -1,18 +1,20 @@
-export function isAdmin(req, res, next) {
-    if (req.session.user && req.session.user.role === 'ADMIN') {
-      next(); 
-    } else {
-      res.status(403).json({ error: 'No tenés los permisos para realizar ésta operación'});
-    }
-};
-  
 export function isUser(req, res, next) {
-  console.log('Middleware isUser - Inicio');
-  if (req.session.user && req.session.user.role === 'user') {
-    console.log('Usuario tiene el rol "user"');
-    next();
+  const user = req.user; // Obtén el usuario desde la sesión (asegúrate de que passport haya configurado req.user)
+
+  if (user && user.role === "user") {
+    next(); // Usuario autenticado y con rol de "user", continúa
   } else {
-    console.log('Usuario no tiene el rol "user"');
-    res.status(403).json({ error: 'No tenés los permisos para realizar esta operación' });
+    res.status(403).json({ error: "Acceso no autorizado para usuarios" }); // Usuario no autorizado
   }
 }
+
+export function isAdmin(req, res, next) {
+  const user = req.user; // Obtén el usuario desde la sesión (asegúrate de que passport haya configurado req.user)
+
+  if (user && user.role === "ADMIN") {
+    next(); // Usuario autenticado y con rol de "ADMIN", continúa
+  } else {
+    res.status(403).json({ error: "Acceso no autorizado para administradores" }); // Usuario no autorizado
+  }
+}
+

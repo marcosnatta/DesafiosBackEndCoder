@@ -2,12 +2,12 @@ import { Router } from "express";
 import { ObjectId } from "mongodb";
 import { CartsMongo } from "../DAL/DAOs/mongoDAOs/CartsMongo.js";
 import { cartsModel } from "../DAL/mongoDB/models/carts.model.js";
-import { isUser } from "../middlewares/auth.middlewares.js";
-import { isAdmin } from "../middlewares/auth.middlewares.js";
 import { ticketService } from "../services/ticket.service.js";
 import { cartService } from "../services/carts.service.js";
 import { productsService } from "../services/products.service.js";
 import { mongoose } from "mongoose";
+import { isUser } from "../middlewares/auth.middlewares.js";
+
 const router = Router();
 const cartsMongo = new CartsMongo();
 
@@ -42,7 +42,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.post("/:cid/products/:pid", async (req, res) => {
+router.post("/:cid/products/:pid",isUser, async (req, res) => {
   const cartId = req.params.cid;
   const productId = req.params.pid;
   const { quantity } = req.body;
