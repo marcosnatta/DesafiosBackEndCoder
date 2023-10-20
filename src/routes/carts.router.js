@@ -161,7 +161,7 @@ router.post("/:cid/purchase", async (req, res) => {
       }
 
       const product = await productsService.findById(productInfo._id);
-
+      console.log(product)
 
       if (!product) {
         productosNoProcesados.push(productInfo.product);
@@ -184,8 +184,9 @@ router.post("/:cid/purchase", async (req, res) => {
 
     // Si hay productos no procesados, devolver sus IDs
     if (productosNoProcesados.length > 0) {
+  
       return res.status(400).json({
-        message: "Compra incompleta",
+        message: "Compra incompleta, no hay stock de los productos",
         productosNoProcesados,
       });
     }

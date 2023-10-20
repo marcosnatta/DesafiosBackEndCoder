@@ -44,8 +44,8 @@ router.post("/", async(req,res)=>{
     }
  })
 
-
-router.delete("/:pid",isAdmin,async(req,res)=>{
+//isAdmin
+router.delete("/:pid",async(req,res)=>{
     const { pid } = req.params
 try {
     const deleteProducts = await productsMongo.deleteProduct(pid)
@@ -54,8 +54,8 @@ try {
     res.status(500).json({ error })
 }
 })
-
-router.put("/:pid",isAdmin,async(req,res)=>{
+//isAdmin
+router.put("/:pid",async(req,res)=>{
     const { pid } = req.params
 
     try {

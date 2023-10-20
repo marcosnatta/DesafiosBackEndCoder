@@ -38,13 +38,13 @@ class CartController {
 
   async updateCart(req, res) {
     const { cartId } = req.params;
-    const { newProducts } = req.body;
-
+    const { updates } = req.body;
     try {
-      const cart = await cartService.updateCart(cartId, newProducts);
+      const cart = await cartService.updateCart(cartId, updates);
+  
       res.status(200).json({ cart });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error });
     }
   }
 
@@ -56,7 +56,7 @@ class CartController {
       const cart = await cartService.updateProductQuantity(cartId, productId, newQuantity);
       res.status(200).json({ cart });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error });
     }
   }
 
@@ -69,7 +69,7 @@ class CartController {
 
       res.status(200).json({ cart: updatedCart });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error });
     }
   }
 }

@@ -7,7 +7,6 @@ class TicketController {
     try {
 
       const ticket = await ticketService.createTicket({
-        code,
         purchase_datetime,
         amount,
         purchaser,

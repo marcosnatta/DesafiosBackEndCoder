@@ -1,4 +1,4 @@
-import {Ticket} from "../../mongoDB/models/ticket.model.js"
+import { Ticket } from "../../mongoDB/models/ticket.model.js";
 
 class TicketMongo {
   async createTicket(ticketData) {
