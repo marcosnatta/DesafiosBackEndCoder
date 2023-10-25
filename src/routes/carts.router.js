@@ -7,7 +7,8 @@ import { cartService } from "../services/carts.service.js";
 import { productsService } from "../services/products.service.js";
 import { mongoose } from "mongoose";
 import { isUser } from "../middlewares/auth.middlewares.js";
-
+import { ErrorMessages } from "../errors/error.enum.js"
+import CustomError from "../errors/CustomError.js"
 const router = Router();
 const cartsMongo = new CartsMongo();
 
@@ -29,7 +30,7 @@ router.get("/:cid", async (req, res) => {
     const carrito = await cartsModel.findById(cartId).populate("products.id");
     res.status(200).json({ message: "Carrito encontrado", carrito });
   } catch (error) {
-    res.status(500).json({ error: "Error al buscar el carrito" });
+    CustomError.createError(ErrorMessages.CART_NOT_FOUND)
   }
 });
 
@@ -38,7 +39,7 @@ router.post("/", async (req, res) => {
     const createCart = await cartService.createCart();
     res.status(200).json({ message: "Productos", carro: createCart });
   } catch (error) {
-    res.status(500).json({ error });
+    CustomError.createError(ErrorMessages.CART_NOT_CREATED)
   }
 });
 
@@ -60,7 +61,7 @@ router.post("/:cid/products/:pid",isUser, async (req, res) => {
       .status(200)
       .json({ message: "Producto agregado al carrito", carrito: updatedCart });
   } catch (error) {
-    res.status(500).json({ error: "Error al agregar el producto al carrito" });
+    CustomError.createError(ErrorMessages.NON_AGGREGATE_PRODUCT)
   }
 });
 

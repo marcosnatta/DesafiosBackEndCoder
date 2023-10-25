@@ -16,6 +16,11 @@ import passport from "passport"
 import './passport/passportStrategies.js'
 import config from "./config.js"
 import { isUser } from "./middlewares/auth.middlewares.js"
+import { generateProduct } from "./mocks/mocks.js"
+import { ErrorMessages } from "./errors/error.enum.js"
+import { errorMiddleware } from "./errors/error.middleware.js"
+import CustomError from "./errors/CustomError.js"
+
 
 const app = express()
 
@@ -79,6 +84,24 @@ app.get('/profile', (req, res) => {
   }); 
 });
 
+// mock
+app.get("/mockingproducts", (req, res) => {
+  const products = [];
+  for (let i = 0; i < 100; i++) {
+    const productsMock = generateProduct();
+    products.push(productsMock);
+  }
+  res.json(products);
+});
+
+
+// test
+app.get("/products", (req, res) => {
+  CustomError.createError(ErrorMessages.PRODUCT_NOT_FOUND);
+  // NotFoundDocumentError.createError("producto");
+});
+
+app.use(errorMiddleware)
 
 const PORT = config.port
 const httpServer = app.listen(PORT, ()=>{
