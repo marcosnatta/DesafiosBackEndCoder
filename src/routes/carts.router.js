@@ -6,17 +6,25 @@ import { ticketService } from "../services/ticket.service.js";
 import { cartService } from "../services/carts.service.js";
 import { productsService } from "../services/products.service.js";
 import { mongoose } from "mongoose";
-import { isUser } from "../middlewares/auth.middlewares.js";
+import { isAdmin, isUser } from "../middlewares/auth.middlewares.js";
 import { ErrorMessages } from "../errors/error.enum.js"
 import CustomError from "../errors/CustomError.js"
+import logger from "../winston.js"
+
+
+
+
+
 const router = Router();
 const cartsMongo = new CartsMongo();
 
 router.get("/", async (req, res) => {
   try {
     const carts = await cartsMongo.findAll();
+    logger.info("carritos encontrados")
     res.status(200).json({ message: "carrito encontrado", carts });
   } catch (error) {
+    logger.error("no se encontraron carritos")
     res.status(500).json({ error });
   }
 });
@@ -28,8 +36,10 @@ router.get("/:cid", async (req, res) => {
 
   try {
     const carrito = await cartsModel.findById(cartId).populate("products.id");
+    logger.info("este es tu carrito")
     res.status(200).json({ message: "Carrito encontrado", carrito });
   } catch (error) {
+    logger.error("no se encontro el carrito solicitado")
     CustomError.createError(ErrorMessages.CART_NOT_FOUND)
   }
 });
@@ -37,13 +47,15 @@ router.get("/:cid", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const createCart = await cartService.createCart();
+    logger.info ("tu carrito se creo correctamente")
     res.status(200).json({ message: "Productos", carro: createCart });
   } catch (error) {
+    logger.error("no se pudo crear el carrito")
     CustomError.createError(ErrorMessages.CART_NOT_CREATED)
   }
 });
 
-router.post("/:cid/products/:pid",isUser, async (req, res) => {
+router.post("/:cid/products/:pid", isUser, async (req, res) => {
   const cartId = req.params.cid;
   const productId = req.params.pid;
   const { quantity } = req.body;
@@ -60,8 +72,10 @@ router.post("/:cid/products/:pid",isUser, async (req, res) => {
     res
       .status(200)
       .json({ message: "Producto agregado al carrito", carrito: updatedCart });
+      logger.info ("tu producto se agrego al carrito")
   } catch (error) {
     CustomError.createError(ErrorMessages.NON_AGGREGATE_PRODUCT)
+    logger.error("no se pudo agregar el producto a tu carrito")
   }
 });
 
@@ -74,14 +88,16 @@ router.delete("/:cid", async (req, res) => {
     res
       .status(200)
       .json({ message: "Productos eliminados del carrito", borrarProds });
+      logger.info ("producto eliminado del carrito")
   } catch (error) {
     res
       .status(500)
       .json({ error: "Error al eliminar los productos del carrito" });
+    logger.error("no se pudo eliminar el producto")
   }
 });
 //isadmin
-router.delete("/:cid/products/:pid", async (req, res) => {
+router.delete("/:cid/products/:pid",isAdmin, async (req, res) => {
   const { cid, pid } = req.params;
   if (!ObjectId.isValid(pid)) {
     return res.status(400).json({ error: "ID de producto no válido" });
@@ -93,8 +109,10 @@ router.delete("/:cid/products/:pid", async (req, res) => {
       cartId,
       productId
     );
+    logger.info("producto borrado con exito")
     res.status(200).json({ message: "Producto borrado con éxito", resultCart });
   } catch (error) {
+    logger.error("no se pudo borrar el producto")
     res.status(500).json({ error: "Error interno del servidor" });
   }
 });

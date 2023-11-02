@@ -20,6 +20,7 @@ import { generateProduct } from "./mocks/mocks.js"
 import { ErrorMessages } from "./errors/error.enum.js"
 import { errorMiddleware } from "./errors/error.middleware.js"
 import CustomError from "./errors/CustomError.js"
+import { logger } from "./winston.js"
 
 
 const app = express()
@@ -105,7 +106,8 @@ app.use(errorMiddleware)
 
 const PORT = config.port
 const httpServer = app.listen(PORT, ()=>{
-  console.log(`escuchando el puerto ${PORT}`)
+  logger.info(`escuchando el puerto ${PORT}`)
+  //console.log(`escuchando el puerto ${PORT}`)
 })
 
 //agregar un producto nuevo
@@ -174,3 +176,16 @@ socketServer.on("connection", (socket) => {
     });
        
   });
+
+// loggers
+
+app.get("/loggerTest", (req, res) => {
+  console.log("Console log");
+  logger.debug("Debug");
+  logger.http("Http");
+  logger.info("info");
+  logger.warning("Warning");
+  logger.error("Error");
+  logger.fatal("Fatal");
+  res.send("loggertest");
+});

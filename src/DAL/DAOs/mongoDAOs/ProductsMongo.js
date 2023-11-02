@@ -1,18 +1,6 @@
 import { productsModel } from "../../mongoDB/models/products.model.js";
-import {mongoose} from "mongoose"
 export class ProductsMongo{
 
-
-/*
-  async findAll(){
-    try {
-        const products = await productsModel.find({})
-        return products
-    } catch (error) {
-        return error
-    }
-}
-*/
 async findAll(obj){
   const  {limit =10 ,page = 1,sort,...query} = obj
 
