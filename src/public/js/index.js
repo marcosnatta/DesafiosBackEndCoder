@@ -1,9 +1,3 @@
-import {cartsMongo} from "../../managers/carts/CartsMongo.js"
-
-
-
-
-
 const socketClient = io()
 const formulario = document.getElementById("formulario");
 const productitle = document.getElementById("title");

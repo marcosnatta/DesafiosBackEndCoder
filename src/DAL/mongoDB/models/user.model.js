@@ -12,6 +12,10 @@ const schema = new mongoose.Schema({
         type: String,
         default: 'user',
       },
+      role: {
+        type: String,
+        default: 'premium',
+      },
       fromGithub: {
         type: Boolean,
         default:false

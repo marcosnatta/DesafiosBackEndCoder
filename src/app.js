@@ -39,10 +39,6 @@ app.use(session({
   saveUninitialized: false,
   cookie: {maxAge:60000}
 }))
-//express
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname +"/public"))
 
 //passport
 app.use(passport.initialize())
@@ -52,6 +48,13 @@ app.use(passport.session())
 app.engine("handlebars", handlebars.engine())
 app.set("views", __dirname +"/views")
 app.set("view engine","handlebars")
+
+//express
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(__dirname +"/public"))
+
+
 
 // mis routers
 //app.use("/api/products", productsRouter)
@@ -66,9 +69,10 @@ app.use("/session",sessionRouter)
 
 
 // chat
-app.get("/chat", (req, res) => {
-  res.render("chat", { messages: [] }); 
+app.get("/chat", passport.authenticate("login"), (req, res) => {
+  res.render("chat", { messages: [] });
 });
+
 
 //login register y profile
 app.get('/login', (req, res) => {
@@ -111,6 +115,7 @@ const httpServer = app.listen(PORT, ()=>{
 })
 
 //agregar un producto nuevo
+
 const socketServer = new Server(httpServer)
 socketServer.on("connection", (socket) => {
     console.log("Cliente conectado:", socket.id);
@@ -153,29 +158,28 @@ socketServer.on("connection", (socket) => {
       }
     });
     
-    
-    socket.on("chatMessage",isUser, async (messageData) => {
-      const { usuario, message } = messageData;
-    
-      if (req.isAuthenticated() && req.user.role === "user") {
-        // El usuario está autenticado y tiene el rol "user"
-        const nuevomensaje = new Mesagge({ usuario, message });
-    
-        try {
-          await nuevomensaje.save();
-          socket.emit("chatMessage", { usuario, message });
-          console.log(`Mensaje guardado en la base de datos: ${usuario}: ${message}`);
-        } catch (error) {
-          console.error("Error al guardar el mensaje en la base de datos:", error);
-          socket.emit("chatMessageError", "Error al guardar el mensaje en la base de datos.");
-        }
-      } else {
-        // El usuario no está autenticado o no tiene el rol "user"
-        socket.emit("chatMessageError", "Acceso no autorizado para enviar mensajes.");
-      }
-    });
-       
+
+socket.on("chatMessage", isUser, async (messageData) => {
+  const { usuario, message } = messageData;
+
+  const user = socket.request.user;
+  if (user && user.role === "user") {
+    const nuevomensaje = new Mesagge({ usuario, message });
+    try {
+      await nuevomensaje.save();
+      socket.emit("chatMessage", { usuario, message });
+      console.log(`Mensaje guardado en la base de datos: ${usuario}: ${message}`);
+    } catch (error) {
+      console.error("Error al guardar el mensaje en la base de datos:", error);
+      socket.emit("chatMessageError", "Error al guardar el mensaje en la base de datos.");
+    }
+  } else {
+    socket.emit("chatMessageError", "Acceso no autorizado para enviar mensajes.");
+  }
+}); 
+  
   });
+
 
 // loggers
 

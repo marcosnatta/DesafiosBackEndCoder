@@ -1,20 +1,30 @@
-export function isUser(req, res, next) {
-  const user = req.user; // Obtén el usuario desde la sesión (asegúrate de que passport haya configurado req.user)
-
-  if (user && user.role === "user") {
-    next(); // Usuario autenticado y con rol de "user", continúa
+export function isAdmin(req, res, next) {
+  const user = req.user; 
+ 
+  if (user && user.role === "ADMIN") {
+    next(); 
   } else {
-    res.status(403).json({ error: "Acceso no autorizado para usuarios" }); // Usuario no autorizado
+    res.status(403).json({ error: "Acceso no autorizado para administradores" }); 
   }
 }
 
-export function isAdmin(req, res, next) {
-  const user = req.user; // Obtén el usuario desde la sesión (asegúrate de que passport haya configurado req.user)
-
-  if (user && user.role === "ADMIN") {
-    next(); // Usuario autenticado y con rol de "ADMIN", continúa
+export function isUser(req, res, next) {
+  const user = req.user; 
+  if (user && user.role === "user") {
+    next(); 
   } else {
-    res.status(403).json({ error: "Acceso no autorizado para administradores" }); // Usuario no autorizado
+    res.status(403).json({ error: "Acceso no autorizado para usuarios" }); 
+  }
+}
+
+
+export function isPremium(req, res, next) {
+  const user = req.user; 
+
+  if (user && user.role === "premium") {
+    next(); 
+  } else {
+    res.status(403).json({ error: "Acceso no autorizado para usuarios premium" });
   }
 }
 

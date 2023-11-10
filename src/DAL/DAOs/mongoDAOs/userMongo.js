@@ -12,6 +12,7 @@ class UserMongo extends BasicMongo {
 
 async findUser(username) {
   const response = await userModel.findOne({ username });
+  console.log(username)
   return response;
 }
 

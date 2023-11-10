@@ -59,7 +59,7 @@ router.post("/login", async (req, res) => {
   };
   req.session[`email`] = email;
   //res.send({status:"success", payload:req.res.user, message:"Bienvenido"})
-  res.redirect("/products");
+  res.redirect("/api/products");
 });
 
 router.get("/logout", (req, res) => {

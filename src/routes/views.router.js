@@ -8,7 +8,7 @@ router.get("/chat", (req,res)=>{
     res.render("chat")
 })
 
-router.get("api/products", async (req, res) => {
+router.get("/api/products", async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
     const sort = req.query.sort || 'asc';

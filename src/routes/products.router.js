@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { productsMongo } from "../DAL/DAOs/mongoDAOs/ProductsMongo.js";
-import { isAdmin } from "../middlewares/auth.middlewares.js";
+import { isAdmin, isPremium } from "../middlewares/auth.middlewares.js";
 import { ErrorMessages } from "../errors/error.enum.js";
 import CustomError from "../errors/CustomError.js";
 import logger from "../winston.js";
@@ -29,33 +29,29 @@ router.get("/:pid", async (req, res) => {
     CustomError.createError(ErrorMessages.PRODUCT_NOT_FOUND);
   }
 });
-//is admin
-router.post("/",isAdmin, async (req, res) => {
-  const { title, description, price, thumbnail, code, stock, category } =
-    req.body;
 
-  if (
-    !title ||
-    !description ||
-    !price ||
-    !thumbnail ||
-    !code ||
-    !stock ||
-    !category
-  ) {
-    logger.error("faltan datos para crear el producto")
-    return res.status(400).json({ message: "faltan datos del producto" });
+router.post("/", isAdmin, isPremium, async (req, res) => {
+  const { title, description, price, thumbnail, code, stock, category } = req.body;
+
+  if (!title || !description || !price || !thumbnail || !code || !stock || !category) {
+    logger.error("Faltan datos para crear el producto");
+    return res.status(400).json({ message: "Faltan datos del producto" });
   }
 
   try {
+    console.log(req.user);
+    req.body.owner = req.user._id;
     const newProduct = await productsMongo.createProduct(req.body);
-    logger.info("producto creado exitosamente")
-    res.status(200).json({ message: "producto creado", producto: newProduct });
+    logger.info("Producto creado exitosamente");
+    res.status(200).json({ message: "Producto creado", producto: newProduct });
   } catch (error) {
     CustomError.createError(ErrorMessages.PRODUCT_NOT_CREATED);
-    logger.erro("el producto no se pudo crear")
+    logger.error("El producto no se pudo crear");
+    res.status(500).json({ message: "Error al crear el producto" });
   }
 });
+
+
 
 router.delete("/:pid",  async (req, res) => {
   const { pid } = req.params;
