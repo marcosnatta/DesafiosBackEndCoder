@@ -47,7 +47,6 @@ router.get("/api/products", async (req, res) => {
             const productBasic = product.toObject();
             res.render("product-details", { product: productBasic });
         } else {
-            // Manejo de caso en el que product no es un documento de Mongoose
             res.status(404).json({ error: "Producto no encontrado" });
         }
     } catch (error) {
@@ -94,7 +93,8 @@ router.get('/login', publicAcces, (req,res)=>{
 router.get('/profile', privateAcces ,(req,res)=>{
   res.render('profile',{
       user: req.session.user
-  })
+    })
+    
 })
 
 

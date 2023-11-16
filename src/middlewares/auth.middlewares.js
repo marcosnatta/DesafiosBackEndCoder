@@ -1,6 +1,6 @@
 export function isAdmin(req, res, next) {
   const user = req.user; 
- 
+  console.log(req)
   if (user && user.role === "ADMIN") {
     next(); 
   } else {

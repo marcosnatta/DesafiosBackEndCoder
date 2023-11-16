@@ -42,7 +42,6 @@ socketClient.on("createProduct", async(nuevoproduct) => {
             <p>Categoría: ${nuevoproduct.category}</p>
         </div>
     `;
-  console.log(addProductos) 
   divproducts.innerHTML = addProductos;
 });
 

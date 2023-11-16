@@ -21,6 +21,9 @@ import { ErrorMessages } from "./errors/error.enum.js"
 import { errorMiddleware } from "./errors/error.middleware.js"
 import CustomError from "./errors/CustomError.js"
 import { logger } from "./winston.js"
+import swaggerJSDoc from "swagger-jsdoc"
+import swaggerUiExpress from "swagger-ui-express"
+
 
 
 const app = express()
@@ -37,7 +40,7 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave:false,
   saveUninitialized: false,
-  cookie: {maxAge:60000}
+  cookie: {maxAge:10000000}
 }))
 
 //passport
@@ -65,14 +68,10 @@ app.use("/api/products", productsRouter)
 //session
 app.use("/session",sessionRouter)
 
-
-
-
 // chat
 app.get("/chat", passport.authenticate("login"), (req, res) => {
   res.render("chat", { messages: [] });
 });
-
 
 //login register y profile
 app.get('/login', (req, res) => {
@@ -107,6 +106,23 @@ app.get("/products", (req, res) => {
 });
 
 app.use(errorMiddleware)
+
+// swagger
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.1',
+    info: {
+      title: "ecommerce natta", 
+      description: "funcionamiento de mi ecommerce",
+    },
+  },
+  apis: [`${__dirname}/docs/**/*.yaml`],
+}; 
+const specs = swaggerJSDoc(swaggerOptions);
+
+app.use("/api/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
+
+
 
 const PORT = config.port
 const httpServer = app.listen(PORT, ()=>{

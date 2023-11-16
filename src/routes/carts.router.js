@@ -162,16 +162,14 @@ router.put("/:cid/products/:pid", async (req, res) => {
 router.post("/:cid/purchase", async (req, res) => {
   const cartId = req.params.cid;
   try {
-    // Obtener el carrito por su ID
+
     const cart = await cartService.getCartById(cartId);
     if (!cart) {
       return res.status(404).json({ error: "Carrito no encontrado" });
     }
 
-    // Inicializa un arreglo para llevar un registro de los productos no procesados
     const productosNoProcesados = [];
 
-    // Recorre los productos en el carrito
     for (const productInfo of cart.products) {
       if (!mongoose.Types.ObjectId.isValid(productInfo._id)) {
         console.log(productInfo._id)
@@ -185,7 +183,7 @@ router.post("/:cid/purchase", async (req, res) => {
       if (!product) {
         productosNoProcesados.push(productInfo.product);
       } else if (product.stock >= productInfo.quantity) {
-        // Resta el stock y actualiza el producto
+       
         product.stock -= productInfo.quantity;
         await product.save();
       } else {
@@ -193,15 +191,14 @@ router.post("/:cid/purchase", async (req, res) => {
       }
     }
 
-    // Filtra los productos no procesados en el carrito
     cart.products = cart.products.filter(
       (productInfo) => !productosNoProcesados.includes(productInfo.product)
     );
 
-    // Actualizar el carrito para reflejar los productos no procesados
+   
     await cartService.updateCart(cart);
 
-    // Si hay productos no procesados, devolver sus IDs
+   
     if (productosNoProcesados.length > 0) {
   
       return res.status(400).json({
@@ -210,11 +207,11 @@ router.post("/:cid/purchase", async (req, res) => {
       });
     }
 
-    // Realizar la compra y guardar los detalles del ticket
+   
     const ticketData = {
       purchase_datetime: new Date(),
       amount: cart.totalAmount,
-      purchaser: "marcos", // Reemplaza esto con el nombre del comprador real
+      purchaser: "marcos",
     };
     const ticket = await ticketService.createTicket(ticketData);
 
