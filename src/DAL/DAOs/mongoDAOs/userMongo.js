@@ -11,15 +11,13 @@ class UserMongo extends BasicMongo {
 } 
 
 async findUser(username) {
-  const response = await userModel.findOne({ username });
-  console.log(username)
-  return response;
+  return userModel.findOne({username});
 }
 
 
 async findById(id) {
-  const response = await userModel.findById(id);
-  return response;
+  
+  return userModel.findById(id);
 }
 
   async findUserByRole(role) {

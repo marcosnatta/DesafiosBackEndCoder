@@ -4,31 +4,28 @@ const collection = 'User';
 
 const schema = new mongoose.Schema({
     first_name: String,
-    last_name:String,
-    email:String,
-    age:Number,
-    password:String,
+    last_name: String,
+    email: String,
+    age: Number,
+    password: String,
     role: {
         type: String,
+        enum: ['user', 'premium', 'ADMIN'],
         default: 'user',
-      },
-      role: {
-        type: String,
-        default: 'premium',
-      },
-      fromGithub: {
+    },
+    fromGithub: {
         type: Boolean,
-        default:false
+        default: false,
     },
-    cart:{
-      type: mongoose.SchemaTypes.ObjectId,
-      ref: "Carts"
+    cart: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "Carts",
     },
-    orders:{
-      type: mongoose.SchemaTypes.ObjectId,
-      ref: "Orders"
-    }
+    orders: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "Orders",
+    },
 });
 
 const userModel = mongoose.model(collection, schema);
-export default userModel
+export default userModel;

@@ -1,0 +1,160 @@
+path:
+  /products:
+    get:
+      summary: Obtener todos los productos
+      description: muestra todos los productos disponibles.
+      parameters:
+        - name: limit
+          in: query
+          description: límite de resultados por página
+          schema:
+            type: integer
+        - name: page
+          in: query
+          description: número de página
+          schema:
+            type: integer
+        - name: category
+          in: query
+          description: búsqueda por Categoría
+          schema:
+            type: string
+        - name: sort
+          in: query
+          description: filtrar los precios
+          schema:
+            type: string
+      responses:
+        200:
+          description: "productos encontrados"
+          content:
+            application/json:
+              example:
+                example: {
+                "_id":"65301554e2b40d25294f7733",
+                "title":"hola",
+                "description":"asdasd",
+                "price":23232,
+                "code":"prod3",
+                "stock":23,
+                "category":"pruebas",
+                "thumbnails":"imagen",
+              }
+        500:
+          description: "no se encontraron productos"
+
+
+    post:
+      summary: Crear un nuevo producto
+      description: Crea un nuevo producto con los datos ingresados.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              title: "Nombre del Producto"
+              description: "Descripción del Producto"
+              price: 2323
+              thumbnail: "imagen"
+              code: "Código del Producto"
+              stock: 12
+              category: "Categoría del Producto"
+      responses:
+        200:
+          description: "Producto creado exitosamente"
+          content:
+            application/json:
+              example:
+                message: "Producto creado"
+                producto: {
+              title: "Nombre del Producto",
+              description: "Descripción del Producto",
+              price: 2323,
+              thumbnail: "imagen",
+              code: "Código del Producto",
+              stock: 12,
+              category: "Categoría del Producto"}
+            
+        500:
+          description: "Error al crear el producto"
+
+  api/products/{pid}:
+   get:
+     summary: Obtener un producto por ID
+     description: trae un producto específico según el ID.
+     parameters:
+       - in: path
+         name: pid
+         required: true
+         schema:
+            type: string
+     responses:
+       200:
+         description: "producto solicitado"
+         content:
+           application/json:
+             example:
+               message: "id del producto"
+               product: {
+                "_id":"65301554e2b40d25294f7733",
+                "title":"hola",
+                "description":"asdasd",
+                "price":23232,
+                "code":"prod3",
+                "stock":23,
+                "category":"pruebas",
+                "thumbnails":"imagen",
+                }
+       500:
+         description: "no se encontro un producto con ese id"
+
+  put:
+      summary: Actualizar un producto por ID
+      description: Actualiza un producto específico según el ID.
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+                type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:{
+              "_id":"65301554e2b40d25294f7733",
+                "title":"hola2",
+                "description":"asdasd2",
+                "price":2343,
+                "code":"prod3nuevo",
+                "stock":23,
+                "category":"pruebasnuevo",
+                "thumbnails":"imagennuevo",}
+      responses:
+        200:
+          description: Exito
+          content:
+            application/json:
+              example:
+                message: "Producto actualizado"
+        500:
+          description: Error del servidor
+
+  delete:
+       summary: Eliminar un producto por ID
+       description: Elimina un producto específico por ID.
+       parameters:
+         - in: path
+           name: pid
+           required: true
+           schema:
+                type: string
+       responses:
+         200:
+           description: "el producto fue borrado exitosamente"
+           content:
+             application/json:
+               example:
+                 message: "Producto borrado"
+         500:
+           description: "el producto no se pudo borrar"

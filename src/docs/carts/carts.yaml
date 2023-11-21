@@ -1,0 +1,281 @@
+path:
+  /carts:
+    get:
+      summary: Obtener todos los carritos
+      description: trae todos los carritos de compras.
+      responses:
+        200:
+          description: "carritos encontrados"
+          content:
+            application/json:
+              example:
+                message: "Carrito encontrado"
+                carts: {
+                    "_id": "653117989c959bc32a8d882f",
+                    "totalAmount": 3,
+                    "products": [
+                      {
+                        "quantity": 3,
+                        "_id": "65301562e2b40d25294f7735"
+                      }
+                    ],}
+        500:
+          description: "no se encontraron carritos"
+
+    post:
+      summary: Crear un nuevo carrito
+      description: Crea un nuevo carrito de compras.
+      responses:
+        200:
+          description: "tu carrito se creo correctamente"
+          content:
+            application/json:
+              example:
+                message: "Productos"
+                carro: {
+                    "_id": "653117989c959bc32a8d882f",
+                    "totalAmount": 3,
+                    "products": [
+                      {
+                        "quantity": 3,
+                        "_id": "65301562e2b40d25294f7735",
+                        "description":"producto lindo1"
+                      }
+                    ],}
+        500:
+          description: "no se pudo crear el carrito"
+
+  /carts/{cid}:
+    get:
+      summary: Obtener un carrito por ID
+      description: Trae un carrito de compras según el ID .
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "este es tu carrito"
+          content:
+            application/json:
+              example:
+                message: "Carrito encontrado"
+                carrito: {
+                    "_id": "653117989c959bc32a8d882f",
+                    "totalAmount": 3,
+                    "products": [
+                      {
+                        "quantity": 3,
+                        "_id": "65301562e2b40d25294f7735",
+                        "description":"producto lindo1"
+                      }
+                    ],}
+        500:
+          description: "no se encontro el carrito solicitado"
+    delete:
+      summary: Eliminar todos los productos de un carrito
+      description: Elimina todos los productos de un carrito.
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Productos eliminados del carrito"
+          content:
+            application/json:
+              example:
+                message: "Productos eliminados del carrito"
+        500:
+          description: "Error al eliminar los productos del carrito"
+    put:
+      summary: Actualizar un carrito por ID
+      description: Actualiza un carrito según el ID
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+                    {
+                    "_id": "653117989c959bc32a8d882f",
+                    "totalAmount": 3,
+                    "products": [
+                      {
+                        "quantity":5,
+                        "_id": "65301562e2b40d25294f7735",
+                        "description":"producto lindo2"
+                      }
+                    ],}
+      responses:
+        200:
+          description: "Carrito actualizado"
+          content:
+            application/json:
+              example:
+                message: "Carrito actualizado"
+                updatedCart: {
+                    "_id": "653117989c959bc32a8d882f",
+                    "totalAmount": 3,
+                    "products": [
+                      {
+                        "quantity":5,
+                        "_id": "65301562e2b40d25294f7735"
+                      }
+                    ],}
+        500:
+          description: "Error al actualizar el carrito"
+
+  /carts/{cid}/products/{pid}:
+    post:
+      summary: Agregar producto a un carrito
+      description: Agrega un producto a un carrito
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              quantity: 5656
+      responses:
+        200:
+          description: "Producto agregado al carrito"
+          content:
+            application/json:
+              example:
+                message: "Producto agregado al carrito"
+                carrito: {
+                    "_id": "653117989c959bc32a8d882f",
+                    "totalAmount": 3,
+                    "products": [
+                      {
+                        "quantity":5656,
+                        "_id": "65301562e2b40d25294f7735"
+                      }
+                    ],}
+        400:
+          description: Datos incorrectos
+        500:
+          description: Error del servidor
+    delete:
+      summary: Eliminar un producto de un carrito
+      description: Elimina un producto de un carrito
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "producto borrado con exito"
+          content:
+            application/json:
+              example:
+                message: "Producto borrado con éxito"
+                resultCart: {
+                    "_id": "653117989c959bc32a8d882f",
+                    "totalAmount": 0,
+                    "products": [],}
+        500:
+          description: "no se pudo borrar el producto"
+    put:
+      summary: Actualizar la cantidad de un producto en un carrito
+      description: Actualiza la cantidad de un producto en un carrito.
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              quantity: 5
+      responses:
+        200:
+          description: "Cantidad de producto actualizada"
+          content:
+            application/json:
+              example:
+                message: "Cantidad de producto actualizada"
+                cart: {
+                    "_id": "653117989c959bc32a8d882f",
+                    "totalAmount": 3,
+                    "products": [
+                      {
+                        "quantity":5656,
+                        "_id": "65301562e2b40d25294f7735",
+                        "description":"producto lindo2"
+                      }
+                    ],}
+                updatedProduct: {
+                  _id: "653117989c959bc32a8d882f",
+                  quantity: 5,
+                }
+        500:
+          description: "Error al actualizar la cantidad del producto en el carrito"
+
+  /carts/{cid}/purchase:
+    post:
+      summary: Realizar compra desde un carrito
+      description: Realiza una compra a partir de un carrito.
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+      responses:
+        201:
+          description: "Compra exitosa"
+          content:
+            application/json:
+              example:
+                message: "Compra exitosa"
+                ticket: {
+                "ticket": 
+                { "code": "435", 
+                "purchase_datetime": "dia y hora",
+                 "purchaser": "marcos" },
+                 "notPurchasedProducts": [] }
+        400:
+          description: "Compra incompleta, no hay stock de los productos"
+          content:
+            application/json:
+              example:
+                message: "Compra incompleta, no hay stock de algunos productos"
+                productosNoProcesados: ["ID del producto"]
+        500:
+          description: "no se encontro un carrito de compras"

@@ -5,6 +5,22 @@ import { Strategy as GithubStrategy } from "passport-github2";
 import { compareData } from "../utils.js";
 import { userMongo } from "../DAL/DAOs/mongoDAOs/userMongo.js";
 
+
+// user => id
+passport.serializeUser((usuario, done) => {
+  done(null, usuario._id);
+});
+
+// id => user
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await userModel.findById(id);
+    done(null, user);
+  } catch (error) {
+    done(error);
+  }
+});
+
 //estrategia local de passport
 passport.use(
   "login",
@@ -12,6 +28,7 @@ passport.use(
     try {
       const user = await userMongo.findUser(username);
       if (!user) {
+        console.log("Usuario no encontrado:", username);
         return done(null, false);
       }
 
@@ -19,7 +36,7 @@ passport.use(
       if (!isPasswordValid) {
         return done(null, false);
       }
-      
+      console.log("Usuario autenticado:", username);
       return done(null, user);
     } catch (error) {
       done(error);
@@ -63,22 +80,4 @@ passport.use(
   )
 );
 
-// user => id
-passport.serializeUser((usuario, done) => {
-  done(null, usuario._id);
-});
 
-// id => user
-passport.deserializeUser(async (id, done) => {
-  try {
-    const user = await userModel.findById(id);
-    done(null, user);
-  } catch (error) {
-    done(error);
-  }
-});
-
-// solucionado el problema que me decia la conexion no es segura
-// tambien modifique la url me faltaba /session/github para que sea redirigido
-//ahora se guarda en mongodb correctamente
-//{"_id":{"$oid":"650b354366e2f48ac56ec664"},"first_name":"marcosnatta","password":" ","role":"usuario","fromGithub":true,"__v":{"$numberInt":"0"}}

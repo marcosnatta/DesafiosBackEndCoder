@@ -31,8 +31,8 @@ router.get("/:pid", async (req, res) => {
 });
 
 router.post("/", isAdmin, isPremium, async (req, res) => {
+  console.log(req.user)
   const { title, description, price, thumbnail, code, stock, category } = req.body;
-
   if (!title || !description || !price || !thumbnail || !code || !stock || !category) {
     logger.error("Faltan datos para crear el producto");
     return res.status(400).json({ message: "Faltan datos del producto" });
