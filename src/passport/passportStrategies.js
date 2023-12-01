@@ -6,21 +6,6 @@ import { compareData } from "../utils.js";
 import { userMongo } from "../DAL/DAOs/mongoDAOs/userMongo.js";
 
 
-// user => id
-passport.serializeUser((usuario, done) => {
-  done(null, usuario._id);
-});
-
-// id => user
-passport.deserializeUser(async (id, done) => {
-  try {
-    const user = await userModel.findById(id);
-    done(null, user);
-  } catch (error) {
-    done(error);
-  }
-});
-
 //estrategia local de passport
 passport.use(
   "login",
@@ -31,7 +16,6 @@ passport.use(
         console.log("Usuario no encontrado:", username);
         return done(null, false);
       }
-
       const isPasswordValid = await compareData(password, user.password);
       if (!isPasswordValid) {
         return done(null, false);
@@ -39,7 +23,7 @@ passport.use(
       console.log("Usuario autenticado:", username);
       return done(null, user);
     } catch (error) {
-      done(error);
+      done(null, false, { message: 'Error al autenticar usuario' });
     }
   })
 );
@@ -81,3 +65,17 @@ passport.use(
 );
 
 
+// user => id
+passport.serializeUser((user, done) => {
+  done(null, user._id);
+});
+
+// id => user
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await userModel.findById(id);
+    done(null, user);
+  } catch (error) {
+    done(error);
+  }
+});

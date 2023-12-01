@@ -20,7 +20,8 @@
       <p>Precio: {{price}}</p>
       <p>Categoría: {{category}}</p>
       
-      <a href="/api/products/{{_id}}">Ver detalles</a>
+      <a href="/products/{{_id}}">Ver detalles</a>
+
       
       <button >Agregar al carrito</button>
     </li>
@@ -28,7 +29,7 @@
 </ul>
 <div class="pagination">
   {{#each pageRange}}
-    <a href="/api/products?page={{ this }}">{{ this }}</a>
+    <a href="/products?page={{ this }}">{{ this }}</a>
   {{/each}}
 </div>
 

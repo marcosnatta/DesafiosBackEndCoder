@@ -57,16 +57,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname +"/public"))
 
-
+//session
+app.use("/session",sessionRouter)
 
 // mis routers
-//app.use("/api/products", productsRouter)
 app.use("/api/carts", cartsRouter)
 app.use("/", viewsRouter)
 app.use("/api/products", productsRouter)
 
-//session
-app.use("/session",sessionRouter)
 
 // chat
 app.get("/chat", passport.authenticate("login"), (req, res) => {
@@ -84,7 +82,7 @@ app.get('/register', (req, res) => {
 
 app.get('/profile', (req, res) => {
   res.render('profile', {
-    user: req.session.user,
+    user: req.session.user
   }); 
 });
 

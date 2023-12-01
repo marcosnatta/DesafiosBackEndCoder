@@ -14,7 +14,7 @@ const id = document.getElementById("id");
 const eliminarForm = document.getElementById("eliminarForm");
 const eliminarProdId = document.getElementById("eliminarProdId");
 
-
+/*
 formulario.onsubmit = (e) => {
   e.preventDefault();
   const nuevoproduct = {
@@ -29,7 +29,7 @@ formulario.onsubmit = (e) => {
   socketClient.emit("createProduct", nuevoproduct);
   console.log(nuevoproduct);
 };
-
+*/
 socketClient.on("createProduct", async(nuevoproduct) => {
   const addProductos = `
         <div>
@@ -45,7 +45,7 @@ socketClient.on("createProduct", async(nuevoproduct) => {
   divproducts.innerHTML = addProductos;
 });
 
-
+/*
 eliminarForm.onsubmit = (e) => {
   e.preventDefault();
   const ProdId = parseInt(eliminarProdId.value);
@@ -53,5 +53,5 @@ eliminarForm.onsubmit = (e) => {
     socketClient.emit("deleteProduct", ProdId);
   }
 };
-
+*/
 

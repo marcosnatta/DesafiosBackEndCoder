@@ -57,7 +57,8 @@ router.post("/login", async (req, res) => {
     age: user.age,
     role: user.role,
   };
-  req.session[`email`] = email;
+  console.log(req.session.user)
+ // req.session[`email`] = email;
   //res.send({status:"success", payload:req.res.user, message:"Bienvenido"})
   res.redirect("/api/products");
 });
@@ -91,7 +92,6 @@ router.get(
 
 router.get("/current", (req, res) => {
   const userDto = new UsersDto(req.session.user); 
-  console.log(userDto)
   res.status(200).json({ user: userDto });
 });
 export default router;

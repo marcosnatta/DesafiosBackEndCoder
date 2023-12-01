@@ -1,5 +1,7 @@
+
 export function isAdmin(req, res, next) {
-  const user = req.user; 
+  const user = req.session.user; 
+  console.log(req.session.user)
   if (user && user.role === "ADMIN") {
     next(); 
   } else {
@@ -8,7 +10,7 @@ export function isAdmin(req, res, next) {
 }
 
 export function isUser(req, res, next) {
-  const user = req.user; 
+  const user = req.session.user; 
   if (user && user.role === "user") {
     next(); 
   } else {
@@ -18,7 +20,7 @@ export function isUser(req, res, next) {
 
 
 export function isPremium(req, res, next) {
-  const user = req.user; 
+  const user = req.session.user; 
 
   if (user && user.role === "premium") {
     next(); 
@@ -26,4 +28,3 @@ export function isPremium(req, res, next) {
     res.status(403).json({ error: "Acceso no autorizado para usuarios premium" });
   }
 }
-

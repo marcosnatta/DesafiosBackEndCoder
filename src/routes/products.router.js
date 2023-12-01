@@ -7,6 +7,7 @@ import logger from "../winston.js";
 const router = Router();
 
 router.get("/", async (req, res) => {
+  console.log(req.session.user)
   try {
     const allproducts = await productsMongo.findAll(req.query);
     logger.info("productos encontrados")
@@ -30,8 +31,7 @@ router.get("/:pid", async (req, res) => {
   }
 });
 
-router.post("/", isAdmin, isPremium, async (req, res) => {
-  console.log(req.user)
+router.post("/", async (req, res) => {
   const { title, description, price, thumbnail, code, stock, category } = req.body;
   if (!title || !description || !price || !thumbnail || !code || !stock || !category) {
     logger.error("Faltan datos para crear el producto");
@@ -39,15 +39,15 @@ router.post("/", isAdmin, isPremium, async (req, res) => {
   }
 
   try {
-    console.log(req.user);
-    req.body.owner = req.user._id;
+    //req.body.owner = req.session.user._id;
     const newProduct = await productsMongo.createProduct(req.body);
     logger.info("Producto creado exitosamente");
     res.status(200).json({ message: "Producto creado", producto: newProduct });
   } catch (error) {
-    CustomError.createError(ErrorMessages.PRODUCT_NOT_CREATED);
+   CustomError.createError(ErrorMessages.PRODUCT_NOT_CREATED);
     logger.error("El producto no se pudo crear");
-    res.status(500).json({ message: "Error al crear el producto" });
+    console.log(error)
+    res.status(500).json({ error });
   }
 });
 
@@ -65,7 +65,7 @@ router.delete("/:pid",  async (req, res) => {
   }
 });
 
-router.put("/:pid", isAdmin, async (req, res) => {
+router.put("/:pid", async (req, res) => {
   const { pid } = req.params;
 
   try {

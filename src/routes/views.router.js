@@ -2,13 +2,14 @@ import {Router} from "express"
 import {productsMongo} from "../DAL/DAOs/mongoDAOs/ProductsMongo.js"
 import {cartsModel} from "../DAL/mongoDB/models/carts.model.js"
 
+
 const router = Router()
 
 router.get("/chat", (req,res)=>{
     res.render("chat")
 })
 
-router.get("/api/products", async (req, res) => {
+router.get("/products", async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
     const sort = req.query.sort || 'asc';
@@ -37,23 +38,24 @@ router.get("/api/products", async (req, res) => {
     }
   });
 
-  router.get("/products/:pid", async (req, res) => {
-    const productId = req.params.pid;
+router.get("/products/:pid", async (req, res) => {
+  const productId = req.params.pid;
 
-    try {
-        const product = await productsMongo.findById(productId);
+  try {
+      const product = await productsMongo.findById(productId);
 
-        if (product && typeof product.toObject === "function") {
-            const productBasic = product.toObject();
-            res.render("product-details", { product: productBasic });
-        } else {
-            res.status(404).json({ error: "Producto no encontrado" });
-        }
-    } catch (error) {
-        res.status(500).json({ error });
-        console.log(error);
-    }
+      if (product && typeof product.toObject === "function") {
+          const productBasic = product.toObject();
+          res.render("product-details", { product: productBasic });
+      } else {
+          res.status(404).json({ error: "Producto no encontrado" });
+      }
+  } catch (error) {
+      res.status(500).json({ error });
+      console.log(error);
+  }
 });
+
 
 
 router.get("/carts/:cid", async (req, res) => {
@@ -71,15 +73,16 @@ router.get("/carts/:cid", async (req, res) => {
 
 // desafio de login y registro
 
-const publicAcces = (req,res,next) =>{
-  if(req.session.user) return res.redirect('/profile');
-  next();
-}
-
 const privateAcces = (req,res,next)=>{
   if(!req.session.user) return res.redirect('/login');
   next();
 }
+
+const publicAcces = (req,res,next) =>{
+  if(req.session.user) return res.redirect('/profile');
+  next();
+}  
+
 
 
 router.get('/register', publicAcces, (req,res)=>{

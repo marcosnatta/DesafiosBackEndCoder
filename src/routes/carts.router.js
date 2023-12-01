@@ -6,7 +6,7 @@ import { ticketService } from "../services/ticket.service.js";
 import { cartService } from "../services/carts.service.js";
 import { productsService } from "../services/products.service.js";
 import { mongoose } from "mongoose";
-import { isAdmin, isUser } from "../middlewares/auth.middlewares.js";
+//import { isAdmin, isUser } from "../middlewares/auth.middlewares.js";
 import { ErrorMessages } from "../errors/error.enum.js"
 import CustomError from "../errors/CustomError.js"
 import logger from "../winston.js"
@@ -55,7 +55,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.post("/:cid/products/:pid", isUser, async (req, res) => {
+router.post("/:cid/products/:pid", async (req, res) => {
   const cartId = req.params.cid;
   const productId = req.params.pid;
   const { quantity } = req.body;
@@ -97,7 +97,7 @@ router.delete("/:cid", async (req, res) => {
   }
 });
 //isadmin
-router.delete("/:cid/products/:pid",isAdmin, async (req, res) => {
+router.delete("/:cid/products/:pid", async (req, res) => {
   const { cid, pid } = req.params;
   if (!ObjectId.isValid(pid)) {
     return res.status(400).json({ error: "ID de producto no válido" });
