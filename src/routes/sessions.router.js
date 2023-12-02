@@ -91,7 +91,12 @@ router.get(
 );
 
 router.get("/current", (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ message: "Usuario no autenticado" });
+  }
+
   const userDto = new UsersDto(req.session.user); 
   res.status(200).json({ user: userDto });
 });
+
 export default router;

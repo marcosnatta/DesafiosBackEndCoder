@@ -6,10 +6,6 @@ class CartsMongo {
     this.productMap = new Map();
   }
 
-  // async saveCart(cart) {
-  //   await cart.save();
-  // }
-
   async saveCart(cart) {
     try {
       const updatedCart = await cartsModel.findOneAndUpdate(
@@ -84,15 +80,11 @@ class CartsMongo {
       } else {
         cart.products.push({ _id: productId, quantity: quantity || 1 });
       }
-
-      // Calcular el totalAmount
       let totalAmount = 0;
       cart.products.forEach((product) => {
         totalAmount += product.quantity;
       });
-
       cart.totalAmount = totalAmount;
-
       const updatedCart = await cart.save();
       return updatedCart;
     } catch (error) {
@@ -141,14 +133,12 @@ class CartsMongo {
       if (!cart) {
         throw new Error("Carrito no encontrado");
       }
-
-      // Encuentra el índice del producto en el carrito
       const productIndex = cart.products.findIndex((product) =>
         product._id.equals(pid)
       );
 
       if (productIndex !== -1) {
-        // Elimina el producto del carrito por su índice
+
         cart.products.splice(productIndex, 1);
       } else {
         throw new Error("Producto no encontrado en el carrito");

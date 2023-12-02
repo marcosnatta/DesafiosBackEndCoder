@@ -6,7 +6,6 @@ async findAll(obj){
 
   try{
  
-    //const resultProd = await productsModel.paginate({title:"producto4"},{limit,page,sort:{price:sortPrice}})
     const resultProd = await productsModel.paginate(query,{limit,page,sort})
     const products = await productsModel.find({})
     const infoProds = {

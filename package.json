@@ -6,7 +6,7 @@
   "main": "ProductManager.js",
   "scripts": {
     "start": "nodemon src/app.js",
-    "test": "mocha -t 10000 src/test/products.test.js"
+    "test": "mocha -t 10000 src/test/sessions.test.js"
   },
   "keywords": [],
   "author": "",
