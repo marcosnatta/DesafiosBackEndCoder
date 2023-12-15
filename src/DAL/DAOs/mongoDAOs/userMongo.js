@@ -10,10 +10,13 @@ class UserMongo extends BasicMongo {
     return userModel.create(user);
 } 
 
-async findUser(username) {
-  return userModel.findOne({username});
-}
+// async findUser(username) {
+//   return userModel.findOne({username});
+// }
 
+async findUserByUsername(username){
+  return userModel.findOne({username});
+} 
 
 async findById(id) {
   

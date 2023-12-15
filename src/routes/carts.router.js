@@ -6,19 +6,15 @@ import { ticketService } from "../services/ticket.service.js";
 import { cartService } from "../services/carts.service.js";
 import { productsService } from "../services/products.service.js";
 import { mongoose } from "mongoose";
-//import { isAdmin, isUser } from "../middlewares/auth.middlewares.js";
+import { isAdmin, isUser } from "../middlewares/auth.middlewares.js";
 import { ErrorMessages } from "../errors/error.enum.js"
 import CustomError from "../errors/CustomError.js"
 import logger from "../winston.js"
 
-
-
-
-
 const router = Router();
 const cartsMongo = new CartsMongo();
 
-router.get("/", async (req, res) => {
+router.get("/",isAdmin, async (req, res) => {
   try {
     const carts = await cartsMongo.findAll();
     logger.info("carritos encontrados")
@@ -44,9 +40,9 @@ router.get("/:cid", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", isAdmin, (req, res) => {
   try {
-    const createCart = await cartService.createCart();
+    const createCart =  cartService.createCart();
     logger.info ("tu carrito se creo correctamente")
     res.status(200).json({ message: "Productos", carro: createCart });
   } catch (error) {

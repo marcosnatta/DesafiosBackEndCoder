@@ -7,6 +7,8 @@ import UsersDto from "../DAL/DTOs/users.dto.js";
 
 const router = Router();
 
+
+
 router.post("/register", async (req, res) => {
   const { first_name, last_name, email, age, password } = req.body;
 
@@ -50,15 +52,15 @@ router.post("/login", async (req, res) => {
   }else {
     user.role = "user";
   }
-
   req.session.user = {
     name: `${user.first_name} ${user.last_name}`,
     email: user.email,
     age: user.age,
     role: user.role,
   };
-  console.log(req.session.user)
- // req.session[`email`] = email;
+  res.cookie('usuario', req.session.user.email);
+  req.session[`email`] = email;
+
   //res.send({status:"success", payload:req.res.user, message:"Bienvenido"})
   res.redirect("/api/products");
 });
@@ -84,7 +86,7 @@ router.get(
   passport.authenticate("github", {
     failureRedirect: "/login",
   }),
-  async (req, res) => {
+   (req, res) => {
     req.session.user = req.user;
     res.redirect("/profile");
   }
@@ -98,5 +100,7 @@ router.get("/current", (req, res) => {
   const userDto = new UsersDto(req.session.user); 
   res.status(200).json({ user: userDto });
 });
+
+
 
 export default router;

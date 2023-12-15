@@ -1,8 +1,5 @@
-
 export function isAdmin(req, res, next) {
-  const user = req.session.user; 
-  console.log(req.session.user)
-  if (user && user.role === "ADMIN") {
+  if (req.session.user && req.session.user.role === "ADMIN") {
     next(); 
   } else {
     res.status(403).json({ error: "Acceso no autorizado para administradores" }); 
@@ -10,8 +7,7 @@ export function isAdmin(req, res, next) {
 }
 
 export function isUser(req, res, next) {
-  const user = req.session.user; 
-  if (user && user.role === "user") {
+  if (req.session.user && req.session.user.role === "user") {
     next(); 
   } else {
     res.status(403).json({ error: "Acceso no autorizado para usuarios" }); 
@@ -20,9 +16,7 @@ export function isUser(req, res, next) {
 
 
 export function isPremium(req, res, next) {
-  const user = req.session.user; 
-
-  if (user && user.role === "premium") {
+  if (req.session.user && req.session.user.role === "premium") {
     next(); 
   } else {
     res.status(403).json({ error: "Acceso no autorizado para usuarios premium" });

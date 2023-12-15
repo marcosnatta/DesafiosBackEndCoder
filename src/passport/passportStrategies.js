@@ -11,22 +11,23 @@ passport.use(
   "login",
   new LocalStrategy(async function (username, password, done) {
     try {
-      const user = await userMongo.findUser(username);
+      const user = await userMongo.findUserByUsername(username);
       if (!user) {
         console.log("Usuario no encontrado:", username);
-        return done(null, false);
+        return done(null, false, { message: "Usuario no encontrado" });
       }
       const isPasswordValid = await compareData(password, user.password);
       if (!isPasswordValid) {
-        return done(null, false);
+        return done(null, false, { message: "Credenciales inválidas" });
       }
       console.log("Usuario autenticado:", username);
       return done(null, user);
     } catch (error) {
-      done(null, false, { message: 'Error al autenticar usuario' });
+      done(error);
     }
   })
 );
+
 
 //passport con github
 passport.use(

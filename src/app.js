@@ -34,7 +34,7 @@ app.use(session({
   store: new  MongoStore({
     mongoUrl: config.mongoUrl,
     mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
-    ttl:15
+    ttl:5000,
 
   }),
   secret: process.env.SESSION_SECRET,
@@ -42,23 +42,23 @@ app.use(session({
   saveUninitialized: false,
   cookie: {maxAge:10000000}
 }))
-
 //passport
 app.use(passport.initialize())
 app.use(passport.session())
+//express
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(__dirname +"/public"))
+
 
 //parte de handlebars
 app.engine("handlebars", handlebars.engine())
 app.set("views", __dirname +"/views")
 app.set("view engine","handlebars")
 
-//express
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname +"/public"))
-
 //session
 app.use("/session",sessionRouter)
+
 
 // mis routers
 app.use("/api/carts", cartsRouter)
