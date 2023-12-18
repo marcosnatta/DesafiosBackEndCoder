@@ -21,6 +21,8 @@ router.post("/register", async (req, res) => {
   }
   const isAdmin =
     email === "adminCoder@coder.com" && password === "adminCod3r123";
+    const isPremium =
+    email === "premium@coder.com" && password === "12345";  
   const hashPassword = await hashData(password);
   const user = {
     first_name,
@@ -28,7 +30,7 @@ router.post("/register", async (req, res) => {
     email,
     age,
     password: hashPassword,
-    role: isAdmin ? "ADMIN" : "user",
+    role: isAdmin ? "ADMIN" : isPremium ? "premium" : "user",
   };
   const result = await userModel.create(user);
   res.send({ status: "succes", message: "Usuario registrado correctamente" });
@@ -101,6 +103,32 @@ router.get("/current", (req, res) => {
   res.status(200).json({ user: userDto });
 });
 
+// users
+router.put("/users/premium/:uid", async (req, res) => {
+  // ruta a seguir http://localhost:8080/session/users/premium/id del usuario
+  try {
+    const  uid  = req.params.uid;
+    const user = await userModel.findOne({_id: uid});
+     console.log(uid)
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
 
+    user.role = user.role === "user" ? "premium" : "user";
+
+    await user.save();
+
+    res.status(200).json({
+      message: "Rol de usuario actualizado exitosamente",
+      user: {
+        _id: user._id,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
 
 export default router;

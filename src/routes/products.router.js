@@ -31,7 +31,7 @@ router.get("/:pid", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/",isAdmin,isPremium, async (req, res) => {
   const { title, description, price, thumbnail, code, stock, category } = req.body;
   if (!title || !description || !price || !thumbnail || !code || !stock || !category) {
     logger.error("Faltan datos para crear el producto");
@@ -53,7 +53,7 @@ router.post("/", async (req, res) => {
 
 
 
-router.delete("/:pid",  async (req, res) => {
+router.delete("/:pid",isAdmin,isPremium,  async (req, res) => {
   const { pid } = req.params;
   try {
     const deleteProducts = await productsMongo.deleteProduct(pid);
@@ -65,7 +65,7 @@ router.delete("/:pid",  async (req, res) => {
   }
 });
 
-router.put("/:pid", async (req, res) => {
+router.put("/:pid",isAdmin, async (req, res) => {
   const { pid } = req.params;
 
   try {

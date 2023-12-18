@@ -33,8 +33,19 @@ const productsSchema = new mongoose.Schema({
     type: String,
   },
   owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'user', 
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "user",
+    default: null,
+    validate: {
+      validator: async function (value) {
+        if (value) {
+          const user = await userModel.findById(value);
+          return user && user.role === 'premium';
+        }
+        return true;
+      },
+      message: 'El propietario debe ser un usuario premium',
+    },
   },
 });
 

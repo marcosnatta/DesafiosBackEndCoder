@@ -14,7 +14,7 @@ import logger from "../winston.js"
 const router = Router();
 const cartsMongo = new CartsMongo();
 
-router.get("/",isAdmin, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const carts = await cartsMongo.findAll();
     logger.info("carritos encontrados")
@@ -40,7 +40,7 @@ router.get("/:cid", async (req, res) => {
   }
 });
 
-router.post("/", isAdmin, (req, res) => {
+router.post("/", (req, res) => {
   try {
     const createCart =  cartService.createCart();
     logger.info ("tu carrito se creo correctamente")
@@ -51,7 +51,7 @@ router.post("/", isAdmin, (req, res) => {
   }
 });
 
-router.post("/:cid/products/:pid", async (req, res) => {
+router.post("/:cid/products/:pid",isUser, async (req, res) => {
   const cartId = req.params.cid;
   const productId = req.params.pid;
   const { quantity } = req.body;

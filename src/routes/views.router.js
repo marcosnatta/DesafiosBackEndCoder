@@ -56,8 +56,6 @@ router.get("/products/:pid", async (req, res) => {
   }
 });
 
-
-
 router.get("/carts/:cid", async (req, res) => {
     const { cid } = req.params;
   
@@ -83,7 +81,7 @@ const publicAcces = (req,res,next) =>{
   next();
 }  
 
-
+//mails
 
 router.get('/register', publicAcces, (req,res)=>{
   res.render('register')
