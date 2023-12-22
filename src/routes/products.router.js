@@ -31,7 +31,7 @@ router.get("/:pid", async (req, res) => {
   }
 });
 
-router.post("/",isAdmin,isPremium, async (req, res) => {
+router.post("/", isAdmin, isPremium, async (req, res) => {
   const { title, description, price, thumbnail, code, stock, category } = req.body;
   if (!title || !description || !price || !thumbnail || !code || !stock || !category) {
     logger.error("Faltan datos para crear el producto");
@@ -39,38 +39,74 @@ router.post("/",isAdmin,isPremium, async (req, res) => {
   }
 
   try {
-    //req.body.owner = req.session.user._id;
-    const newProduct = await productsMongo.createProduct(req.body);
+    const { user } = req.session;
+
+    const newProduct = {
+      title,
+      description,
+      price,
+      thumbnail,
+      code,
+      stock,
+      category,
+      owner: user && user.role === 'premium' ? user.email : 'ADMIN',
+    };
+
+    const createdProduct = await productsMongo.createProduct(newProduct);
+
     logger.info("Producto creado exitosamente");
-    res.status(200).json({ message: "Producto creado", producto: newProduct });
+    res.status(200).json({ message: "Producto creado", producto: createdProduct });
   } catch (error) {
-   CustomError.createError(ErrorMessages.PRODUCT_NOT_CREATED);
+    CustomError.createError(ErrorMessages.PRODUCT_NOT_CREATED);
     logger.error("El producto no se pudo crear");
-    console.log(error)
+    console.log(error);
     res.status(500).json({ error });
   }
 });
 
 
 
-router.delete("/:pid",isAdmin,isPremium,  async (req, res) => {
+router.delete("/:pid",isAdmin,isPremium, async (req, res) => {
   const { pid } = req.params;
   try {
-    const deleteProducts = await productsMongo.deleteProduct(pid);
-    logger.info("el producto fue borrado exitosamente")
-    res.status(200).json({ message: "producto borrado" });
+    const userId = req.session.user._id
+    const isAdminUser = req.session.user.role === 'ADMIN'
+    const product = await productsMongo.findById(pid);
+    const isOwner = product.owner === userId;
+
+if (isAdminUser || (isOwner && req.session.user.role === 'premium')) {
+      const deleteProducts = await productsMongo.deleteProduct(pid);
+      logger.info("El producto fue borrado exitosamente");
+      res.status(200).json({ message: "Producto borrado" });
+    } else {
+      logger.error("El usuario no tiene permisos para borrar este producto");
+      res.status(403).json({ message: "No tienes permisos para borrar este producto" });
+    }
   } catch (error) {
-    logger.error("el producto no se pudo borrar")
+    logger.error("El producto no se pudo borrar");
     res.status(500).json({ error });
   }
 });
 
-router.put("/:pid",isAdmin, async (req, res) => {
+router.put("/:pid", async (req, res) => {
   const { pid } = req.params;
 
   try {
-    const updateproduct = await productsMongo.updateProduct(pid, req.body);
-    res.status(200).json({ message: "producto actualizado" });
+    const userId = req.session.user._id;
+
+    const product = await productsMongo.findById(pid);
+
+    const isAdminUser = req.session.user.role === 'ADMIN';
+
+    const isOwner = product.owner === userId;
+
+    if (isAdminUser || (isOwner && req.session.user.role === 'premium')) {
+      const updateProduct = await productsMongo.updateProduct(pid, req.body);
+      res.status(200).json({ message: "Producto actualizado" });
+    } else {
+      logger.error("El usuario no tiene permisos para modificar este producto");
+      res.status(403).json({ message: "No tienes permisos para modificar este producto" });
+    }
   } catch (error) {
     res.status(500).json({ error });
   }

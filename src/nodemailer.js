@@ -8,3 +8,6 @@ export const transporter = nodemailer.createTransport({
         pass: config.gmail_password,
     },
 });
+
+
+export default transporter

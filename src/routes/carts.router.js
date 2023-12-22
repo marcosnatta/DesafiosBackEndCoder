@@ -92,8 +92,8 @@ router.delete("/:cid", async (req, res) => {
     logger.error("no se pudo eliminar el producto")
   }
 });
-//isadmin
-router.delete("/:cid/products/:pid", async (req, res) => {
+
+router.delete("/:cid/products/:pid",isAdmin, async (req, res) => {
   const { cid, pid } = req.params;
   if (!ObjectId.isValid(pid)) {
     return res.status(400).json({ error: "ID de producto no válido" });

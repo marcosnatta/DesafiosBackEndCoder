@@ -4,6 +4,8 @@ import { hashData } from "../utils.js";
 import { compareData } from "../utils.js";
 import passport from "passport";
 import UsersDto from "../DAL/DTOs/users.dto.js";
+import { userMongo } from "../DAL/DAOs/mongoDAOs/userMongo.js";
+import InactiveUserService from "../services/userinactive.service.js"
 
 const router = Router();
 
@@ -21,7 +23,8 @@ router.post("/register", async (req, res) => {
   }
   const isAdmin =
     email === "adminCoder@coder.com" && password === "adminCod3r123";
-    const isPremium =
+  
+  const isPremium =
     email === "premium@coder.com" && password === "12345";  
   const hashPassword = await hashData(password);
   const user = {
@@ -37,6 +40,7 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
+  //http://localhost:8080/session/login
   const { email, password } = req.body;
   const user = await userModel.findOne({ email });
   if (!user) {
@@ -46,12 +50,17 @@ router.post("/login", async (req, res) => {
   }
   const isPasswordValid = await compareData(password, user.password);
   if (!isPasswordValid) {
-    return res.status(401).json({ message: "Username or Password not valid" });
+    return res.status(401).json({ message: "usuario o contraseña no validos" });
   }
+  user.lastConnection = new Date();
+  await user.save();
+  console.log(user.lastConnection)
 
   if (email === "adminCoder@coder.com" && password === "adminCod3r123") {
     user.role = "ADMIN";
-  }else {
+  } else if (email === "premium@coder.com" && password === "12345") {
+    user.role = "premium";
+  } else {
     user.role = "user";
   }
   req.session.user = {
@@ -68,6 +77,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
+  // get http://localhost:8080/session/logout
   req.session.destroy((err) => {
     if (err)
       return res
@@ -104,8 +114,39 @@ router.get("/current", (req, res) => {
 });
 
 // users
+router.get('/users', async (req, res) => {
+  // http://localhost:8080/session/users
+  try {
+    const projection = { first_name: 1, email: 1, role: 1 };
+    const users = await userMongo.find({}, projection);
+    res.status(200).json({ users });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
+router.delete('/deletedUsers', async (req, res) => {
+  try {
+    const inactiveUsers = await InactiveUserService.getInactiveUsers();
+
+    if (inactiveUsers.length > 0) {
+      await InactiveUserService.deleteInactiveUsers(inactiveUsers);
+      await InactiveUserService.sendInactiveUserEmails(inactiveUsers);
+
+      res.status(200).json({ message: 'Usuarios inactivos eliminados y notificados' });
+    } else {
+      res.status(200).json({ message: 'No hay usuarios inactivos para eliminar' });
+    }
+  } catch (error) {
+    console.error('Error al eliminar usuarios inactivos:', error);
+    res.status(500).json({ error: 'Error interno del servidor al procesar la solicitud' });
+  }
+});
+
+
 router.put("/users/premium/:uid", async (req, res) => {
   // ruta a seguir http://localhost:8080/session/users/premium/id del usuario
+  // en el thunder agregar {"role": el rol}
   try {
     const  uid  = req.params.uid;
     const user = await userModel.findOne({_id: uid});

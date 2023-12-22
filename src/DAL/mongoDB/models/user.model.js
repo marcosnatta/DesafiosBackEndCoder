@@ -26,6 +26,10 @@ const schema = new mongoose.Schema({
         type: mongoose.SchemaTypes.ObjectId,
         ref: "Orders",
     },
+    lastConnection: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
 const userModel = mongoose.model(collection, schema);

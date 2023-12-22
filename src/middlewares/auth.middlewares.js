@@ -16,6 +16,7 @@ export function isUser(req, res, next) {
 
 
 export function isPremium(req, res, next) {
+  console.log(req.session.user)
   if (req.session.user && req.session.user.role === "premium") {
     next(); 
   } else {

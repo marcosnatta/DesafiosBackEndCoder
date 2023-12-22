@@ -6,13 +6,15 @@ class UserMongo extends BasicMongo {
     super(userModel);
   }
 
+
+
   async create(user){
     return userModel.create(user);
 } 
 
-// async findUser(username) {
-//   return userModel.findOne({username});
-// }
+async find(query, projection) {
+  return userModel.find(query).select(projection);
+}
 
 async findUserByUsername(username){
   return userModel.findOne({username});
