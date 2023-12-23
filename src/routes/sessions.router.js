@@ -25,7 +25,8 @@ router.post("/register", async (req, res) => {
     email === "adminCoder@coder.com" && password === "adminCod3r123";
   
   const isPremium =
-    email === "premium@coder.com" && password === "12345";  
+    email === "marcos.natta@gmail.com" && password === "12345";
+  
   const hashPassword = await hashData(password);
   const user = {
     first_name,
@@ -39,42 +40,40 @@ router.post("/register", async (req, res) => {
   res.send({ status: "succes", message: "Usuario registrado correctamente" });
 });
 
+//http://localhost:8080/session/login
 router.post("/login", async (req, res) => {
-  //http://localhost:8080/session/login
   const { email, password } = req.body;
   const user = await userModel.findOne({ email });
+
   if (!user) {
-    return res
-      .status(400)
-      .send({ status: "error", error: "Datos incorrectos" });
+    return res.status(400).send({ status: "error", error: "Datos incorrectos" });
   }
   const isPasswordValid = await compareData(password, user.password);
+
   if (!isPasswordValid) {
-    return res.status(401).json({ message: "usuario o contraseña no validos" });
+    return res.status(401).json({ message: "Usuario o contraseña no válidos" });
   }
+
   user.lastConnection = new Date();
-  await user.save();
-  console.log(user.lastConnection)
 
   if (email === "adminCoder@coder.com" && password === "adminCod3r123") {
     user.role = "ADMIN";
-  } else if (email === "premium@coder.com" && password === "12345") {
-    user.role = "premium";
-  } else {
-    user.role = "user";
   }
+  await user.save();
+
   req.session.user = {
     name: `${user.first_name} ${user.last_name}`,
     email: user.email,
     age: user.age,
     role: user.role,
   };
+console.log(req.session.user)
   res.cookie('usuario', req.session.user.email);
   req.session[`email`] = email;
 
-  //res.send({status:"success", payload:req.res.user, message:"Bienvenido"})
   res.redirect("/api/products");
 });
+
 
 router.get("/logout", (req, res) => {
   // get http://localhost:8080/session/logout
@@ -144,28 +143,47 @@ router.delete('/deletedUsers', async (req, res) => {
 });
 
 
+// ruta a seguir http://localhost:8080/session/users/premium/id del usuario
 router.put("/users/premium/:uid", async (req, res) => {
-  // ruta a seguir http://localhost:8080/session/users/premium/id del usuario
-  // en el thunder agregar {"role": el rol}
   try {
-    const  uid  = req.params.uid;
-    const user = await userModel.findOne({_id: uid});
-     console.log(uid)
-    if (!user) {
-      return res.status(404).json({ message: "Usuario no encontrado" });
+    const uid = req.params.uid;
+    const { role } = req.body;
+
+    const validRoles = ['user', 'premium', 'ADMIN'];
+    if (!validRoles.includes(role)) {
+      return res.status(400).json({ message: "Rol no válido" });
     }
 
-    user.role = user.role === "user" ? "premium" : "user";
-
-    await user.save();
-
-    res.status(200).json({
-      message: "Rol de usuario actualizado exitosamente",
-      user: {
-        _id: user._id,
-        role: user.role,
-      },
-    });
+    const updatedUser = await userModel.findOneAndUpdate(
+      { _id: uid },
+      { $set: { role: role } },
+      { new: true }
+    );
+    if (req.session) {
+      req.session.user = {
+        name: `${updatedUser.first_name} ${updatedUser.last_name}`,
+        email: updatedUser.email,
+        age: updatedUser.age,
+        role: updatedUser.role,
+      };
+    
+      req.session.save((err) => {
+        if (err) {
+          console.error(err);
+          res.status(500).json({ error: "Error al guardar la sesión" });
+        } else {
+          res.status(200).json({
+            message: `Rol de usuario actualizado exitosamente a ${role}`,
+            user: {
+              _id: updatedUser._id,
+              role: updatedUser.role,
+            },
+          });
+        }
+      });
+    } else {
+      res.status(500).json({ error: "Sesión no definida al actualizar el rol del usuario" });
+    }    
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error interno del servidor" });

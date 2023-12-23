@@ -5,7 +5,6 @@ import config from "../config.js"
 class InactiveUserService {
   async getInactiveUsers() {
     try {
-      // Obtener usuarios inactivos (por ejemplo, en los últimos 30 minutos)
       const inactiveUsers = await userModel.find({
         lastConnection: { $lt: new Date(Date.now() - 2880 * 60 * 1000) },
       });
@@ -19,7 +18,6 @@ class InactiveUserService {
 
   async deleteInactiveUsers(inactiveUsers) {
     try {
-      // Eliminar usuarios inactivos
       await userModel.deleteMany({
         lastConnection: { $lt: new Date(Date.now() - 2880 * 60 * 1000) },
       });

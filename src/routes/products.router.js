@@ -4,7 +4,11 @@ import { isAdmin, isPremium } from "../middlewares/auth.middlewares.js";
 import { ErrorMessages } from "../errors/error.enum.js";
 import CustomError from "../errors/CustomError.js";
 import logger from "../winston.js";
+import nodemailer from 'nodemailer';
+import config from "../config.js"
+
 const router = Router();
+
 
 router.get("/", async (req, res) => {
   console.log(req.session.user)
@@ -31,7 +35,7 @@ router.get("/:pid", async (req, res) => {
   }
 });
 
-router.post("/", isAdmin, isPremium, async (req, res) => {
+router.post("/",isPremium, async (req, res) => {
   const { title, description, price, thumbnail, code, stock, category } = req.body;
   if (!title || !description || !price || !thumbnail || !code || !stock || !category) {
     logger.error("Faltan datos para crear el producto");
@@ -64,29 +68,59 @@ router.post("/", isAdmin, isPremium, async (req, res) => {
   }
 });
 
-
-
-router.delete("/:pid",isAdmin,isPremium, async (req, res) => {
+router.delete("/:pid", isAdmin || isPremium, async (req, res) => {
   const { pid } = req.params;
   try {
-    const userId = req.session.user._id
-    const isAdminUser = req.session.user.role === 'ADMIN'
+    const userId = req.session.user._id;
+    const isAdminUser = req.session.user.role === 'ADMIN';
     const product = await productsMongo.findById(pid);
     const isOwner = product.owner === userId;
 
-if (isAdminUser || (isOwner && req.session.user.role === 'premium')) {
+    if (isAdminUser || isOwner) {
       const deleteProducts = await productsMongo.deleteProduct(pid);
       logger.info("El producto fue borrado exitosamente");
-      res.status(200).json({ message: "Producto borrado" });
+
+      if (req.session.user.role === 'premium') {
+       sendDeletedProductEmail(product.title, transporter, res);
+      } else {
+        res.status(200).json({ message: 'Producto borrado' });
+      }
     } else {
       logger.error("El usuario no tiene permisos para borrar este producto");
       res.status(403).json({ message: "No tienes permisos para borrar este producto" });
     }
   } catch (error) {
-    logger.error("El producto no se pudo borrar");
-    res.status(500).json({ error });
+    console.error('Error al intentar borrar el producto:', error);
+    res.status(500).json({ error: 'Error al intentar borrar el producto', details: error.message });
   }
 });
+
+async function sendDeletedProductEmail(product, res) {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: config.gmail_user,
+        pass: config.gmail_password,
+      },
+    });
+
+    const mailOptions = {
+      from: 'marcos.natta@gmail.com',
+      to: product.owner,
+      subject: 'Producto eliminado',
+      text: `Hola, te informamos que tu producto  ha sido eliminado`,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Correo electrónico enviado:', info.response);
+    res.status(200).json({ message: 'Producto borrado y correo electrónico enviado' });
+  } catch (error) {
+    console.error('Error al enviar el correo electrónico:', error);
+    res.status(500).json({ error: 'Error al enviar el correo electrónico' });
+  }
+}
+
 
 router.put("/:pid", async (req, res) => {
   const { pid } = req.params;
@@ -111,5 +145,7 @@ router.put("/:pid", async (req, res) => {
     res.status(500).json({ error });
   }
 });
+
+
 
 export default router;
