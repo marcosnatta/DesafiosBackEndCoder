@@ -23,7 +23,7 @@ import CustomError from "./errors/CustomError.js"
 import { logger } from "./winston.js"
 import swaggerJSDoc from "swagger-jsdoc"
 import swaggerUiExpress from "swagger-ui-express"
-import messagesRouter from "./routes/messages.router.js"
+//import messagesRouter from "./routes/messages.router.js"
 
 
 const app = express()
@@ -64,7 +64,7 @@ app.use("/api/session/users/premium", sessionRouter)
 app.use("/api/carts", cartsRouter)
 app.use("/", viewsRouter)
 app.use("/api/products", productsRouter)
-app.use("/api/messages", messagesRouter)
+//app.use("/api/messages", messagesRouter)
 
 // chat
 app.get("/chat", passport.authenticate("login"), (req, res) => {

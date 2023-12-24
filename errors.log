@@ -6503,3 +6503,323 @@
   level: 'info',
   timestamp: '2023-12-23T18:54:03.159Z'
 }
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T16:01:58.726Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T16:02:37.087Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T16:02:54.091Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T16:12:19.023Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T16:12:32.478Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T16:13:16.354Z'
+}
+{
+  message: 'Faltan datos para crear el producto',
+  level: 'error',
+  timestamp: '2023-12-24T16:14:44.522Z'
+}
+{
+  message: 'Producto creado exitosamente',
+  level: 'info',
+  timestamp: '2023-12-24T16:15:10.988Z'
+}
+{
+  message: 'Faltan datos para crear el producto',
+  level: 'error',
+  timestamp: '2023-12-24T16:15:35.559Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T16:17:57.493Z'
+}
+{
+  message: 'El producto fue borrado exitosamente',
+  level: 'info',
+  timestamp: '2023-12-24T16:18:39.654Z'
+}
+{
+  message: 'Faltan datos para crear el producto',
+  level: 'error',
+  timestamp: '2023-12-24T16:24:06.289Z'
+}
+{
+  message: 'Producto creado exitosamente',
+  level: 'info',
+  timestamp: '2023-12-24T16:24:11.163Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T16:25:03.093Z'
+}
+{
+  message: 'El usuario no tiene permisos para borrar este producto',
+  level: 'error',
+  timestamp: '2023-12-24T16:25:25.349Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T16:25:43.976Z'
+}
+{
+  message: 'El usuario no tiene permisos para borrar este producto',
+  level: 'error',
+  timestamp: '2023-12-24T16:25:48.536Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T17:09:00.107Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T17:23:37.101Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T17:31:10.568Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T17:31:21.884Z'
+}
+{
+  message: 'Faltan datos para crear el producto',
+  level: 'error',
+  timestamp: '2023-12-24T17:31:34.751Z'
+}
+{
+  message: 'Producto creado exitosamente',
+  level: 'info',
+  timestamp: '2023-12-24T17:31:51.586Z'
+}
+{
+  message: 'El producto fue borrado exitosamente',
+  level: 'info',
+  timestamp: '2023-12-24T17:32:30.044Z'
+}
+{
+  message: 'Faltan datos para crear el producto',
+  level: 'error',
+  timestamp: '2023-12-24T17:33:05.793Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T17:33:23.521Z'
+}
+{
+  message: 'Producto creado exitosamente',
+  level: 'info',
+  timestamp: '2023-12-24T17:33:29.870Z'
+}
+{
+  message: 'El producto fue borrado exitosamente',
+  level: 'info',
+  timestamp: '2023-12-24T17:33:48.972Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T17:49:53.953Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T17:50:14.078Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T17:55:30.451Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T17:55:40.349Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T17:59:11.509Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:13:09.682Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:14:16.791Z'
+}
+{
+  message: 'Faltan datos para crear el producto',
+  level: 'error',
+  timestamp: '2023-12-24T18:14:35.922Z'
+}
+{
+  message: 'Producto creado exitosamente',
+  level: 'info',
+  timestamp: '2023-12-24T18:14:39.455Z'
+}
+{
+  message: 'El producto fue borrado exitosamente',
+  level: 'info',
+  timestamp: '2023-12-24T18:15:30.750Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:17:01.529Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:17:24.473Z'
+}
+{
+  message: 'Faltan datos para crear el producto',
+  level: 'error',
+  timestamp: '2023-12-24T18:17:34.965Z'
+}
+{
+  message: 'Producto creado exitosamente',
+  level: 'info',
+  timestamp: '2023-12-24T18:17:42.154Z'
+}
+{
+  message: 'El producto fue borrado exitosamente',
+  level: 'info',
+  timestamp: '2023-12-24T18:18:06.651Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:20:11.459Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:20:17.987Z'
+}
+{
+  message: 'Faltan datos para crear el producto',
+  level: 'error',
+  timestamp: '2023-12-24T18:20:28.643Z'
+}
+{
+  message: 'Producto creado exitosamente',
+  level: 'info',
+  timestamp: '2023-12-24T18:20:30.960Z'
+}
+{
+  message: 'El producto fue borrado exitosamente',
+  level: 'info',
+  timestamp: '2023-12-24T18:20:50.586Z'
+}
+{
+  message: 'Faltan datos para crear el producto',
+  level: 'error',
+  timestamp: '2023-12-24T18:23:12.525Z'
+}
+{
+  message: 'Producto creado exitosamente',
+  level: 'info',
+  timestamp: '2023-12-24T18:23:20.955Z'
+}
+{
+  message: 'El producto fue borrado exitosamente',
+  level: 'info',
+  timestamp: '2023-12-24T18:24:28.717Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:25:54.272Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:26:42.752Z'
+}
+{
+  message: 'Producto creado exitosamente',
+  level: 'info',
+  timestamp: '2023-12-24T18:26:48.889Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:27:37.188Z'
+}
+{
+  message: 'Producto creado exitosamente',
+  level: 'info',
+  timestamp: '2023-12-24T18:27:44.467Z'
+}
+{
+  message: 'El producto fue borrado exitosamente',
+  level: 'info',
+  timestamp: '2023-12-24T18:28:33.873Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:36:47.276Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:36:49.860Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:37:59.798Z'
+}
+{
+  message: 'Faltan datos para crear el producto',
+  level: 'error',
+  timestamp: '2023-12-24T18:38:23.860Z'
+}
+{
+  message: 'Producto creado exitosamente',
+  level: 'info',
+  timestamp: '2023-12-24T18:39:36.174Z'
+}
+{
+  message: 'El producto fue borrado exitosamente',
+  level: 'info',
+  timestamp: '2023-12-24T18:39:51.422Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:40:40.798Z'
+}
