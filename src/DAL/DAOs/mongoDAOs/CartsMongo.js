@@ -61,6 +61,7 @@ class CartsMongo {
 
   async addProductToCart(cartId, productId, quantity) {
     try {
+      console.log("Adding product to cart:", cartId, productId, quantity);
       if (!ObjectId.isValid(productId)) {
         throw new Error("ID de producto no válido");
       }
@@ -70,24 +71,25 @@ class CartsMongo {
       if (!cart) {
         throw new Error("Carrito no encontrado");
       }
-      // Buscar el producto en el carrito
       const existingProduct = cart.products.find(
-        (p) => p.product && p.product.equals(new ObjectId(originalProductId))
+        (p) => p._id && p._id.equals(new ObjectId(productId))
       );
-
+  
       if (existingProduct) {
         existingProduct.quantity += quantity || 1;
       } else {
-        cart.products.push({ _id: productId, quantity: quantity || 1 });
+        cart.products.push({ product: productId, quantity: quantity || 1 });
       }
       let totalAmount = 0;
       cart.products.forEach((product) => {
         totalAmount += product.quantity;
       });
       cart.totalAmount = totalAmount;
-      const updatedCart = await cart.save();
+      const updatedCart = await this.saveCart(cart);
+      console.log("Product added successfully");
       return updatedCart;
     } catch (error) {
+      console.error("Error adding product to cart:", error.message);
       throw new Error("Error al agregar producto al carrito: " + error.message);
     }
   }

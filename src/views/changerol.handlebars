@@ -1,0 +1,27 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambiar Rol de Usuario</title>
+</head>
+<body>
+    <h1>Cambiar Rol de Usuario</h1>
+    <form id="userForm">
+        <label for="userId">ID del Usuario:</label>
+        <input type="text" id="userId" name="userId" required>
+        
+        <label for="role">Nuevo Rol:</label>
+        <select id="role" name="role" required>
+            <option value="premium">Premium</option>
+            <option value="ADMIN">Admin</option>
+        </select>
+
+        <button type="button" onclick="changeUserRole()">Cambiar Rol</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script src="/js/changerol.js"></script>
+</body>
+</html>

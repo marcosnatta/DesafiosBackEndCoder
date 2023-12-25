@@ -14,14 +14,27 @@ import logger from "../winston.js"
 const router = Router();
 const cartsMongo = new CartsMongo();
 
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const carts = await cartsMongo.findAll();
-    logger.info("carritos encontrados")
-    res.status(200).json({ message: "carrito encontrado", carts });
+
+    if (carts.length > 0) {
+      return res.status(200).json({
+        message: "Carrito encontrado",
+        carts: [carts[0]],
+      });
+    }
+
+    const newCart = await cartsMongo.createCart();
+    return res.status(200).json({
+      message: "Nuevo carrito creado",
+      carts: [newCart],
+    });
   } catch (error) {
-    logger.error("no se encontraron carritos")
-    res.status(500).json({ error });
+    console.error("Error al obtener carritos:", error.message);
+    return res.status(500).json({
+      error: "Error interno del servidor",
+    });
   }
 });
 
@@ -60,20 +73,28 @@ router.post("/:cid/products/:pid",isUser, async (req, res) => {
   }
 
   try {
-    const updatedCart = await cartsMongo.addProductToCart(
-      cartId,
-      productId,
-      quantity
-    );
-    res
-      .status(200)
-      .json({ message: "Producto agregado al carrito", carrito: updatedCart });
-      logger.info ("tu producto se agrego al carrito")
+    const cart = await cartsMongo.getCartById(cartId);
+
+    if (!cart) {
+      const newCart = await cartsMongo.createCart();
+      const newCartId = newCart._id;
+      const updatedCart = await cartsMongo.addProductToCart(newCartId, productId, req.body.quantity);
+      return res.status(200).json({
+        message: "Producto agregado al carrito",
+        cart: updatedCart,
+      });
+    }
+    const updatedCart = await cartsMongo.addProductToCart(cartId, productId, req.body.quantity);
+    return res.status(200).json({
+      message: "Producto agregado al carrito",
+      cart: updatedCart,
+    });
   } catch (error) {
     CustomError.createError(ErrorMessages.NON_AGGREGATE_PRODUCT)
     logger.error("no se pudo agregar el producto a tu carrito")
   }
 });
+
 
 router.delete("/:cid", async (req, res) => {
   const { cid } = req.params;

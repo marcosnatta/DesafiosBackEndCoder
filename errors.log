@@ -6823,3 +6823,758 @@
   level: 'info',
   timestamp: '2023-12-24T18:40:40.798Z'
 }
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:42:47.151Z'
+}
+{
+  message: 'productos encontrados',
+  level: 'info',
+  timestamp: '2023-12-24T18:43:18.780Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:51:24.983Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:54:45.995Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:55:24.147Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:55:34.578Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:55:50.706Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:56:02.867Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:58:24.039Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:58:35.486Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:58:45.828Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:59:30.089Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T18:59:50.375Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T19:00:24.722Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T19:00:34.365Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T19:49:15.901Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T20:01:47.305Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T20:01:51.339Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T20:04:47.550Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T20:05:19.303Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T20:05:35.188Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T20:05:59.115Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T20:31:21.047Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T20:33:26.297Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T20:33:33.879Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T20:34:20.989Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T20:35:43.235Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T20:36:36.966Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T20:37:25.065Z'
+}
+{
+  message: 'carritos encontrados',
+  level: 'info',
+  timestamp: '2023-12-24T20:37:30.335Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T20:46:38.326Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T20:46:55.610Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T20:47:03.734Z'
+}
+{
+  message: 'carritos encontrados',
+  level: 'info',
+  timestamp: '2023-12-24T20:47:09.358Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T20:47:45.944Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T20:54:00.170Z'
+}
+{
+  message: 'productos encontrados',
+  level: 'info',
+  timestamp: '2023-12-24T20:54:05.463Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T20:54:18.631Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T20:54:40.001Z'
+}
+{
+  message: 'carritos encontrados',
+  level: 'info',
+  timestamp: '2023-12-24T20:54:45.292Z'
+}
+{
+  message: 'tu carrito se creo correctamente',
+  level: 'info',
+  timestamp: '2023-12-24T20:54:45.611Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T20:56:58.067Z'
+}
+{
+  message: 'carritos encontrados',
+  level: 'info',
+  timestamp: '2023-12-24T20:57:04.156Z'
+}
+{
+  message: 'tu carrito se creo correctamente',
+  level: 'info',
+  timestamp: '2023-12-24T20:57:04.475Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T20:59:11.054Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T20:59:42.657Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T21:00:06.546Z'
+}
+{
+  message: 'carritos encontrados',
+  level: 'info',
+  timestamp: '2023-12-24T21:00:12.542Z'
+}
+{
+  message: 'tu carrito se creo correctamente',
+  level: 'info',
+  timestamp: '2023-12-24T21:00:12.861Z'
+}
+{
+  message: 'carritos encontrados',
+  level: 'info',
+  timestamp: '2023-12-24T21:05:39.202Z'
+}
+{
+  message: 'tu carrito se creo correctamente',
+  level: 'info',
+  timestamp: '2023-12-24T21:05:39.505Z'
+}
+{
+  message: 'carritos encontrados',
+  level: 'info',
+  timestamp: '2023-12-24T21:12:44.116Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T21:13:45.856Z'
+}
+{
+  message: 'carritos encontrados',
+  level: 'info',
+  timestamp: '2023-12-24T21:13:50.318Z'
+}
+{
+  message: 'tu carrito se creo correctamente',
+  level: 'info',
+  timestamp: '2023-12-24T21:13:50.635Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T21:16:02.926Z'
+}
+{
+  message: 'carritos encontrados',
+  level: 'info',
+  timestamp: '2023-12-24T21:16:07.371Z'
+}
+{
+  message: 'tu carrito se creo correctamente',
+  level: 'info',
+  timestamp: '2023-12-24T21:16:07.687Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T21:22:19.506Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T21:23:19.090Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T21:23:40.618Z'
+}
+{
+  message: 'carritos encontrados',
+  level: 'info',
+  timestamp: '2023-12-24T21:23:50.126Z'
+}
+{
+  message: 'tu carrito se creo correctamente',
+  level: 'info',
+  timestamp: '2023-12-24T21:23:50.434Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T21:35:38.967Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T21:41:21.007Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T21:41:30.510Z'
+}
+{
+  message: 'carritos encontrados',
+  level: 'info',
+  timestamp: '2023-12-24T21:41:52.873Z'
+}
+{
+  message: 'tu carrito se creo correctamente',
+  level: 'info',
+  timestamp: '2023-12-24T21:41:52.898Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T21:54:31.297Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T21:55:57.904Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T21:56:37.928Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T21:59:20.711Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T21:59:38.004Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T22:00:56.946Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T22:01:05.900Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-24T23:34:48.809Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T17:38:22.795Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T17:54:07.238Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T17:55:58.745Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T17:57:12.150Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:02:32.527Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:11:44.434Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:12:35.888Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:13:34.035Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:14:30.547Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:14:46.664Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:16:06.616Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:16:23.352Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:16:30.625Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:16:50.753Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:18:39.535Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:18:48.749Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:20:39.568Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:21:04.772Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:21:41.185Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:22:36.257Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:23:09.501Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:23:21.878Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:23:30.244Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:23:53.270Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:24:47.862Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:24:56.984Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:26:49.766Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:30:41.511Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:30:56.085Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:31:20.592Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:35:22.042Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:51:26.348Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:53:07.803Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:53:27.798Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:57:49.714Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T18:59:05.416Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:01:17.201Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:02:02.936Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:02:11.965Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:03:55.540Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:07:07.398Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:07:43.723Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:08:25.554Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:10:43.310Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:11:39.598Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:11:47.598Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:12:56.596Z'
+}
+{
+  message: 'productos encontrados',
+  level: 'info',
+  timestamp: '2023-12-25T19:14:52.935Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:23:32.200Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:24:43.278Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:25:28.754Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:25:59.101Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:26:13.126Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:27:06.525Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:28:37.330Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:30:52.021Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:31:29.083Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:32:04.130Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:32:35.769Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:38:08.150Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:38:32.203Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:43:37.066Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:46:49.850Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:47:14.446Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:47:40.838Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:48:13.286Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:51:32.262Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:52:37.641Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:52:59.536Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:53:19.098Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:54:46.678Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:55:38.800Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:56:09.979Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:57:01.547Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-25T19:57:21.117Z'
+}

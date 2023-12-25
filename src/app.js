@@ -23,7 +23,6 @@ import CustomError from "./errors/CustomError.js"
 import { logger } from "./winston.js"
 import swaggerJSDoc from "swagger-jsdoc"
 import swaggerUiExpress from "swagger-ui-express"
-//import messagesRouter from "./routes/messages.router.js"
 
 
 const app = express()
@@ -64,7 +63,6 @@ app.use("/api/session/users/premium", sessionRouter)
 app.use("/api/carts", cartsRouter)
 app.use("/", viewsRouter)
 app.use("/api/products", productsRouter)
-//app.use("/api/messages", messagesRouter)
 
 // chat
 app.get("/chat", passport.authenticate("login"), (req, res) => {
@@ -85,6 +83,11 @@ app.get('/profile', (req, res) => {
     user: req.session.user
   }); 
 });
+
+//modificar rol
+app.get("/changerol",(req,res)=>{
+  res.render("changerol")
+})
 
 // mock
 app.get("/mockingproducts", (req, res) => {
@@ -125,7 +128,6 @@ app.use("/api/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 const PORT = config.port
 const httpServer = app.listen(PORT, ()=>{
   logger.info(`escuchando el puerto ${PORT}`)
-  //console.log(`escuchando el puerto ${PORT}`)
 })
 
 //agregar un producto nuevo
@@ -133,45 +135,6 @@ const httpServer = app.listen(PORT, ()=>{
 const socketServer = new Server(httpServer)
 socketServer.on("connection", (socket) => {
     console.log("Cliente conectado:", socket.id);
-
-    socket.on("createProduct", async (nuevoproduct) => {
-      try {
-        const agregarProducto = await productsMongo.createProduct(
-          nuevoproduct.title,
-          nuevoproduct.description,
-          nuevoproduct.price,
-          nuevoproduct.thumbnail,
-          nuevoproduct.code,
-          nuevoproduct.stock,
-          nuevoproduct.status,
-          nuevoproduct.category
-        );
-  
-        if (typeof agregarProducto === "string") {
-          socket.emit("addProductError", agregarProducto);
-        } else {
-          socketServer.emit("addProductSuccess", agregarProducto);
-        }
-      } catch (error) {
-        socket.emit("addProductError", "Error al agregar el producto.");
-      }
-    });
-
-    //eliminar producto
-    
-    socket.on("deleteProduct", async (ProdId) => {
-      try {
-        const result = await productsMongo.deleteProduct(ProdId);
-        if (result === "producto con id no encontrado") {
-          socket.emit("deleteProductError", result);
-        } else {
-          socketServer.emit("deleteProductSuccess", ProdId);
-        }
-      } catch (error) {
-        socket.emit("deleteProductError", "Error al eliminar el producto.");
-      }
-    });
-    
 
 socket.on("chatMessage", isUser, async (messageData) => {
   const { usuario, message } = messageData;
@@ -191,8 +154,7 @@ socket.on("chatMessage", isUser, async (messageData) => {
     socket.emit("chatMessageError", "Acceso no autorizado para enviar mensajes.");
   }
 }); 
-  
-  });
+ });
 
 
 // loggers

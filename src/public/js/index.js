@@ -1,31 +1,50 @@
-const socketClient = io()
-const formulario = document.getElementById("formulario");
-const productitle = document.getElementById("title");
-const prodDescription = document.getElementById("description");
-const prodprice = document.getElementById("price");
-const prodcode = document.getElementById("code");
-const prodstock = document.getElementById("stock");
-const prodcategory = document.getElementById("category");
-const divproducts = document.getElementById("viewProducts");
-const id = document.getElementById("id");
+const addToCartButton = document.getElementById("addtocart");
 
+addToCartButton.addEventListener("click", async () => {
+  try {
+    console.log("Botón 'Agregar al carrito' clicado");
 
-//eliminar productos
-const eliminarForm = document.getElementById("eliminarForm");
-const eliminarProdId = document.getElementById("eliminarProdId");
+    const pid = addToCartButton.dataset.pid;
 
-socketClient.on("createProduct", async(nuevoproduct) => {
-  const addProductos = `
-        <div>
-            <p>ID: ${nuevoproduct.id}</p>
-            <p>Título: ${nuevoproduct.title}</p>
-            <p>Descripción: ${nuevoproduct.description}</p>
-            <p>Precio: ${nuevoproduct.price}</p>
-            <p>Código: ${nuevoproduct.code}</p>
-            <p>Stock: ${nuevoproduct.stock}</p>
-            <p>Categoría: ${nuevoproduct.category}</p>
-        </div>
-    `;
-  divproducts.innerHTML = addProductos;
+    const response = await fetch(`/api/carts`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Error al obtener carritos");
+    }
+
+    const { carts } = await response.json();
+    console.log("Carts:", carts);
+
+    let cid;
+    if (carts.length > 0) {
+      cid = carts[0]._id;
+      console.log("Cart ID:", cid);
+    } else {
+      console.error("No se recibió un carrito válido");
+      return;
+    }
+
+    const addToCartResponse = await fetch(`/api/carts/${cid}/products/${pid}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ quantity: 1 }),
+    });
+
+    if (!addToCartResponse.ok) {
+      throw new Error("Error al agregar producto al carrito");
+    }
+
+    const result = await addToCartResponse.json();
+    console.log("Mensaje:", result.message);
+    console.log("Carrito actualizado:", result.cart);
+  } catch (error) {
+    console.error(error.message);
+  }
 });
-
