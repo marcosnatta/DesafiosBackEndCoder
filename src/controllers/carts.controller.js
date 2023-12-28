@@ -13,14 +13,15 @@ class CartController {
   async addProductToCart(req, res) {
     const { cartId } = req.params;
     const { productId, quantity } = req.body;
-
+  
     try {
-      const cart = await cartService.addProductToCart(cartId, productId, quantity) 
-      res.status(200).json({ cart: updatedCart });
+      const cart = await cartService.addProductToCart(cartId, productId, quantity);
+      res.status(200).json({ cart });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   }
+  
 
   async removeProductFromCart(req, res) {
     const { cartId } = req.params;

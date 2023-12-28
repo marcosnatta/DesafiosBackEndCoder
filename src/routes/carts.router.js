@@ -1,20 +1,19 @@
 import { Router } from "express";
 import { ObjectId } from "mongodb";
 import { CartsMongo } from "../DAL/DAOs/mongoDAOs/CartsMongo.js";
-import { cartsModel } from "../DAL/mongoDB/models/carts.model.js";
 import { ticketService } from "../services/ticket.service.js";
 import { cartService } from "../services/carts.service.js";
 import { productsService } from "../services/products.service.js";
 import { mongoose } from "mongoose";
-import { isAdmin, isUser } from "../middlewares/auth.middlewares.js";
-import { ErrorMessages } from "../errors/error.enum.js"
-import CustomError from "../errors/CustomError.js"
-import logger from "../winston.js"
+import { isAdmin } from "../middlewares/auth.middlewares.js";
+import { ErrorMessages } from "../errors/error.enum.js";
+import CustomError from "../errors/CustomError.js";
+import logger from "../winston.js";
 
 const router = Router();
 const cartsMongo = new CartsMongo();
 
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const carts = await cartsMongo.findAll();
 
@@ -41,60 +40,86 @@ router.get('/', async (req, res) => {
 router.get("/:cid", async (req, res) => {
   const { cid } = req.params;
 
-  const cartId = new ObjectId(cid);
-
   try {
-    const carrito = await cartsModel.findById(cartId).populate("products.id");
-    logger.info("este es tu carrito")
-    res.status(200).json({ message: "Carrito encontrado", carrito });
+    const cart = await cartsMongo.getCartById(cid);
+    if (!cart) {
+      return res.status(404).json({ error: "Carrito no encontrado" });
+    }
+    const productDetails = await Promise.all(cart.products.map(async (productInfo) => {
+      const plainProduct = await productsService.findById(productInfo.product);
+      console.log(productInfo.product)
+      return {
+        ...plainProduct,
+        quantity: productInfo.quantity,
+        subtotal: productInfo.quantity * plainProduct.price,
+      };
+    }));
+    
+    res.render('cart', { cart: { products: productDetails, totalAmount: cart.totalAmount } });
   } catch (error) {
-    logger.error("no se encontro el carrito solicitado")
-    CustomError.createError(ErrorMessages.CART_NOT_FOUND)
+    console.error("Error al obtener el carrito:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 });
 
 router.post("/", (req, res) => {
   try {
-    const createCart =  cartService.createCart();
-    logger.info ("tu carrito se creo correctamente")
+    const createCart = cartService.createCart();
+    logger.info("tu carrito se creo correctamente");
     res.status(200).json({ message: "Productos", carro: createCart });
   } catch (error) {
-    logger.error("no se pudo crear el carrito")
-    CustomError.createError(ErrorMessages.CART_NOT_CREATED)
+    logger.error("no se pudo crear el carrito");
+    CustomError.createError(ErrorMessages.CART_NOT_CREATED);
   }
 });
 
-router.post("/:cid/products/:pid",isUser, async (req, res) => {
+router.post("/:cid/products/:pid", async (req, res) => {
   const cartId = req.params.cid;
   const productId = req.params.pid;
   const { quantity } = req.body;
+
   if (!quantity || isNaN(quantity)) {
     return res.status(400).json({ error: "Cantidad no válida" });
   }
 
   try {
+    const product = await productsService.findById(productId);
+
+    if (!product) {
+      console.error("Producto no encontrado en la base de datos");
+      return res.status(404).json({ error: "Producto no encontrado" });
+    }
+
     const cart = await cartsMongo.getCartById(cartId);
 
     if (!cart) {
       const newCart = await cartsMongo.createCart();
       const newCartId = newCart._id;
-      const updatedCart = await cartsMongo.addProductToCart(newCartId, productId, req.body.quantity);
+
+      const updatedCart = await cartsMongo.addProductToCart(
+        newCartId,
+        productId,
+        quantity
+      );
       return res.status(200).json({
         message: "Producto agregado al carrito",
         cart: updatedCart,
       });
     }
-    const updatedCart = await cartsMongo.addProductToCart(cartId, productId, req.body.quantity);
+    const updatedCart = await cartsMongo.addProductToCart(
+      cartId,
+      productId,
+      quantity
+    );
     return res.status(200).json({
       message: "Producto agregado al carrito",
       cart: updatedCart,
     });
   } catch (error) {
-    CustomError.createError(ErrorMessages.NON_AGGREGATE_PRODUCT)
-    logger.error("no se pudo agregar el producto a tu carrito")
+    console.error("Error al agregar el producto al carrito:", error.message);
+    return res.status(500).json({ error: "Error interno del servidor" });
   }
 });
-
 
 router.delete("/:cid", async (req, res) => {
   const { cid } = req.params;
@@ -105,16 +130,16 @@ router.delete("/:cid", async (req, res) => {
     res
       .status(200)
       .json({ message: "Productos eliminados del carrito", borrarProds });
-      logger.info ("producto eliminado del carrito")
+    logger.info("producto eliminado del carrito");
   } catch (error) {
     res
       .status(500)
       .json({ error: "Error al eliminar los productos del carrito" });
-    logger.error("no se pudo eliminar el producto")
+    logger.error("no se pudo eliminar el producto");
   }
 });
 
-router.delete("/:cid/products/:pid",isAdmin, async (req, res) => {
+router.delete("/:cid/products/:pid", isAdmin, async (req, res) => {
   const { cid, pid } = req.params;
   if (!ObjectId.isValid(pid)) {
     return res.status(400).json({ error: "ID de producto no válido" });
@@ -126,10 +151,10 @@ router.delete("/:cid/products/:pid",isAdmin, async (req, res) => {
       cartId,
       productId
     );
-    logger.info("producto borrado con exito")
+    logger.info("producto borrado con exito");
     res.status(200).json({ message: "Producto borrado con éxito", resultCart });
   } catch (error) {
-    logger.error("no se pudo borrar el producto")
+    logger.error("no se pudo borrar el producto");
     res.status(500).json({ error: "Error interno del servidor" });
   }
 });
@@ -179,7 +204,6 @@ router.put("/:cid/products/:pid", async (req, res) => {
 router.post("/:cid/purchase", async (req, res) => {
   const cartId = req.params.cid;
   try {
-
     const cart = await cartService.getCartById(cartId);
     if (!cart) {
       return res.status(404).json({ error: "Carrito no encontrado" });
@@ -189,18 +213,17 @@ router.post("/:cid/purchase", async (req, res) => {
 
     for (const productInfo of cart.products) {
       if (!mongoose.Types.ObjectId.isValid(productInfo._id)) {
-        console.log(productInfo._id)
+        console.log(productInfo._id);
         productosNoProcesados.push(productInfo._id);
         continue;
       }
 
       const product = await productsService.findById(productInfo._id);
-      console.log(product)
+      console.log(product);
 
       if (!product) {
         productosNoProcesados.push(productInfo.product);
       } else if (product.stock >= productInfo.quantity) {
-       
         product.stock -= productInfo.quantity;
         await product.save();
       } else {
@@ -212,19 +235,15 @@ router.post("/:cid/purchase", async (req, res) => {
       (productInfo) => !productosNoProcesados.includes(productInfo.product)
     );
 
-   
     await cartService.updateCart(cart);
 
-   
     if (productosNoProcesados.length > 0) {
-  
       return res.status(400).json({
         message: "Compra incompleta, no hay stock de los productos",
         productosNoProcesados,
       });
     }
 
-   
     const ticketData = {
       purchase_datetime: new Date(),
       amount: cart.totalAmount,

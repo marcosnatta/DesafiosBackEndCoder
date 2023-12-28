@@ -38,14 +38,12 @@ class ProductController {
     }
   }
 
-// En tu controlador ProductController
 async updateProduct(req, res) {
   const { id } = req.params;
   const updateprod = req.body;
 
   try {
-    // Asegura que el ID no se modifique
-    delete updateprod._id; // Si existe _id en los datos enviados, elimínalo
+    delete updateprod._id;
 
     const updatedProduct = await productsService.updateProduct(id, updateprod);
     if (updatedProduct) {

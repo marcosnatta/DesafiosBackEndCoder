@@ -1,5 +1,6 @@
 import { cartsModel } from "../../mongoDB/models/carts.model.js";
-import { ObjectId } from "mongodb";
+import mongoose from "mongoose";
+import { productsModel } from "../../mongoDB/models/products.model.js";
 
 class CartsMongo {
   constructor() {
@@ -13,11 +14,11 @@ class CartsMongo {
         { $set: cart },
         { new: true }
       );
-  
+
       if (!updatedCart) {
-        throw new Error('Carrito no encontrado');
+        throw new Error("Carrito no encontrado");
       }
-  
+
       return updatedCart;
     } catch (error) {
       throw error;
@@ -34,9 +35,24 @@ class CartsMongo {
   }
 
   async getCartById(id) {
-    return await cartsModel.findById(id);
+    try {
+      const cart = await cartsModel
+      .findById(id)
+      .populate({
+        path: 'products.product',
+        select: 'title price stock', 
+        model: 'Products',
+      });
+      if (!cart) {
+        throw new Error("Carrito no encontrado");
+      }
+  
+      return cart;
+    } catch (error) {
+      throw new Error("Error al obtener el carrito: " + error.message);
+    }
   }
-
+  
   async createCart() {
     try {
       const newCart = new cartsModel();
@@ -49,7 +65,7 @@ class CartsMongo {
 
   async findById(id) {
     try {
-      const carrito = await cartsModel.findById(id);
+      const carrito = await productsModel.findById(id)
       if (!carrito) {
         throw new Error("Carrito no encontrado");
       }
@@ -62,38 +78,47 @@ class CartsMongo {
   async addProductToCart(cartId, productId, quantity) {
     try {
       console.log("Adding product to cart:", cartId, productId, quantity);
-      if (!ObjectId.isValid(productId)) {
+  
+      if (!mongoose.Types.ObjectId.isValid(productId)) {
         throw new Error("ID de producto no válido");
       }
-
+  
       const cart = await this.getCartById(cartId);
-
+  
       if (!cart) {
         throw new Error("Carrito no encontrado");
-      }
-      const existingProduct = cart.products.find(
-        (p) => p._id && p._id.equals(new ObjectId(productId))
+      }  
+      console.log("Product ID before adding to cart:", productId);
+  
+      const existingCartItem = cart.products.find(
+        (p) => p.product && p.product._id.equals(productId)
       );
   
-      if (existingProduct) {
-        existingProduct.quantity += quantity || 1;
+      if (existingCartItem) {
+        existingCartItem.quantity += quantity || 1;
       } else {
         cart.products.push({ product: productId, quantity: quantity || 1 });
+        console.log("Product added to cart:", cart.products);
       }
+  
       let totalAmount = 0;
       cart.products.forEach((product) => {
         totalAmount += product.quantity;
       });
       cart.totalAmount = totalAmount;
+  
       const updatedCart = await this.saveCart(cart);
-      console.log("Product added successfully");
+      console.log("Product added/quantity updated successfully");
       return updatedCart;
     } catch (error) {
-      console.error("Error adding product to cart:", error.message);
-      throw new Error("Error al agregar producto al carrito: " + error.message);
+      console.error("Error updating product quantity in cart:", error.message);
+      throw new Error(
+        "Error al actualizar la cantidad del producto en el carrito: " +
+          error.message
+      );
     }
   }
-
+  
   async updateOne(id, obj) {
     try {
       const update = await cartsModel.updateOne({ _id: id }, { ...obj });
@@ -140,7 +165,6 @@ class CartsMongo {
       );
 
       if (productIndex !== -1) {
-
         cart.products.splice(productIndex, 1);
       } else {
         throw new Error("Producto no encontrado en el carrito");
@@ -155,7 +179,9 @@ class CartsMongo {
 
   async updateProductQuantity(cartId, productId, updatedQuantity) {
     try {
-      const cart = await cartsModel.findById(cartId).populate("products._id");
+      const cart = await cartsModel
+        .findById(cartId)
+        .populate("products.product");
 
       if (!cart) {
         throw new Error("Carrito no encontrado");
@@ -199,6 +225,9 @@ class CartsMongo {
       throw error;
     }
   }
+
 }
+
+
 
 export { CartsMongo };

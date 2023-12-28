@@ -51,7 +51,6 @@ async findById(id) {
 }
 
 
-
 async updateProduct(id,obj){
   try {
       const update = await productsModel.updateOne({_id:id},{...obj})

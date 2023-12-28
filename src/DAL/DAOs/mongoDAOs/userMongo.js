@@ -6,8 +6,6 @@ class UserMongo extends BasicMongo {
     super(userModel);
   }
 
-
-
   async create(user){
     return userModel.create(user);
 } 

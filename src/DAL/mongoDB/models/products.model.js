@@ -34,11 +34,12 @@ const productsSchema = new mongoose.Schema({
     type: String,
   },
   owner: {
-    type: String, 
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
     default: "admin",
     validate: {
       validator: async function (value) {
-        if (value === "admin") {
+        if (value === "ADMIN") {
           return true;
         }
         if (value) {
@@ -55,20 +56,19 @@ const productsSchema = new mongoose.Schema({
 productsSchema.pre('save', async function (next) {
   if (!this.owner) {
     try {
-      const adminUser = await userModel.findOne({ username: 'admin' });
+      const adminUser = await userModel.findOne({ username: 'ADMIN' });
       
       if (adminUser) {
         this.owner = adminUser._id;
       } else {
-        this.owner = 'admin';
+        this.owner = 'ADMIN';
       }
     } catch (error) {
-      console.error("Error al buscar el usuario 'admin':", error);
+      console.error("Error al buscar el usuario 'ADMIN':", error);
     }
   }
   next();
 });
-
 productsSchema.plugin(mongoosePaginate);
 
 export const productsModel = mongoose.model("Products", productsSchema);
