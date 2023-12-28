@@ -29,14 +29,13 @@ async function addToCart(cartId, productId) {
       },
       body: JSON.stringify({ quantity: 1 }),
     });
-
-    if (response.status === 200) {
-      const result = await response.json();
+    const result = await response.json();
+    if (response.ok) {
       console.log("Mensaje:", result.message);
       console.log("Carrito actualizado:", result.cart);
+      window.location.href = `/carts/${cartId}`;
     } else {
-      const errorMessage = await response.text();
-      throw new Error(`Error al agregar producto al carrito: ${errorMessage}`);
+      console.error("Error al agregar producto al carrito:", result.error);
     }
   } catch (error) {
     console.error("Error al agregar producto al carrito:", error.message);

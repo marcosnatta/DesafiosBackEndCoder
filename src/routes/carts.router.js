@@ -39,23 +39,35 @@ router.get("/", async (req, res) => {
 
 router.get("/:cid", async (req, res) => {
   const { cid } = req.params;
-
   try {
     const cart = await cartsMongo.getCartById(cid);
     if (!cart) {
       return res.status(404).json({ error: "Carrito no encontrado" });
     }
-    const productDetails = await Promise.all(cart.products.map(async (productInfo) => {
-      const plainProduct = await productsService.findById(productInfo.product);
-      console.log(productInfo.product)
-      return {
-        ...plainProduct,
-        quantity: productInfo.quantity,
-        subtotal: productInfo.quantity * plainProduct.price,
-      };
-    }));
-    
-    res.render('cart', { cart: { products: productDetails, totalAmount: cart.totalAmount } });
+
+    const productDetails = await Promise.all(
+      cart.products.map(async (productInfo) => {
+
+        const isValidObjectId = mongoose.Types.ObjectId.isValid(productInfo._id);
+        if (!isValidObjectId) {
+          console.error("ID de producto no válido:", productInfo._id);
+          throw new Error("ID de producto no válido");
+        }
+        console.log(productInfo._id)
+        const plainProduct = await productsService.findById(
+          productInfo._id
+        );
+        console.log(plainProduct)
+        return {
+          ...plainProduct,
+          quantity: productInfo.quantity,
+          subtotal: productInfo.quantity * plainProduct.price,
+        };
+      })
+    );
+    res.render("cart", {
+      cart: { products: productDetails, totalAmount: cart.totalAmount },
+    });
   } catch (error) {
     console.error("Error al obtener el carrito:", error);
     res.status(500).json({ error: "Error interno del servidor" });
@@ -120,7 +132,6 @@ router.post("/:cid/products/:pid", async (req, res) => {
     return res.status(500).json({ error: "Error interno del servidor" });
   }
 });
-
 router.delete("/:cid", async (req, res) => {
   const { cid } = req.params;
   const cartId = new ObjectId(cid);

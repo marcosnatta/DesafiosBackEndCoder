@@ -12,13 +12,6 @@ const cartsSchema = new mongoose.Schema({
   }],
 });
 
-cartsSchema.virtual('products.id', {
-  ref: 'Products',
-  localField: 'products.product',
-  foreignField: '_id',
-  justOne: true,
-});
-
 cartsSchema.plugin(mongoosePaginate);
 
 export const cartsModel = mongoose.model("Carts", cartsSchema);

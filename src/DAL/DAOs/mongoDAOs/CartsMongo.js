@@ -1,6 +1,8 @@
 import { cartsModel } from "../../mongoDB/models/carts.model.js";
 import mongoose from "mongoose";
 import { productsModel } from "../../mongoDB/models/products.model.js";
+import { ObjectId } from "mongodb";
+
 
 class CartsMongo {
   constructor() {
@@ -36,13 +38,7 @@ class CartsMongo {
 
   async getCartById(id) {
     try {
-      const cart = await cartsModel
-      .findById(id)
-      .populate({
-        path: 'products.product',
-        select: 'title price stock', 
-        model: 'Products',
-      });
+      const cart = await cartsModel.findById(id);
       if (!cart) {
         throw new Error("Carrito no encontrado");
       }
@@ -90,16 +86,16 @@ class CartsMongo {
       }  
       console.log("Product ID before adding to cart:", productId);
   
-      const existingCartItem = cart.products.find(
-        (p) => p.product && p.product._id.equals(productId)
-      );
-  
-      if (existingCartItem) {
-        existingCartItem.quantity += quantity || 1;
+      const existingProduct = cart.products.find((p) => p.id && p.id.toString() === productId.toString());
+
+        
+      if (existingProduct) {
+        existingProduct.quantity += quantity || 1;
       } else {
-        cart.products.push({ product: productId, quantity: quantity || 1 });
+        cart.products.push({ id: productId, quantity: quantity || 1 });
+        
         console.log("Product added to cart:", cart.products);
-      }
+      }      
   
       let totalAmount = 0;
       cart.products.forEach((product) => {
