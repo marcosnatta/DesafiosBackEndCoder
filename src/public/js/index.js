@@ -1,22 +1,26 @@
-document.addEventListener('DOMContentLoaded', function () {
-  document.querySelectorAll('#addtocart').forEach(button => {
-    button.addEventListener('click', async () => {
-      console.log("Botón clicado");
+document.querySelectorAll('#addtocart').forEach(button => {
+  button.addEventListener('click', async () => {
+    console.log("Botón clicado");
 
-      try {
-        const productId = button.dataset.productid;
-        const cartId = await obtenerCartId();
-        if (!productId || !cartId) {
-          console.error("Error: ID del producto o ID del carrito no válido");
-          return;
-        }
-        await addToCart(cartId, productId);
-        console.log(cartId,productId)
-          window.location.href = `/carts/${cartId}`;        
-      } catch (error) {
-        console.error(error);
+    try {
+      const productId = button.dataset.productid;
+      const cartId = await obtenerCartId();
+      if (!productId || !cartId) {
+        console.error("Error: ID del producto o ID del carrito no válido");
+        return;
       }
-    });
+
+      const result = await addToCart(cartId, productId);
+      if (result && result.success) {
+        console.log("Mensaje:", result.message);
+        console.log("Carrito actualizado:", result.cart);
+        window.location.href = `/carts/${cartId}`;
+      } else {
+        console.error("Error al agregar producto al carrito:", result ? result.error : "Error desconocido");
+      }
+    } catch (error) {
+      console.error("Error general:", error.message);
+    }
   });
 });
 
@@ -29,30 +33,25 @@ async function addToCart(cartId, productId) {
       },
       body: JSON.stringify({ quantity: 1 }),
     });
-    const result = await response.json();
-    if (response.ok) {
-      console.log("Mensaje:", result.message);
-      console.log("Carrito actualizado:", result.cart);
-      window.location.href = `/carts/${cartId}`;
+
+    if (response.status === 200) {
+      const result = await response.json();
+      return { success: true, message: result.message, cart: result.cart };
     } else {
-      console.error("Error al agregar producto al carrito:", result.error);
+      const errorMessage = await response.text();
+      return { success: false, error: `Error al agregar producto al carrito: ${errorMessage}` };
     }
   } catch (error) {
-    console.error("Error al agregar producto al carrito:", error.message);
+    return { success: false, error: `Error al agregar producto al carrito: ${error.message}` };
   }
 }
 
 async function obtenerCartId() {
   try {
     const response = await fetch('/api/carts/');
-
-    if (!response.ok) {
-      throw new Error(`Error al obtener el carrito. Código de estado: ${response.status}`);
-    }
     const { carts } = await response.json();
     return carts?.length > 0 ? carts[0]._id : null;
   } catch (error) {
-    console.error("Error al obtener ID del carrito:", error.message);
-    return null;
+    throw new Error(`Error al obtener ID del carrito: ${error.message}`);
   }
 }

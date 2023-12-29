@@ -9,8 +9,12 @@ const cartsSchema = new mongoose.Schema({
       ref: 'Products',
     },
     quantity: Number,
+    title: String, 
+    price: Number, 
   }],
 });
+
+
 
 cartsSchema.plugin(mongoosePaginate);
 

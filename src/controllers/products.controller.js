@@ -56,9 +56,6 @@ async updateProduct(req, res) {
   }
 }
 
-
-
-
   async deleteProduct(req,res){
     const { id } = req.params;
     try {

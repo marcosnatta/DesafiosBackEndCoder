@@ -22,9 +22,8 @@ import CustomError from "./errors/CustomError.js"
 import { logger } from "./winston.js"
 import swaggerJSDoc from "swagger-jsdoc"
 import swaggerUiExpress from "swagger-ui-express"
-
-
 const app = express()
+app.set('view engine', 'ejs');
 
 // cookie
 app.use(cookieParser())
@@ -97,7 +96,7 @@ app.get("/mockingproducts", (req, res) => {
   }
   res.json(products);
 });
-
+ 
 
 // test
 app.get("/products", (req, res) => {

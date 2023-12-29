@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { ObjectId } from "mongodb";
 import { CartsMongo } from "../DAL/DAOs/mongoDAOs/CartsMongo.js";
+import { cartController } from "../controllers/carts.controller.js";
 import { ticketService } from "../services/ticket.service.js";
 import { cartService } from "../services/carts.service.js";
 import { productsService } from "../services/products.service.js";
@@ -41,39 +42,20 @@ router.get("/:cid", async (req, res) => {
   const { cid } = req.params;
   try {
     const cart = await cartsMongo.getCartById(cid);
+
     if (!cart) {
       return res.status(404).json({ error: "Carrito no encontrado" });
     }
-
-    const productDetails = await Promise.all(
-      cart.products.map(async (productInfo) => {
-
-        const isValidObjectId = mongoose.Types.ObjectId.isValid(productInfo._id);
-        if (!isValidObjectId) {
-          console.error("ID de producto no válido:", productInfo._id);
-          throw new Error("ID de producto no válido");
-        }
-        console.log(productInfo._id)
-        const plainProduct = await productsService.findById(
-          productInfo._id
-        );
-        console.log(plainProduct)
-        return {
-          ...plainProduct,
-          quantity: productInfo.quantity,
-          subtotal: productInfo.quantity * plainProduct.price,
-        };
-      })
-    );
-    res.render("cart", {
-      cart: { products: productDetails, totalAmount: cart.totalAmount },
+    
+    res.status(200).json({
+      message: "Carrito encontrado", cart
     });
+    
   } catch (error) {
     console.error("Error al obtener el carrito:", error);
     res.status(500).json({ error: "Error interno del servidor" });
   }
 });
-
 router.post("/", (req, res) => {
   try {
     const createCart = cartService.createCart();
@@ -132,6 +114,24 @@ router.post("/:cid/products/:pid", async (req, res) => {
     return res.status(500).json({ error: "Error interno del servidor" });
   }
 });
+router.delete("/:cid", async (req, res) => {
+  const { cid } = req.params;
+  const cartId = new ObjectId(cid);
+
+  try {
+    const borrarProds = await cartsMongo.deleteAllProducts(cartId);
+    res
+      .status(200)
+      .json({ message: "Productos eliminados del carrito", borrarProds });
+    logger.info("producto eliminado del carrito");
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Error al eliminar los productos del carrito" });
+    logger.error("no se pudo eliminar el producto");
+  }
+});
+
 router.delete("/:cid", async (req, res) => {
   const { cid } = req.params;
   const cartId = new ObjectId(cid);

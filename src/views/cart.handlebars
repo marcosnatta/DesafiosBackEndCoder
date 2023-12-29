@@ -1,0 +1,10 @@
+  <h2>Carrito de Compras</h2>
+  {{#each products}}
+    <div class="cart-item">
+      <p>{{title}}</p>
+      <p>Cantidad: {{quantity}}</p>
+      <p>Precio: {{price}}</p>
+      <p>Total: {{total}}</p>
+    </div>
+  {{/each}}
+  <button id="checkout-btn">Finalizar el Pago</button>

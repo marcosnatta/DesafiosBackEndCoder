@@ -60,8 +60,8 @@ router.get("/carts/:cid", async (req, res) => {
     const { cid } = req.params;
   
     try {
-      const cart = await cartsModel.findById(cid).populate("products.id").lean()
-      res.render("cart-details", { cart });
+      const cart = await cartsModel.findById(cid)
+      res.render("cart", { cart});
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Error al buscar el carrito" });
