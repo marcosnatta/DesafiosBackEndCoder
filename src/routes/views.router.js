@@ -1,9 +1,9 @@
 import {Router} from "express"
 import {productsMongo} from "../DAL/DAOs/mongoDAOs/ProductsMongo.js"
-import {cartsModel} from "../DAL/mongoDB/models/carts.model.js"
-
+import { CartsMongo } from "../DAL/DAOs/mongoDAOs/CartsMongo.js"
 
 const router = Router()
+const cartsMongo = new CartsMongo();
 
 router.get("/chat", (req,res)=>{
     res.render("chat")
@@ -57,17 +57,20 @@ router.get("/products/:pid", async (req, res) => {
 });
 
 router.get("/carts/:cid", async (req, res) => {
-    const { cid } = req.params;
-  
-    try {
-      const cart = await cartsModel.findById(cid)
-      res.render("cart", { cart});
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Error al buscar el carrito" });
+  const { cid } = req.params;
+  try {
+    const cart = await cartsMongo.getCartById(cid);
+    if (!cart) {
+      return res.status(404).json({ error: "Carrito no encontrado" });
     }
-  });
 
+     res.render("cart-detail" ,{ cart });
+    //  res.status(200).json({cart})
+  } catch (error) {
+    console.error("Error al obtener el carrito:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
 
 // desafio de login y registro
 

@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { ObjectId } from "mongodb";
 import { CartsMongo } from "../DAL/DAOs/mongoDAOs/CartsMongo.js";
-import { cartController } from "../controllers/carts.controller.js";
 import { ticketService } from "../services/ticket.service.js";
 import { cartService } from "../services/carts.service.js";
 import { productsService } from "../services/products.service.js";
@@ -56,6 +55,8 @@ router.get("/:cid", async (req, res) => {
     res.status(500).json({ error: "Error interno del servidor" });
   }
 });
+
+
 router.post("/", (req, res) => {
   try {
     const createCart = cartService.createCart();
@@ -78,13 +79,13 @@ router.post("/:cid/products/:pid", async (req, res) => {
 
   try {
     const product = await productsService.findById(productId);
+    const cart = await cartsMongo.getCartById(cartId);
 
     if (!product) {
       console.error("Producto no encontrado en la base de datos");
       return res.status(404).json({ error: "Producto no encontrado" });
     }
 
-    const cart = await cartsMongo.getCartById(cartId);
 
     if (!cart) {
       const newCart = await cartsMongo.createCart();
@@ -100,7 +101,7 @@ router.post("/:cid/products/:pid", async (req, res) => {
         cart: updatedCart,
       });
     }
-    const updatedCart = await cartsMongo.addProductToCart(
+    const updatedCart = await cartService.addProductToCart(
       cartId,
       productId,
       quantity
@@ -112,23 +113,6 @@ router.post("/:cid/products/:pid", async (req, res) => {
   } catch (error) {
     console.error("Error al agregar el producto al carrito:", error.message);
     return res.status(500).json({ error: "Error interno del servidor" });
-  }
-});
-router.delete("/:cid", async (req, res) => {
-  const { cid } = req.params;
-  const cartId = new ObjectId(cid);
-
-  try {
-    const borrarProds = await cartsMongo.deleteAllProducts(cartId);
-    res
-      .status(200)
-      .json({ message: "Productos eliminados del carrito", borrarProds });
-    logger.info("producto eliminado del carrito");
-  } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Error al eliminar los productos del carrito" });
-    logger.error("no se pudo eliminar el producto");
   }
 });
 

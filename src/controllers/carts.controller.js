@@ -19,48 +19,50 @@ class CartController {
     const { cid } = req.params;
 
     try {
-      const cart = await this.cartsMongo.getCartById(cid);
+      const cart = await this.cartsMongo.getCartById(cid)
 
       if (!cart) {
         return res.status(404).json({ error: "Carrito no encontrado" });
       }
-    
+      res.status(200).json({ message: "Carrito encontrado", cart });
     } catch (error) {
       console.error("Error al obtener el carrito:", error);
       res.status(500).json({ error: "Error interno del servidor" });
     }
   }
 
-  async getProductDetails(productInfos) {
-    try {
-      return await Promise.all(
-        productInfos.map(async (productInfo) => {
-          const isValidObjectId = mongoose.Types.ObjectId.isValid(productInfo._id);
-          if (!isValidObjectId) {
-            console.error("ID de producto no válido:", productInfo._id);
-            throw new Error("ID de producto no válido");
-          }
-          const plainProduct = await productsService.findById(productInfo._id);
-          return {
-            ...plainProduct,
-            quantity: productInfo.quantity,
-            subtotal: productInfo.quantity * plainProduct.price,
-          };
-        })
-      );
-    } catch (error) {
-      console.error("Error al obtener detalles del producto:", error);
-      throw error;
-    }
-  }
+  // async getProductDetails(productInfos) {
+  //   try {
+  //     return await Promise.all(
+  //       productInfos.map(async (productInfo) => {
+  //         const isValidObjectId = mongoose.Types.ObjectId.isValid(productInfo._id);
+  //         if (!isValidObjectId) {
+  //           console.error("ID de producto no válido:", productInfo._id);
+  //           throw new Error("ID de producto no válido");
+  //         }
+  //         const plainProduct = await productsService.findById(productInfo._id);
+  //         console.log(plainProduct)
+  //         return {
+  //           ...plainProduct,
+  //           quantity: productInfo.quantity,
+  //           subtotal: productInfo.quantity * plainProduct.price,
+  //         };
+  //       })
+  //     );
+  //   } catch (error) {
+  //     console.error("Error al obtener detalles del producto:", error);
+  //     throw error;
+  //   }
+  // }
 
   async addProductToCart(req, res) {
     const { cartId } = req.params;
     const { productId, quantity } = req.body;
   
     try {
+      
       const cart = await cartService.addProductToCart(cartId, productId, quantity);
-      res.redirect(`/carts/${cartId}`);
+      res.status(200).json({ message: "Producto agregado al carrito", cart });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -74,7 +76,7 @@ class CartController {
       const cart = await cartService.removeProductFromCart(cartId, productId);
       const updatedCart = await cartService.calculateTotalAmount(cart);
 
-    res.status(200).json({ cart: updatedCart });
+      res.status(200).json({ message: "Producto eliminado del carrito", cart: updatedCart });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -86,9 +88,9 @@ class CartController {
     try {
       const cart = await cartService.updateCart(cartId, updates);
   
-      res.status(200).json({ cart });
+      res.status(200).json({ message: "Carrito actualizado", cart });
     } catch (error) {
-      res.status(500).json({ error });
+      res.status(500).json({ error: "Error interno del servidor" });
     }
   }
 
@@ -98,7 +100,7 @@ class CartController {
 
     try {
       const cart = await cartService.updateProductQuantity(cartId, productId, newQuantity);
-      res.status(200).json({ cart });
+      res.status(200).json({ message: "Cantidad de producto actualizada", cart });
     } catch (error) {
       res.status(500).json({ error });
     }
@@ -111,7 +113,7 @@ class CartController {
       const cart = await cartService.clearCart(cartId);
       const updatedCart = await cartService.calculateTotalAmount(cart);
 
-      res.status(200).json({ cart: updatedCart });
+     res.status(200).json({ message: "Carrito limpiado", cart: updatedCart });
     } catch (error) {
       res.status(500).json({ error });
     }

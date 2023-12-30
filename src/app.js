@@ -49,7 +49,11 @@ app.use(express.static(__dirname +"/public"))
 
 
 //parte de handlebars
-app.engine("handlebars", handlebars.engine())
+app.engine("handlebars", handlebars.engine({
+  allowProtoMethodsByDefault: true,
+  allowProtoPropertiesByDefault: true,
+}));
+
 app.set("views", __dirname +"/views")
 app.set("view engine","handlebars")
 
