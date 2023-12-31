@@ -49,6 +49,48 @@ class CartsMongo {
     }
   }
 
+  async getCartByUserId(userId) {
+    try {
+      const cart = await cartsModel.findOne({ user: userId }).populate({
+        path: 'products._id',
+        model: 'Products',
+      });
+  
+      return cart;
+    } catch (error) {
+      console.error('Error al obtener el carrito:', error.message);
+      throw error;
+    }
+  }
+
+  async createCartForUser(userId) {
+    try {
+      const isValidUserId = mongoose.Types.ObjectId.isValid(userId);
+  
+      if (!isValidUserId) {
+        throw new Error('ID de usuario no válido al crear el carrito');
+      }
+  
+      let existingCart = await this.getCartByUserId(userId);
+  
+      if (!existingCart) {
+        console.log('No se encontró un carrito existente para el usuario. Creando uno nuevo...');
+        const newCart = new cartsModel({ user: userId });
+        await newCart.save();
+        console.log('Nuevo carrito creado para el usuario:', newCart);
+  
+        existingCart = newCart;
+      } else {
+        console.log('El usuario ya tiene un carrito existente:', existingCart);
+      }
+  
+      return existingCart;
+    } catch (error) {
+      console.error('Error al crear el carrito para el usuario:', error.message);
+      throw new Error('Error al crear el carrito para el usuario');
+    }
+  }
+
   async createCart() {
     try {
       const newCart = new cartsModel();
@@ -74,44 +116,48 @@ class CartsMongo {
   async addProductToCart(cartId, productId, quantity) {
     try {
       console.log("Adding product to cart:", cartId, productId, quantity);
-  
+
       if (!mongoose.Types.ObjectId.isValid(productId)) {
         throw new Error("ID de producto no válido");
       }
-  
+
       const cart = await this.getCartById(cartId);
-  
+
       if (!cart) {
         throw new Error("Carrito no encontrado");
       }
-  
+
       console.log("Product ID before adding to cart:", productId);
-  
-      const existingProductIndex = cart.products.findIndex((p) =>
-        p._id && p._id.toString() === productId.toString()
+
+      const existingProductIndex = cart.products.findIndex(
+        (p) => p._id && p._id.toString() === productId.toString()
       );
-  
+
       if (existingProductIndex !== -1) {
         cart.products[existingProductIndex].quantity += quantity || 1;
       } else {
         const product = await productsService.findById(productId);
-        if (product) {
-          cart.products.push({
-            _id: productId,
-            quantity: quantity || 1,
-            title: product.title,
-            price: product.price,
-            stock: product.stock
-          });
-          console.log("Product added to cart:", cart.products);
-        } else {
-          console.error("Producto no encontrado en la base de datos");
+
+        if (!product) {
+          throw new Error("Producto no encontrado en la base de datos");
         }
+
+        cart.products.push({
+          _id: productId,
+          quantity: quantity || 1,
+          title: product.title,
+          price: product.price,
+          stock: product.stock,
+        });
+
+        console.log("Product added to cart:", cart.products);
       }
+
       cart.totalAmount = cart.products.reduce(
         (total, product) => total + product.quantity * product.price,
         0
       );
+
       const updatedCart = await this.saveCart(cart);
       return updatedCart;
     } catch (error) {
@@ -207,12 +253,13 @@ class CartsMongo {
 
   async deleteCart(id) {
     try {
-      const deleted = await cartsModel.findByIdAndDelete(id);
-      return deleted;
+        const deleted = await cartsModel.findByIdAndDelete(id);
+        console.log('Cart deleted:', deleted);
+        return deleted;
     } catch (error) {
-      return error;
+        return error;
     }
-  }
+}
 
   async deleteAllProducts(cartId) {
     try {

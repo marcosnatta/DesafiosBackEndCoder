@@ -5,9 +5,9 @@ class TicketService {
     this.ticketMongo = new TicketMongo();
   }
 
-  async createTicket(ticketData) {
+  async createTicket(ticketData, userEmail) {
     try {
-      const newTicket = await this.ticketMongo.createTicket(ticketData);
+      const newTicket = await this.ticketMongo.createTicket(ticketData, userEmail);
       return newTicket;
     } catch (error) {
       throw new Error(error);

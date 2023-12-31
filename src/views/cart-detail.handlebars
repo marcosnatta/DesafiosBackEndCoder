@@ -8,6 +8,7 @@
 </head>
 
 <body class="center">
+   <p>mail de usuario:{{user.email}}</p>
   <div>
     <h1 class=" text-center"><span class="badge bg-secondary">Detalles del Carrito</span></h1>
   </div>
@@ -25,6 +26,7 @@
       <p>Total del Carrito: {{cart._doc.totalAmount}}</p>
 
     </ul>
+    <a href="/carts/{{cart._doc._id}}/purchase">Pagar</a>
 
   </div>
 

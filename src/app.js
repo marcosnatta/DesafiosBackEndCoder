@@ -1,5 +1,6 @@
 import express from "express"
 import productsRouter from "./routes/products.router.js"
+import sessionRouter from "./routes/sessions.router.js"
 import cartsRouter from "./routes/carts.router.js"
 import {__dirname} from "./utils.js"
 import handlebars from "express-handlebars"
@@ -9,7 +10,6 @@ import {Mesagge} from "./DAL/mongoDB/models/messages.model.js"
 import cookieParser from "cookie-parser"
 import session from "express-session"
 import MongoStore from "connect-mongo"
-import sessionRouter from "./routes/sessions.router.js"
 import "./DAL/mongoDB/dbConfig.js"
 import passport from "passport"
 import './passport/passportStrategies.js'
@@ -22,8 +22,8 @@ import CustomError from "./errors/CustomError.js"
 import { logger } from "./winston.js"
 import swaggerJSDoc from "swagger-jsdoc"
 import swaggerUiExpress from "swagger-ui-express"
+
 const app = express()
-app.set('view engine', 'ejs');
 
 // cookie
 app.use(cookieParser())

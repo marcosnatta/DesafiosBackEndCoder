@@ -34,41 +34,44 @@ const productsSchema = new mongoose.Schema({
     type: String,
   },
   owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+
+    type: String,
     default: "admin",
-    validate: {
-      validator: async function (value) {
-        if (value === "ADMIN") {
-          return true;
-        }
-        if (value) {
-          const user = await userModel.findOne({ email: value, role: 'premium' });
-          return user !== null;
-        }
-        return true;
-      },
-      message: 'El propietario debe ser un usuario premium con el correo electrónico correspondiente',
-    },
+    // type: mongoose.Schema.Types.ObjectId,
+    // ref: "User",
+    // default: null,
+    // validate: {
+    //   validator: async function (value) {
+    //     if (value === null || value === "ADMIN") {
+    //       return true;
+    //     }
+    //     if (value) {
+    //       const user = await userModel.findOne({ email: value, role: 'premium' });
+    //       return user !== null;
+    //     }
+    //     return true;
+    //   },
+    //   message: 'El propietario debe ser un usuario premium con el correo electrónico correspondiente',
+    // },
   },
 });
 
-productsSchema.pre('save', async function (next) {
-  if (!this.owner) {
-    try {
-      const adminUser = await userModel.findOne({ username: 'ADMIN' });
+// productsSchema.pre('save', async function (next) {
+//   if (!this.owner) {
+//     try {
+//       const adminUser = await userModel.findOne({ username: 'ADMIN' });
       
-      if (adminUser) {
-        this.owner = adminUser._id;
-      } else {
-        this.owner = 'ADMIN';
-      }
-    } catch (error) {
-      console.error("Error al buscar el usuario 'ADMIN':", error);
-    }
-  }
-  next();
-});
+//       if (adminUser) {
+//         this.owner = adminUser._id;
+//       } else {
+//         this.owner = 'ADMIN';
+//       }
+//     } catch (error) {
+//       console.error("Error al buscar el usuario 'ADMIN':", error);
+//     }
+//   }
+//   next();
+// });
 productsSchema.plugin(mongoosePaginate);
 
 export const productsModel = mongoose.model("Products", productsSchema);

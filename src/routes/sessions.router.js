@@ -6,9 +6,10 @@ import passport from "passport";
 import UsersDto from "../DAL/DTOs/users.dto.js";
 import { userMongo } from "../DAL/DAOs/mongoDAOs/userMongo.js";
 import InactiveUserService from "../services/userinactive.service.js"
+import { CartsMongo } from '../DAL/DAOs/mongoDAOs/CartsMongo.js';
 
 const router = Router();
-
+const cartsMongo = new CartsMongo();
 
 
 router.post("/register", async (req, res) => {
@@ -43,50 +44,100 @@ router.post("/register", async (req, res) => {
 //http://localhost:8080/session/login
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  const user = await userModel.findOne({ email });
 
-  if (!user) {
-    return res.status(400).send({ status: "error", error: "Datos incorrectos" });
+  try {
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+      return res.status(400).send({ status: "error", error: "Datos incorrectos" });
+    }
+
+    const isPasswordValid = await compareData(password, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Usuario o contraseña no válidos" });
+    }
+
+    user.lastConnection = new Date();
+
+    if (email === "adminCoder@coder.com" && password === "adminCod3r123") {
+      user.role = "ADMIN";
+    }
+
+    const existingCart = await cartsMongo.getCartByUserId(user._id);
+
+    req.session.user = {
+      _id: user._id,
+      name: `${user.first_name} ${user.last_name}`,
+      email: user.email,
+      age: user.age,
+      role: user.role,
+      cartId: existingCart ? existingCart._id : null,
+    };
+
+    req.session.cartId = req.session.user.cartId;
+
+    if (!existingCart) {
+      console.log('No se encontró un carrito existente para el usuario. Creando uno nuevo...');
+      const newCart = await cartsMongo.createCartForUser(user._id);
+      console.log('Nuevo carrito creado para el usuario:', newCart);
+
+      req.session.user.cartId = newCart._id;
+      req.session.cartId = newCart._id;
+    }
+
+    await user.save();
+    res.cookie('usuario', req.session.user.email);
+    res.redirect("/api/products");
+  } catch (error) {
+    console.error("Error durante la autenticación:", error);
+    res.status(500).json({ status: "error", error: "Error interno del servidor" });
   }
-  const isPasswordValid = await compareData(password, user.password);
+});
 
-  if (!isPasswordValid) {
-    return res.status(401).json({ message: "Usuario o contraseña no válidos" });
+// get http://localhost:8080/session/logout
+router.get("/logout", async (req, res) => {
+  try {
+    const cartId = req.session.cartId;
+    const userId = req.session.user ? req.session.user._id : null;
+
+    console.log("Cerrando sesión. CartId:", cartId, "UserId:", userId);
+
+    if (cartId && userId) {
+      const cart = await cartsMongo.getCartById(cartId);
+
+      console.log("Obteniendo información del carrito:", cart);
+
+      if (cart && cart.user && cart.user.toString() === userId.toString()) {
+        await cartsMongo.deleteCart(cartId);
+        console.log(`Carrito ${cartId} eliminado al cerrar sesión.`);
+      }
+    }
+    
+    req.session.cartId = null;
+    req.session.user = null;
+
+    console.log("Sesión destruida. Redireccionando a /login.");
+    
+    req.session.destroy((err) => {
+      if (err) {
+        return res
+          .status(500)
+          .send({ status: "error", error: "No pudo cerrar sesión" });
+      }
+
+      res.redirect("/login");
+    });
+  } catch (error) {
+    console.error("Error al cerrar sesión:", error);
+    res.status(500).json({ status: "error", error: "Error interno del servidor" });
   }
-
-  user.lastConnection = new Date();
-
-  if (email === "adminCoder@coder.com" && password === "adminCod3r123") {
-    user.role = "ADMIN";
-  }
-  await user.save();
-
-  req.session.user = {
-    name: `${user.first_name} ${user.last_name}`,
-    email: user.email,
-    age: user.age,
-    role: user.role,
-  };
-console.log(req.session.user)
-  res.cookie('usuario', req.session.user.email);
-  req.session[`email`] = email;
-
-  res.redirect("/api/products");
 });
 
 
-router.get("/logout", (req, res) => {
-  // get http://localhost:8080/session/logout
-  req.session.destroy((err) => {
-    if (err)
-      return res
-        .status(500)
-        .send({ status: "error", error: "No pudo cerrar sesion" });
-    res.redirect("/login");
-  });
-});
+
+
 //passport github
-
 router.get(
   "/githubSignup",
   passport.authenticate("github", { scope: ["user:email"] })

@@ -4,7 +4,7 @@ import { CartsMongo } from "../DAL/DAOs/mongoDAOs/CartsMongo.js";
 import { ticketService } from "../services/ticket.service.js";
 import { cartService } from "../services/carts.service.js";
 import { productsService } from "../services/products.service.js";
-import { mongoose } from "mongoose";
+import  mongoose  from "mongoose";
 import { isAdmin } from "../middlewares/auth.middlewares.js";
 import { ErrorMessages } from "../errors/error.enum.js";
 import CustomError from "../errors/CustomError.js";
@@ -41,13 +41,14 @@ router.get("/:cid", async (req, res) => {
   const { cid } = req.params;
   try {
     const cart = await cartsMongo.getCartById(cid);
-
+    const user = req.session.user;
+    console.log(user)
     if (!cart) {
       return res.status(404).json({ error: "Carrito no encontrado" });
     }
-    
+
     res.status(200).json({
-      message: "Carrito encontrado", cart
+      message: "Carrito encontrado", cart,user
     });
     
   } catch (error) {
@@ -56,22 +57,30 @@ router.get("/:cid", async (req, res) => {
   }
 });
 
-
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   try {
-    const createCart = cartService.createCart();
-    logger.info("tu carrito se creo correctamente");
-    res.status(200).json({ message: "Productos", carro: createCart });
+    const newCart = await cartsMongo.createCart();
+    req.session.cartId = newCart._id;
+    logger.info("Tu carrito se creó correctamente");
+    res.status(200).json({ message: "Nuevo carrito creado", cart: newCart });
   } catch (error) {
-    logger.error("no se pudo crear el carrito");
-    CustomError.createError(ErrorMessages.CART_NOT_CREATED);
+    logger.error("No se pudo crear el carrito");
+    res.status(500).json({ error: "Error interno del servidor al crear el carrito" });
   }
 });
+
 
 router.post("/:cid/products/:pid", async (req, res) => {
   const cartId = req.params.cid;
   const productId = req.params.pid;
   const { quantity } = req.body;
+
+  const userId = req.session.user;
+  console.log(userId);
+
+  if (!userId) {
+    return res.status(401).json({ error: "Usuario no autenticado" });
+  }
 
   if (!quantity || isNaN(quantity)) {
     return res.status(400).json({ error: "Cantidad no válida" });
@@ -79,33 +88,31 @@ router.post("/:cid/products/:pid", async (req, res) => {
 
   try {
     const product = await productsService.findById(productId);
-    const cart = await cartsMongo.getCartById(cartId);
+    let cart;
+
+    if (!cartId) {
+      cart = await cartsMongo.getCartByUserId(userId);
+    } else {
+      cart = await cartsMongo.getCartById(cartId);
+    }
 
     if (!product) {
       console.error("Producto no encontrado en la base de datos");
       return res.status(404).json({ error: "Producto no encontrado" });
     }
 
-
     if (!cart) {
-      const newCart = await cartsMongo.createCart();
-      const newCartId = newCart._id;
-
-      const updatedCart = await cartsMongo.addProductToCart(
-        newCartId,
-        productId,
-        quantity
-      );
-      return res.status(200).json({
-        message: "Producto agregado al carrito",
-        cart: updatedCart,
-      });
+      const newCart = await cartsMongo.createCartForUser(userId);
+      req.session.cartId = newCart._id;
+      cart = newCart;
     }
-    const updatedCart = await cartService.addProductToCart(
-      cartId,
+
+    const updatedCart = await cartsMongo.addProductToCart(
+      cart,
       productId,
       quantity
     );
+
     return res.status(200).json({
       message: "Producto agregado al carrito",
       cart: updatedCart,
@@ -116,16 +123,21 @@ router.post("/:cid/products/:pid", async (req, res) => {
   }
 });
 
+
 router.delete("/:cid", async (req, res) => {
   const { cid } = req.params;
   const cartId = new ObjectId(cid);
-
+  console.log(cid)
+  if (!ObjectId.isValid(cartId)) {
+    return res.status(400).json({ error: "ID de carrito no válido" });
+  }
+  
   try {
-    const borrarProds = await cartsMongo.deleteAllProducts(cartId);
+    const borrarcart = await cartsMongo.deleteCart(cid);
     res
       .status(200)
-      .json({ message: "Productos eliminados del carrito", borrarProds });
-    logger.info("producto eliminado del carrito");
+      .json({ message: "carrito eliminado", borrarcart });
+    logger.info("carrito eliminado");
   } catch (error) {
     res
       .status(500)
@@ -198,7 +210,13 @@ router.put("/:cid/products/:pid", async (req, res) => {
 
 router.post("/:cid/purchase", async (req, res) => {
   const cartId = req.params.cid;
+  
   try {
+    const user = req.session.user;
+    console.log(user)
+    if (!req.session.user) {
+      return res.status(401).json({ error: "Usuario no autenticado" });
+    }
     const cart = await cartService.getCartById(cartId);
     if (!cart) {
       return res.status(404).json({ error: "Carrito no encontrado" });
@@ -238,18 +256,20 @@ router.post("/:cid/purchase", async (req, res) => {
         productosNoProcesados,
       });
     }
-
+    const userEmail = req.session.user.email;
+   
     const ticketData = {
       purchase_datetime: new Date(),
       amount: cart.totalAmount,
-      purchaser: "marcos",
+      purchaser: userEmail,
     };
-    const ticket = await ticketService.createTicket(ticketData);
-
-    res.status(201).json({ message: "Compra exitosa", ticket });
+    const ticket = await ticketService.createTicket(ticketData, userEmail);
+    res.status(200).json({ "purchase": ticket });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
+
 
 export default router;
