@@ -1,17 +1,25 @@
+function generateUniqueCode() {
+  return Date.now().toString();
+}
 import nodemailer from "nodemailer";
 import { Ticket } from "../../mongoDB/models/ticket.model.js";
 import config from "../../../config.js";
 
 class TicketMongo {
+
+
   async createTicket(ticketData, userEmail) {
     try {
       const { purchase_datetime, amount } = ticketData;
       if (!purchase_datetime || !amount) {
         throw new Error("purchase_datetime y amount son campos obligatorios");
       }
+      const code = generateUniqueCode();
       const newTicket = new Ticket({
         ...ticketData,
+        code: code,
       });
+
       await newTicket.save();
       console.log('Correo electrónico del usuario:', userEmail);
 
@@ -24,6 +32,7 @@ class TicketMongo {
     }
   }
 
+  
   async sendEmail(ticket, userEmail) {
     try {
       const transporter = nodemailer.createTransport({

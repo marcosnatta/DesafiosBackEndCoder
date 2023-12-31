@@ -15088,3 +15088,253 @@
   level: 'info',
   timestamp: '2023-12-31T18:21:45.494Z'
 }
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T18:24:00.133Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T18:28:59.303Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T18:29:34.832Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T18:32:44.735Z'
+}
+{
+  message: 'productos encontrados',
+  level: 'info',
+  timestamp: '2023-12-31T18:32:58.876Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T18:33:47.096Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T18:36:46.338Z'
+}
+{
+  message: 'carrito eliminado',
+  level: 'info',
+  timestamp: '2023-12-31T18:37:59.514Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T18:39:04.112Z'
+}
+{
+  message: 'productos encontrados',
+  level: 'info',
+  timestamp: '2023-12-31T18:39:43.983Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T18:40:03.365Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T18:45:05.457Z'
+}
+{
+  message: 'productos encontrados',
+  level: 'info',
+  timestamp: '2023-12-31T18:45:13.711Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T18:47:17.175Z'
+}
+{
+  message: 'productos encontrados',
+  level: 'info',
+  timestamp: '2023-12-31T18:47:28.175Z'
+}
+{
+  message: 'productos encontrados',
+  level: 'info',
+  timestamp: '2023-12-31T18:48:09.491Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T18:49:18.531Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T18:51:26.314Z'
+}
+{
+  message: 'productos encontrados',
+  level: 'info',
+  timestamp: '2023-12-31T18:51:39.913Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T18:53:07.347Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T18:53:33.453Z'
+}
+{
+  message: 'productos encontrados',
+  level: 'info',
+  timestamp: '2023-12-31T18:53:48.902Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T18:56:12.195Z'
+}
+{
+  message: 'carrito eliminado',
+  level: 'info',
+  timestamp: '2023-12-31T18:59:19.388Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T19:05:23.603Z'
+}
+{
+  message: 'productos encontrados',
+  level: 'info',
+  timestamp: '2023-12-31T19:05:54.246Z'
+}
+{
+  message: 'carrito eliminado',
+  level: 'info',
+  timestamp: '2023-12-31T19:06:24.123Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T19:06:51.892Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T19:07:16.288Z'
+}
+{
+  message: 'productos encontrados',
+  level: 'info',
+  timestamp: '2023-12-31T19:07:28.151Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T19:07:49.131Z'
+}
+{
+  message: 'productos encontrados',
+  level: 'info',
+  timestamp: '2023-12-31T19:08:01.990Z'
+}
+{
+  message: 'carrito eliminado',
+  level: 'info',
+  timestamp: '2023-12-31T19:08:06.233Z'
+}
+{
+  message: 'productos encontrados',
+  level: 'info',
+  timestamp: '2023-12-31T19:08:33.600Z'
+}
+{
+  message: 'carrito eliminado',
+  level: 'info',
+  timestamp: '2023-12-31T19:08:42.822Z'
+}
+{
+  message: 'productos encontrados',
+  level: 'info',
+  timestamp: '2023-12-31T19:08:56.204Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T19:09:49.589Z'
+}
+{
+  message: 'carrito eliminado',
+  level: 'info',
+  timestamp: '2023-12-31T19:10:44.669Z'
+}
+{
+  message: 'productos encontrados',
+  level: 'info',
+  timestamp: '2023-12-31T19:11:44.444Z'
+}
+{
+  message: 'carrito eliminado',
+  level: 'info',
+  timestamp: '2023-12-31T19:12:03.122Z'
+}
+{
+  message: 'productos encontrados',
+  level: 'info',
+  timestamp: '2023-12-31T19:15:12.057Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T19:16:16.161Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T19:16:47.050Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T19:18:52.330Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T19:20:21.316Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2023-12-31T19:20:38.349Z'
+}
+{
+  message: 'carrito eliminado',
+  level: 'info',
+  timestamp: '2023-12-31T19:20:42.609Z'
+}
+{
+  message: 'productos encontrados',
+  level: 'info',
+  timestamp: '2023-12-31T19:20:54.516Z'
+}
+{
+  message: 'carrito eliminado',
+  level: 'info',
+  timestamp: '2023-12-31T19:21:04.105Z'
+}
+{
+  message: 'productos encontrados',
+  level: 'info',
+  timestamp: '2023-12-31T19:21:40.849Z'
+}

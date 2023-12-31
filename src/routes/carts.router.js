@@ -6,8 +6,6 @@ import { cartService } from "../services/carts.service.js";
 import { productsService } from "../services/products.service.js";
 import  mongoose  from "mongoose";
 import { isAdmin } from "../middlewares/auth.middlewares.js";
-import { ErrorMessages } from "../errors/error.enum.js";
-import CustomError from "../errors/CustomError.js";
 import logger from "../winston.js";
 
 const router = Router();

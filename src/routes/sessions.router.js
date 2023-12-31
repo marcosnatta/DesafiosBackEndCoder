@@ -7,6 +7,7 @@ import UsersDto from "../DAL/DTOs/users.dto.js";
 import { userMongo } from "../DAL/DAOs/mongoDAOs/userMongo.js";
 import InactiveUserService from "../services/userinactive.service.js"
 import { CartsMongo } from '../DAL/DAOs/mongoDAOs/CartsMongo.js';
+import fetch from 'node-fetch';
 
 const router = Router();
 const cartsMongo = new CartsMongo();
@@ -104,13 +105,15 @@ router.get("/logout", async (req, res) => {
     console.log("Cerrando sesión. CartId:", cartId, "UserId:", userId);
 
     if (cartId && userId) {
-      const cart = await cartsMongo.getCartById(cartId);
+      const response = await fetch(`http://localhost:8080/api/carts/${cartId}`, {
+        method: 'DELETE',
+      });
 
-      console.log("Obteniendo información del carrito:", cart);
-
-      if (cart && cart.user && cart.user.toString() === userId.toString()) {
-        await cartsMongo.deleteCart(cartId);
+      if (response.ok) {
         console.log(`Carrito ${cartId} eliminado al cerrar sesión.`);
+      } else {
+        console.error(`Error al intentar eliminar el carrito ${cartId}.`);
+        console.error(response.status, response.statusText);
       }
     }
     
@@ -133,9 +136,6 @@ router.get("/logout", async (req, res) => {
     res.status(500).json({ status: "error", error: "Error interno del servidor" });
   }
 });
-
-
-
 
 //passport github
 router.get(
