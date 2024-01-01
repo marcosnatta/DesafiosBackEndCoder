@@ -115,59 +115,50 @@ class CartsMongo {
 
   async addProductToCart(cartId, productId, quantity) {
     try {
-      console.log("Adding product to cart:", cartId, productId, quantity);
+        const cart = await this.getCartById(cartId);
 
-      if (!mongoose.Types.ObjectId.isValid(productId)) {
-        throw new Error("ID de producto no válido");
-      }
-
-      const cart = await this.getCartById(cartId);
-
-      if (!cart) {
-        throw new Error("Carrito no encontrado");
-      }
-
-      console.log("Product ID before adding to cart:", productId);
-
-      const existingProductIndex = cart.products.findIndex(
-        (p) => p._id && p._id.toString() === productId.toString()
-      );
-
-      if (existingProductIndex !== -1) {
-        cart.products[existingProductIndex].quantity += quantity || 1;
-      } else {
-        const product = await productsService.findById(productId);
-
-        if (!product) {
-          throw new Error("Producto no encontrado en la base de datos");
+        if (!cart) {
+            throw new Error("Carrito no encontrado");
         }
 
-        cart.products.push({
-          _id: productId,
-          quantity: quantity || 1,
-          title: product.title,
-          price: product.price,
-          stock: product.stock,
-        });
+        const existingProduct = cart.products.find(
+            (p) => p._id.equals(productId)
+        );
 
-        console.log("Product added to cart:", cart.products);
-      }
+        if (existingProduct) {
+            existingProduct.quantity += quantity || 1;
+        } else {
+            const product = await productsService.findById(productId);
 
-      cart.totalAmount = cart.products.reduce(
-        (total, product) => total + product.quantity * product.price,
-        0
-      );
+            if (!product) {
+                throw new Error("Producto no encontrado en la base de datos");
+            }
 
-      const updatedCart = await this.saveCart(cart);
-      return updatedCart;
+            cart.products.push({
+                _id: productId,
+                quantity: quantity || 1,
+                title: product.title,
+                price: product.price,
+                stock: product.stock,
+            });
+        }
+
+        cart.totalAmount = cart.products.reduce(
+            (total, product) => total + product.quantity * product.price,
+            0
+        );
+
+        const updatedCart = await this.saveCart(cart);
+        return updatedCart;
     } catch (error) {
-      console.error("Error updating product quantity in cart:", error.message);
-      throw new Error(
-        "Error al actualizar la cantidad del producto en el carrito: " +
-          error.message
-      );
+        console.error("Error updating product quantity in cart:", error.message);
+        throw new Error(
+            "Error al actualizar la cantidad del producto en el carrito: " +
+            error.message
+        );
     }
-  }
+}
+
 
   async updateOne(id, obj) {
     try {
@@ -229,27 +220,28 @@ class CartsMongo {
 
   async updateProductQuantity(cartId, productId, updatedQuantity) {
     try {
-      const cart = await this.getCartById(cartId);
+        const cart = await this.getCartById(cartId);
 
-      if (!cart) {
-        throw new Error("Carrito no encontrado");
-      }
+        if (!cart) {
+            throw new Error("Carrito no encontrado");
+        }
 
-      const productToUpdate = cart.products.find((product) =>
-        product.product.equals(productId)
-      );
+        const productToUpdate = cart.products.find((product) =>
+            product._id.equals(productId)
+        );
 
-      if (!productToUpdate) {
-        throw new Error("Producto no encontrado en el carrito");
-      }
+        if (!productToUpdate) {
+            throw new Error("Producto no encontrado en el carrito");
+        }
 
-      productToUpdate.quantity = updatedQuantity;
-      const updatedCart = await this.saveCart(cart);
-      return updatedCart;
+        productToUpdate.quantity = updatedQuantity;
+        const updatedCart = await this.saveCart(cart);
+        return updatedCart;
     } catch (error) {
-      throw error;
+        throw error;
     }
-  }
+}
+
 
   async deleteCart(id) {
     try {

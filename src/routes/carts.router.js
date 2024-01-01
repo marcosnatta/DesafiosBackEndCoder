@@ -187,9 +187,9 @@ router.put("/:cid/products/:pid", async (req, res) => {
       updatedQuantity
     );
     const updatedProduct = updatedCart.products.find(
-      (product) => product.id._id.toString() === pid
-    );
-
+      (product) => product && product.id && product.id._id && product.id._id.toString() === pid
+  );
+  
     res.status(200).json({
       message: "Cantidad de producto actualizada",
       cart: updatedCart,
