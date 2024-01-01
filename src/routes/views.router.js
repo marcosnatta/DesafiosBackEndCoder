@@ -5,7 +5,7 @@ import { cartService } from "../services/carts.service.js"
 import mongoose from "mongoose"
 import { productsService } from "../services/products.service.js"
 import { ticketService } from "../services/ticket.service.js"
-
+import { isAdmin } from "../middlewares/auth.middlewares.js";
 const router = Router()
 const cartsMongo = new CartsMongo();
 
@@ -138,7 +138,9 @@ router.get("/carts/:cid/purchase", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
 //para cambiar rol de usuario ver los usuario y eliminarlos
+http://localhost:8080/api/session/users
 router.get('/api/session/users', async (req, res) => {
   try {
     const projection = { first_name: 1, email: 1, role: 1 };

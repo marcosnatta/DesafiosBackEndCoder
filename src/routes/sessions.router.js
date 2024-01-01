@@ -8,6 +8,7 @@ import { userMongo } from "../DAL/DAOs/mongoDAOs/userMongo.js";
 import InactiveUserService from "../services/userinactive.service.js"
 import { CartsMongo } from '../DAL/DAOs/mongoDAOs/CartsMongo.js';
 import fetch from 'node-fetch';
+import { isAdmin } from "../middlewares/auth.middlewares.js";
 
 const router = Router();
 const cartsMongo = new CartsMongo();
@@ -196,7 +197,6 @@ router.delete('/deletedUsers', async (req, res) => {
 });
 
 
-// ruta a seguir http://localhost:8080/session/users/premium/id del usuario
 router.put("/users/premium/:uid", async (req, res) => {
   try {
     const uid = req.params.uid;

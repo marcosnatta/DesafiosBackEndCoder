@@ -15763,3 +15763,98 @@
   level: 'info',
   timestamp: '2024-01-01T03:51:45.321Z'
 }
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2024-01-01T03:55:23.614Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2024-01-01T03:55:34.848Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2024-01-01T03:55:46.862Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2024-01-01T03:56:18.687Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2024-01-01T03:56:35.476Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2024-01-01T03:57:17.058Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2024-01-01T03:57:39.828Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2024-01-01T03:57:57.484Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2024-01-01T03:58:12.870Z'
+}
+{
+  message: 'productos encontrados',
+  level: 'info',
+  timestamp: '2024-01-01T03:58:28.726Z'
+}
+{
+  message: 'carrito eliminado',
+  level: 'info',
+  timestamp: '2024-01-01T04:01:26.047Z'
+}
+{
+  message: 'productos encontrados',
+  level: 'info',
+  timestamp: '2024-01-01T04:01:47.940Z'
+}
+{
+  message: 'carrito eliminado',
+  level: 'info',
+  timestamp: '2024-01-01T04:02:33.959Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2024-01-01T04:50:25.695Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2024-01-01T04:51:49.072Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2024-01-01T04:55:49.142Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2024-01-01T04:55:50.915Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2024-01-01T04:56:04.859Z'
+}
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2024-01-01T04:56:54.870Z'
+}
