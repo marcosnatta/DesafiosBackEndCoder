@@ -15858,3 +15858,8 @@
   level: 'info',
   timestamp: '2024-01-01T04:56:54.870Z'
 }
+{
+  message: 'escuchando el puerto 8080',
+  level: 'info',
+  timestamp: '2024-01-01T23:06:03.356Z'
+}
