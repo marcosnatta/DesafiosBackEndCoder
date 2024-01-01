@@ -87,9 +87,9 @@ app.get('/profile', (req, res) => {
 });
 
 //modificar rol
-app.get("/changerol",(req,res)=>{
-  res.render("changerol")
-})
+// app.get("/changerol",(req,res)=>{
+//   res.render("changerol")
+// })
 
 // mock
 app.get("/mockingproducts", (req, res) => {

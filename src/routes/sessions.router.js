@@ -163,9 +163,11 @@ router.get("/current", (req, res) => {
   res.status(200).json({ user: userDto });
 });
 
+
+
+// http://localhost:8080/session/users
 // users
 router.get('/users', async (req, res) => {
-  // http://localhost:8080/session/users
   try {
     const projection = { first_name: 1, email: 1, role: 1 };
     const users = await userMongo.find({}, projection);
@@ -240,5 +242,21 @@ router.put("/users/premium/:uid", async (req, res) => {
     res.status(500).json({ error: "Error interno del servidor" });
   }
 });
+
+router.delete('/users/:userId', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const deletedUser = await userModel.deleteOne({ _id: userId });
+    if (deletedUser.deletedCount > 0) {
+      res.status(200).json({ message: 'Usuario eliminado correctamente', deletedUser });
+    } else {
+      res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+  } catch (error) {
+    console.error('Error al eliminar el usuario:', error);
+    res.status(500).json({ error: 'Error interno del servidor al eliminar el usuario' });
+  }
+});
+
 
 export default router;

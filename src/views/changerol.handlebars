@@ -1,12 +1,14 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cambiar Rol de Usuario</title>
+    <title>Administrar Usuarios</title>
 </head>
 <body>
-    <h1>Cambiar Rol de Usuario</h1>
+    <h1>Administrar Usuarios</h1>
+
     <form id="userForm">
         <label for="userId">ID del Usuario:</label>
         <input type="text" id="userId" name="userId" required>
@@ -21,6 +23,16 @@
     </form>
 
     <div id="result"></div>
+
+    <div>
+        <h2>Lista de Usuarios</h2>
+        <ul id="userList"></ul>
+    </div>
+    <form id="deleteUserForm">
+        <label for="deleteUserId">ID del Usuario a Borrar:</label>
+        <input type="text" id="deleteUserId" name="deleteUserId" required>
+        <button type="button" onclick="deleteUser()">Borrar Usuario</button>
+    </form>
 
     <script src="/js/changerol.js"></script>
 </body>

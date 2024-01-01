@@ -138,6 +138,16 @@ router.get("/carts/:cid/purchase", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+//para cambiar rol de usuario ver los usuario y eliminarlos
+router.get('/api/session/users', async (req, res) => {
+  try {
+    const projection = { first_name: 1, email: 1, role: 1 };
+    const users = await userMongo.find({}, projection);
+    res.status(200).json({ users });
+  } catch (error) {
+    res.render("changerol")
+  }
+});
 
 
 
